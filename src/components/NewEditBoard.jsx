@@ -7,14 +7,17 @@ export default function NewEditBoard() {
     setTodos,
     isEdit,
     setEdit,
-    currentTodo,
-    setCurrentTodo,
     currentBoard,
-    setCurrentBoard,
-    dialogRef,
+    setCurrentBoard
   } = useContext(TodoContext);
-  console.log(currentBoard);
+
   const [columns, setColumns] = useState([{ id: 0, name: "" }]);
+
+  useEffect(() => {
+    if (isEdit && currentBoard) {
+      setColumns(currentBoard.columns || []);
+    }
+  }, [isEdit, currentBoard]);
 
   function addColumn() {
     setColumns([...columns, { id: columns.length, name: "" }]);
@@ -41,92 +44,65 @@ export default function NewEditBoard() {
       columns: columns.length > 0 ? columns : [],
     };
 
-    console.log("Yeni Board:", newBoardObj);
     setTodos((prevTodos) => [...prevTodos, newBoardObj]);
+    window.location.hash = "#/"; // Ana sayfaya yönlendir
   }
 
   function editBoard(e) {
     e.preventDefault();
-    const form = new FormData(e.target);
-    const formObj = Object.fromEntries(form);
+    const formData = new FormData(e.target);
+    const formObj = Object.fromEntries(formData);
+
     setTodos(
       todos.map((todo) =>
         todo.id === currentBoard.id
-          ? { ...todo, ...formObj, columns: currentBoard.columns || [] }
+          ? { ...todo, name: formObj.name, columns }
           : todo
       )
     );
 
-    setCurrentBoard(2);
+    setEdit(false);
+    setCurrentBoard(null);
+    window.location.hash = "#/"; 
   }
-
-  useEffect(() => {
-    console.log("Güncellenmiş Current Board:", currentBoard);
-  }, [currentBoard]);
 
   return (
     <div className="newEditBoardPage">
-      <div className="newBoardDialog">
-        <dialog ref={dialogRef}>
-          <form autoComplete="off" onSubmit={isEdit ? editBoard : handleSubmit}>
-            <div className="newBoardName">
-              <label>Name</label>
+      <form autoComplete="off" onSubmit={isEdit ? editBoard : handleSubmit}>
+        <div className="newBoardName">
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            required
+            defaultValue={isEdit ? currentBoard?.name : ""}
+          />
+        </div>
+        <div className="newBoardColumns">
+          <label>Columns</label>
+          {columns.map((column, index) => (
+            <div key={column.id} className="column-input">
               <input
                 type="text"
-                name="name"
+                value={column.name}
+                onChange={(e) => handleColumnChange(index, e.target.value)}
                 required
-                defaultValue={currentBoard?.name || ""}
-                onChange={(e) =>
-                  setCurrentBoard({ ...currentBoard, name: e.target.value })
-                }
               />
-            </div>
-            <div className="newBoardColumns">
-              <label>Columns</label>
-              {columns.map((column, index) => (
-                <div key={column.id} className="column-input">
-                  <input
-                    type="text"
-                    name="column"
-                    defaultValue={currentBoard?.columns?.[index]?.name || ""}
-                    onChange={(e) => {
-                      const updatedColumns = [...(currentBoard?.columns || [])];
-                      updatedColumns[index] = {
-                        ...updatedColumns[index],
-                        name: e.target.value,
-                      };
-                      setCurrentBoard({
-                        ...currentBoard,
-                        columns: updatedColumns,
-                      });
-                    }}
-                  />
-
-                  {columns.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => deleteColumn(column.id)}
-                    >
-                      ❌
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button type="button" onClick={addColumn}>
-                + Add New Column
-              </button>
-            </div>
-
-            <div className="addNewBoardBtn">
-              {isEdit ? (
-                <button>Save Changes</button>
-              ) : (
-                <button>Create New Board</button>
+              {columns.length > 1 && (
+                <button type="button" onClick={() => deleteColumn(column.id)}>
+                  ❌
+                </button>
               )}
             </div>
-          </form>
-        </dialog>
-      </div>
+          ))}
+          <button type="button" onClick={addColumn}>
+            + Add New Column
+          </button>
+        </div>
+        <div className="addNewBoardBtn">
+          {isEdit ? <button>Save Changes</button> : <button>Create New Board</button>}
+        </div>
+      </form>
     </div>
   );
 }

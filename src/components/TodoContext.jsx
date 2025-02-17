@@ -7,6 +7,11 @@ export function TodoProvider({ children }) {
   const [isEdit, setEdit] = useState(false);
   const [currentBoard, setCurrentBoard] = useState(null);
   const dialogRef = useRef(null);
+
+useEffect(() => {
+  console.log("Dialog Ref:", dialogRef.current);
+}, []);
+
   // const [selectedNotes, setSelectedNotes] = useState(() => {
   //   return JSON.parse(localStorage.getItem("archivedNotes")) || [];
   // });
