@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 
 export const TodoContext = createContext(null);
 
@@ -6,6 +6,7 @@ export function TodoProvider({ children }) {
   const [todos, setTodos] = useState([]);
   const [isEdit, setEdit] = useState(false);
   const [currentBoard, setCurrentBoard] = useState(null);
+  const dialogRef = useRef(null);
   // const [selectedNotes, setSelectedNotes] = useState(() => {
   //   return JSON.parse(localStorage.getItem("archivedNotes")) || [];
   // });
@@ -19,6 +20,11 @@ export function TodoProvider({ children }) {
     fetchNotes();
   }, []);
 
+  useEffect(() => {
+    console.log("Todos Güncellendi:", todos);
+  }, [todos]);
+  
+
   // useEffect(() => {
   //   localStorage.setItem("archivedNotes", JSON.stringify(selectedNotes));
   // }, [selectedNotes]);
@@ -28,7 +34,7 @@ export function TodoProvider({ children }) {
   // };
 
   return (
-    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard }}>
+    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard, dialogRef }}>
       {children}
     </TodoContext.Provider>
   );
