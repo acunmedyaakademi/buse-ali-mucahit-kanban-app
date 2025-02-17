@@ -2,7 +2,8 @@ import { TodoContext } from "./TodoContext";
 import { useContext, useState, useEffect } from "react";
 
 export default function Board() {
-  const { todos, setTodos, setEdit, setCurrentBoard, dialogRef } = useContext(TodoContext);
+  const { todos, setTodos, setEdit, setCurrentBoard, dialogRef } =
+    useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   useEffect(() => {
     console.log("Seçilen Board:", selectedBoard);
@@ -12,10 +13,14 @@ export default function Board() {
     console.log("Seçilen Board:", board);
     setSelectedBoard({ ...board, columns: board.columns || [] });
     setEdit(false);
-    setCurrentBoard(null);
-    dialogRef.current.showModal(); 
+    setCurrentBoard(board);
+
+    if (dialogRef.current) {
+      dialogRef.current.showModal();
+    } else {
+      console.error("Dialog referansı bulunamadı!");
+    }
   }
-  
 
   return (
     <div className="boardPage">
@@ -26,7 +31,15 @@ export default function Board() {
           </li>
         ))}
       </ul>
-      <a href="#/new-edit-board">Edit Board</a>
+      <a
+        href="#/new-edit-board"
+        onClick={() => {
+          setEdit(true);
+          setCurrentBoard(selectedBoard);
+        }}
+      >
+        Edit Board
+      </a>
       <a href="#/new-edit-board">Create new board</a>
       {selectedBoard && <BoardColumns board={selectedBoard} />}
     </div>

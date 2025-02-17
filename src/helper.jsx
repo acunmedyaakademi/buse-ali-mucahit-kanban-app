@@ -7,26 +7,13 @@ const routes = [
   { title: "Home", url: "/", component: <Board /> },
   { title: "NewEditBoard", url: "/new-edit-board", component: <NewEditBoard /> },
   { title: "NewEditTask", url: "/new-edit-task", component: <NewEditTask /> },
-  { url: "/todo-detail", component: <TodoDetail /> },   
+  { url: "/todo-detail", component: <TodoDetail /> },
 ];
 
-const notFound = {
-  component: <NotFound />,
-};
-
+// Eğer sayfa bulunamazsa yönlendirme yap
 export function getPage(url) {
   const exactPage = routes.find((x) => x.url === url);
-  if (exactPage) return exactPage;
-
-  // if (url.startsWith("/feedback-detail/")) {
-  //   return { title: "Feedback Detail", component: <FeedbackDetail /> };
-  // }
-
-  // if (url.startsWith("/tags/")) {
-  //   return { title: "Tagged Notes", component: <TaggedNotes /> };
-  // }
-
-  return notFound;
+  return exactPage || { title: "Not Found", component: <NotFound /> };
 }
 
 function NotFound() {
