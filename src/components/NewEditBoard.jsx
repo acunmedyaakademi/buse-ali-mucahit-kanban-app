@@ -45,7 +45,7 @@ export default function NewEditBoard() {
     };
 
     setTodos((prevTodos) => [...prevTodos, newBoardObj]);
-    window.location.hash = "#/"; // Ana sayfaya yönlendir
+    window.location.hash = "#/";
   }
 
   function editBoard(e) {

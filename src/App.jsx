@@ -26,18 +26,6 @@ function App() {
           <a href="#/" className={`link ${url === "/" ? "active" : ""}`}>
             Home
           </a>
-          <a
-            href="#/new-edit-board"
-            className={`link ${url === "/new-edit-board" ? "active" : ""}`}
-          >
-            New Edit Board
-          </a>
-          <a
-            href="#/new-edit-task"
-            className={`link ${url === "/new-edit-task" ? "active" : ""}`}
-          >
-            New Edit Task
-          </a>
         </nav>
 
         <div className="page-content">

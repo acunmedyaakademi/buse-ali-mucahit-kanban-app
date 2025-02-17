@@ -1,10 +1,12 @@
 import { TodoContext } from "./TodoContext";
 import { useContext, useState, useEffect } from "react";
+import NewEditBoard from "./NewEditBoard";
 
 export default function Board() {
-  const { todos, setTodos, setEdit, setCurrentBoard, dialogRef } =
-    useContext(TodoContext);
+  const { todos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     console.log("Seçilen Board:", selectedBoard);
   }, [selectedBoard]);
@@ -14,12 +16,17 @@ export default function Board() {
     setSelectedBoard({ ...board, columns: board.columns || [] });
     setEdit(false);
     setCurrentBoard(board);
+  }
 
-    if (dialogRef.current) {
-      dialogRef.current.showModal();
-    } else {
-      console.error("Dialog referansı bulunamadı!");
-    }
+  function openModal(isEditMode) {
+    setEdit(isEditMode);
+    setIsModalOpen(true); 
+  }
+
+  function closeModal() {
+    setIsModalOpen(false); 
+    setEdit(false);
+    setCurrentBoard(null);
   }
 
   return (
@@ -31,45 +38,24 @@ export default function Board() {
           </li>
         ))}
       </ul>
-      <a
-        href="#/new-edit-board"
-        onClick={() => {
-          setEdit(true);
-          setCurrentBoard(selectedBoard);
-        }}
+      <button className="modal-btn" onClick={() => openModal(false)}>+ Create New Board</button>
+      
+      <button 
+        className="modal-btn" 
+        onClick={() => openModal(true)} 
+        disabled={!selectedBoard} 
       >
         Edit Board
-      </a>
-      <a href="#/new-edit-board">Create new board</a>
-      {selectedBoard && <BoardColumns board={selectedBoard} />}
-    </div>
-  );
-}
-function BoardColumns({ board }) {
-  if (!board || !Array.isArray(board.columns)) {
-    return <p>Bu board için kolon bulunmamaktadır.</p>;
-  }
+      </button>
 
-  return (
-    <div>
-      <div className="boardColumns">
-        {board.columns.length > 0 ? (
-          board.columns.map((column, columnIndex) => (
-            <div className="boardColumn" key={columnIndex}>
-              <h3>{column.name}</h3>
-              {(Array.isArray(column.tasks) ? column.tasks : []).length > 0 ? (
-                column.tasks.map((task, taskIndex) => (
-                  <p key={taskIndex}>{task.title}</p>
-                ))
-              ) : (
-                <p>Bu sütunda görev bulunmamaktadır.</p>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>Bu board için henüz sütun eklenmemiş.</p>
-        )}
-      </div>
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeModal}>✖</button>
+            <NewEditBoard closeModal={closeModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
