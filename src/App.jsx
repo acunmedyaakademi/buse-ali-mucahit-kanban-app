@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { TodoProvider } from "./components/TodoContext";
 import { getPage } from "./helper";
 import "./App.css";
+import MyComponent from "./components/Header";
 
 function App() {
   const [url, setUrl] = useState(window.location.hash.substring(1) || "/");
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <TodoProvider>
+      <MyComponent/> 
       <div className="app-container">
         <nav className="nav-links">
           <a href="#/" className={`link ${url === "/" ? "active" : ""}`}>

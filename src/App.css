@@ -1,4 +1,4 @@
-.eyeIcon path{
+.eyeIcon path {
   fill: aqua;
 }
 
@@ -8,7 +8,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Arka planı karart */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Arka planı karart */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,4 +32,48 @@
   background: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+.header {
+  display: flex;
+  color: white;
+  background-color: #2B2C37;
+  align-items: center;
+  padding: 24px;
+  justify-content: space-between;
+
+  .header-top,
+  .header-down {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-top-bottom {
+    display: flex;
+    align-items: center;
+    gap: 8px
+  }
+
+  a {
+    text-decoration: none;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 24px;
+    background-color: inherit;
+    background-color: #635FC7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+}
+
+@media(width > 768px ) {
+  .header {
+  
+    a {
+      padding: 10px 18px;
+    }
+  }
 }
