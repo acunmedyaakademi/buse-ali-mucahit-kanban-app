@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { TodoContext } from "./TodoContext";
 import NewEditTask from './NewEditTask';
 
@@ -38,7 +38,7 @@ function MobileComponent() {
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <h2>Platform Launch</h2>
+            <Dropdown />
             <img src="img/down-icon.svg" alt="" />
           </div>
         </div>
@@ -73,13 +73,13 @@ function DesktopComponent() {
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <h2>Platform Launch</h2>
+            <Dropdown />
             <img src="img/down-icon.svg" alt="" />
           </div>
         </div>
 
         <div className="header-down">
-            <button className="modal-btn" onClick={openTaskModal} disabled={!currentBoard}>
+            <button className="headerAddTaskBtn" onClick={openTaskModal} disabled={!currentBoard}>
             + Add New Task
             </button>
           <img src="img/detail-icon.svg" alt="" />
@@ -95,5 +95,58 @@ function DesktopComponent() {
         </div>
       )}
     </>
+  )
+}
+
+function Dropdown() {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
+
+  // menü dısına tıklanınca
+  useEffect(() => {
+    function handleClickOutside() {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+  }, [])
+
+
+  function handleSelectBoard(board) {
+    setSelectedBoard({ ...board, columns: board.columns || [] });
+    setEdit(false);
+    setCurrentBoard(board);
+  }
+
+
+  return (
+    <div className="dropdown" ref={dropdownRef}>
+      <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
+      ALL BOARDS (3)
+      </button>
+      <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
+        {todos?.map((x) => (
+          <li key={x.id}>
+            <button className='dropdownBtn' onClick={() => handleSelectBoard(x)}><img src="img/dropdown-white-menu-icon.svg" alt="" />{x.name}</button>
+          </li>
+        ))}
+      </ul>
+      {/* <div className={`dropdownMenu ${isOpen ? "show" : ""}`}>
+        <a href="#">
+          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Platform Launch</a>
+        <a href="#">
+          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Marketing Plan</a>
+        <a href="#">
+          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Roadmap</a>
+        <a href="#">
+          <img src="img/dropdown-white-menu-icon.svg" alt="" /> + Create New Board</a>
+      </div> */}
+    </div>
   )
 }
