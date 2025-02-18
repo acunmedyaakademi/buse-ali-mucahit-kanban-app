@@ -21,7 +21,8 @@ function App() {
   const page = getPage(url);
 
   return (
-    <TodoProvider>
+    <div className="board-container">
+      <TodoProvider>
       <div className="app-container">
         <MyComponent/> 
         <div className="page-content">
@@ -29,6 +30,7 @@ function App() {
         </div>
       </div>
     </TodoProvider>
+    </div>
   );
 }
 
