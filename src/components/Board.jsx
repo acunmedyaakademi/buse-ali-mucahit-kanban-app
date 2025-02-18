@@ -1,13 +1,13 @@
 import { TodoContext } from "./TodoContext";
 import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
-import AddColumnModal from "./AddColumnModal"; // Yeni modal bileşeni
+import AddColumnModal from "./AddColumnModal"; 
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isColumnModalOpen, setIsColumnModalOpen] = useState(false); // Yeni Column Modal için state
+  const [isColumnModalOpen, setIsColumnModalOpen] = useState(false); 
 
   useEffect(() => {
     if (todos.length > 0 && !selectedBoard) {
@@ -52,6 +52,16 @@ export default function Board() {
     setTodos(todos.map((b) => (b.id === selectedBoard.id ? updatedBoard : b)));
     setSelectedBoard(updatedBoard);
   }
+
+  useEffect(() => {
+    if (todos.length > 0 && selectedBoard) {
+      const updatedBoard = todos.find((b) => b.id === selectedBoard.id);
+      if (updatedBoard) {
+        setSelectedBoard(updatedBoard);
+      }
+    }
+  }, [todos]);
+  
 
   return (
     <div className="boardPage">
@@ -137,8 +147,7 @@ function BoardColumns({ board, openColumnModal }) {
           )}
         </div>
       ))}
-
-      {/* Yeni Kolon Ekleme Kutusu */}
+      
       <div className="boardColumn new-column" onClick={openColumnModal}>
         <p>+ New Column</p>
       </div>

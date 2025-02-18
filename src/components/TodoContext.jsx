@@ -7,6 +7,7 @@ export function TodoProvider({ children }) {
   const [isEdit, setEdit] = useState(false);
   const [currentBoard, setCurrentBoard] = useState(null);
   const dialogRef = useRef(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
 useEffect(() => {
   console.log("Dialog Ref:", dialogRef.current);
@@ -28,6 +29,14 @@ useEffect(() => {
   useEffect(() => {
     console.log("Todos Güncellendi:", todos);
   }, [todos]);
+
+  function openTaskModal() {
+    setIsTaskModalOpen(true);
+  }
+
+  function closeTaskModal() {
+    setIsTaskModalOpen(false);
+  }
   
 
   // useEffect(() => {
@@ -39,7 +48,7 @@ useEffect(() => {
   // };
 
   return (
-    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard, dialogRef }}>
+    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard, dialogRef, isTaskModalOpen, closeTaskModal, openTaskModal }}>
       {children}
     </TodoContext.Provider>
   );

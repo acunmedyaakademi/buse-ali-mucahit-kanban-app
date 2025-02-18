@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { TodoContext } from "./TodoContext";
+import NewEditTask from './NewEditTask';
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 600);
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,6 +19,8 @@ export default function MyComponent() {
     };
   }, []);
 
+
+
   return (
     <div>
       {ismobil ? <MobileComponent /> : <DesktopComponent />}
@@ -25,6 +30,7 @@ export default function MyComponent() {
 
 
 function MobileComponent() {
+  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard } = useContext(TodoContext);
   return (
     <>
       <div className="header">
@@ -38,17 +44,27 @@ function MobileComponent() {
         </div>
 
         <div className="header-down">
-          <a href="#/new-edit-task">
+          <button className="modal-btn" onClick={openTaskModal} disabled={!currentBoard}>
             <img src="img/add-icon.svg" alt="" />
-          </a>
+          </button>
           <img src="img/detail-icon.svg" alt="" />
         </div>
       </div>
+
+      {isTaskModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeTaskModal}>✖</button>
+            <NewEditTask closeModal={closeTaskModal} />
+          </div>
+        </div>
+      )}
     </>
   )
 }
 
 function DesktopComponent() {
+  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard } = useContext(TodoContext);
   return (
     <>
       <div className="header">
@@ -57,18 +73,27 @@ function DesktopComponent() {
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <h2>latform Launch</h2>
+            <h2>Platform Launch</h2>
             <img src="img/down-icon.svg" alt="" />
           </div>
         </div>
 
         <div className="header-down">
-          <a href="#/new-edit-task">
+            <button className="modal-btn" onClick={openTaskModal} disabled={!currentBoard}>
             + Add New Task
-          </a>
+            </button>
           <img src="img/detail-icon.svg" alt="" />
         </div>
       </div>
+
+      {isTaskModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeTaskModal}>✖</button>
+            <NewEditTask closeModal={closeTaskModal} />
+          </div>
+        </div>
+      )}
     </>
   )
 }
