@@ -9,18 +9,35 @@ export default function NewEditTask({ closeModal, task }) {
   const [subtasks, setSubtasks] = useState([{ id: 0, name: "" }]);
   const [status, setStatus] = useState("");
 
-  const boardColumns = currentBoard?.columns || [];
+  useEffect(() => {
+    console.log("Güncellenen currentBoard:", currentBoard);
+    console.log("Güncellenen Todos:", todos);
+  }, [currentBoard, todos]);
+  
+  useEffect(() => {
+    const updatedBoard = todos.find((b) => b.id === currentBoard?.id);
+    if (updatedBoard && updatedBoard.columns.length !== currentBoard?.columns.length) {
+      console.log("✅ `setCurrentBoard` güncellendi:", updatedBoard);
+      setCurrentBoard(updatedBoard);
+    }
+  }, [todos]); 
+
+  useEffect(() => {
+    if (currentBoard?.columns) {
+      setStatus(currentBoard.columns[0]?.name || "");
+    }
+  }, [currentBoard]);
 
   useEffect(() => {
     if (isEdit && task) {
       setTitle(task.title);
       setDescription(task.description);
       setSubtasks(task.subtasks || [{ id: 0, name: "" }]);
-      setStatus(task.status || boardColumns[0]?.name || "");
+      setStatus(task.status || (currentBoard?.columns[0]?.name || ""));
     } else {
-      setStatus(boardColumns[0]?.name || "");
+      setStatus(currentBoard?.columns[0]?.name || "");
     }
-  }, [isEdit, task, currentBoard]);
+  }, [isEdit, task, currentBoard ]); 
 
   function addSubtask() {
     setSubtasks([...subtasks, { id: subtasks.length, name: "" }]);
@@ -40,69 +57,36 @@ export default function NewEditTask({ closeModal, task }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formObj = Object.fromEntries(formData);
-  
     const newTaskObj = {
       id: crypto.randomUUID(),
       title: formObj.title,
       description: formObj.description,
-      subtasks: subtasks.length > 0 ? subtasks : [],
+      subtasks: subtasks.length > 0 ? subtasks.map(st => ({
+        id: crypto.randomUUID(),
+        name: st.name,
+        isCompleted: false
+      })) : [],
       status: formObj.status,
     };
-  
+    
+
     const updatedTodos = todos.map((board) =>
       board.id === currentBoard.id
         ? {
             ...board,
             columns: board.columns.map((col) =>
-              col.name === status
+              col.name === formObj.status
                 ? { ...col, tasks: [...(col.tasks || []), newTaskObj] }
                 : col
             ),
           }
         : board
     );
-  
+
     setTodos(updatedTodos);
-  
+
     const updatedBoard = updatedTodos.find((b) => b.id === currentBoard.id);
     setCurrentBoard(updatedBoard);
-  
-    if (typeof closeModal === "function") {
-      closeModal();
-    } else {
-      console.error("closeModal fonksiyonu undefined!");
-    }
-  }
-  
-
-  function editTask(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const formObj = Object.fromEntries(formData);
-
-    setTodos((prevTodos) =>
-      prevTodos.map((board) =>
-        board.id === currentBoard.id
-          ? {
-              ...board,
-              columns: board.columns.map((col) =>
-                col.name === task.status
-                  ? {
-                      ...col,
-                      tasks: col.tasks.map((t) =>
-                        t.id === task.id
-                          ? { ...t, title: formObj.title, description: formObj.description, subtasks, status: formObj.status }
-                          : t
-                      ),
-                    }
-                  : col
-              ),
-            }
-          : board
-      )
-    );
-
-    setEdit(false);
 
     if (typeof closeModal === "function") {
       closeModal();
@@ -116,7 +100,7 @@ export default function NewEditTask({ closeModal, task }) {
       <div className="taskModalContent">
         <button className="taskModalCloseBtn" onClick={closeModal}>✖</button>
         <h2>{isEdit ? "Edit Task" : "Add New Task"}</h2>
-        <form autoComplete="off" onSubmit={isEdit ? editTask : handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="addTaskInputGroup">
             <label>Title</label>
             <input
@@ -143,7 +127,7 @@ export default function NewEditTask({ closeModal, task }) {
               <div key={subtask.id} className="subtaskInput">
                 <input
                   type="text"
-                  value={subtask.name}
+                  value={subtask.title}
                   onChange={(e) => handleSubtaskChange(index, e.target.value)}
                   required
                 />
@@ -159,7 +143,7 @@ export default function NewEditTask({ closeModal, task }) {
           <div className="addTaskInputGroup">
             <label>Status</label>
             <select name="status" value={status} onChange={(e) => setStatus(e.target.value)}>
-              {boardColumns.map((col) => (
+              {currentBoard?.columns.map((col) => (
                 <option key={col.name} value={col.name}>
                   {col.name}
                 </option>
@@ -167,7 +151,7 @@ export default function NewEditTask({ closeModal, task }) {
             </select>
           </div>
           <div className="submit-btn-group">
-            <button className="create-task-btn">{isEdit ? "Save Changes" : "Create Task"}</button>
+            <button className="create-task-btn" disabled={subtasks.length === 0}>{isEdit ? "Save Changes" : "Create Task"}</button>
           </div>
         </form>
       </div>

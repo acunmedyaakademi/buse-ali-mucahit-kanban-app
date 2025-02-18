@@ -2,6 +2,7 @@ import { TodoContext } from "./TodoContext";
 import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
 import AddColumnModal from "./AddColumnModal"; 
+import ViewTask from "./ViewTask";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
@@ -116,8 +117,19 @@ function getRandomColor() {
 }
 
 function BoardColumns({ board, openColumnModal }) {
+  const [selectedTask, setSelectedTask] = useState(null);
+
   if (!board || !Array.isArray(board.columns)) {
     return <p>Bu board için kolon bulunmamaktadır.</p>;
+  }
+
+  function openTaskModal(task) {
+    console.log("Tıklanan Task:", task); 
+    setSelectedTask(task);
+  }
+
+  function closeTaskModal() {
+    setSelectedTask(null);
   }
 
   return (
@@ -138,8 +150,13 @@ function BoardColumns({ board, openColumnModal }) {
           </div>
           {(Array.isArray(column.tasks) ? column.tasks : []).length > 0 ? (
             column.tasks.map((task, taskIndex) => (
-              <div className="columnTodo" key={taskIndex}>
+              <div className="columnTodo" key={taskIndex} onClick={() => openTaskModal(task)}>
                 <p>{task.title}</p>
+                {task.subtasks && task.subtasks.length > 0 && (
+                  <span className="board-subtasks-info">
+                    {task.subtasks.filter(st => st.isCompleted).length} of {task.subtasks.length} subtasks
+                  </span>
+                )}
               </div>
             ))
           ) : (
@@ -151,6 +168,15 @@ function BoardColumns({ board, openColumnModal }) {
       <div className="boardColumn new-column" onClick={openColumnModal}>
         <p>+ New Column</p>
       </div>
+
+      {selectedTask && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeTaskModal}>✖</button>
+            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
