@@ -33,7 +33,7 @@
   font-size: 20px;
   cursor: pointer;
 }
-
+/* ALİ CSS  BASLANGIC */
 .header {
   display: flex;
   color: white;
@@ -68,7 +68,9 @@
     color: inherit;
   }
 }
+/* ALİ CSS  BİTİŞ */
 
+/* ALİ TABLET CSS  BASLANGIC */
 @media(width > 768px ) {
   .header {
   
@@ -77,3 +79,4 @@
     }
   }
 }
+/* ALİ TABLET CSS  BASLANGIC */
