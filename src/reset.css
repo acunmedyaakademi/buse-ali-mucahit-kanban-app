@@ -3,6 +3,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  list-style: none;
 }
 
 /* 2. Remove default margin */
@@ -16,11 +17,8 @@ body {
   line-height: 1.5;
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
-<<<<<<< HEAD
-  font-family: Plus Jakarta Sans;
-=======
   font-family: "Plus Jakarta Sans", serif;
->>>>>>> origin/mucahit
+  
 }
 
 /* 5. Improve media defaults */
