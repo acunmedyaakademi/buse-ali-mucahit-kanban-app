@@ -36,8 +36,8 @@ function MobileComponent() {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
 
-  
- 
+
+
   return (
     <>
       <div className="header">
@@ -61,7 +61,7 @@ function MobileComponent() {
       {
         isEditDeleteBoard && (
           <div className='edit-delete-board'>
-            <button onClick={location.hash ="/new-edit-board"} className='editBoard'>Edit Board</button>
+            <button onClick={location.hash = "/new-edit-board"} className='editBoard'>Edit Board</button>
             <button className='deleteBoard'>Delete Board</button>
           </div>
         )
@@ -80,7 +80,11 @@ function MobileComponent() {
 }
 
 function DesktopComponent() {
-  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard } = useContext(TodoContext);
+  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard, isEditDeleteBoard, setIsEditDeleteBoard } = useContext(TodoContext);
+
+  function openIsEditDeleteBoard() {
+    setIsEditDeleteBoard(!isEditDeleteBoard);
+  }
   return (
     <>
       <div className="header">
@@ -101,6 +105,14 @@ function DesktopComponent() {
           <img src="img/detail-icon.svg" alt="" />
         </div>
       </div>
+      {
+        isEditDeleteBoard && (
+          <div className='edit-delete-board'>
+            <button onClick={location.hash = "/new-edit-board"} className='editBoard'>Edit Board</button>
+            <button className='deleteBoard'>Delete Board</button>
+          </div>
+        )
+      }
 
       {isTaskModalOpen && (
         <div className="modal-overlay">
@@ -153,6 +165,14 @@ function Dropdown() {
             <button className='dropdownBtn' onClick={() => handleSelectBoard(x)}><img src="img/dropdown-grey-menu-icon.svg" alt="" />{x.name}</button>
           </li>
         ))}
+        <div className='light-dark-mode'>
+          <button>
+            <img src="img/white-mode-theme-icon.svg" alt="" />
+          </button>
+          <button>
+            <img src="img/dark-mode-theme-icon.svg" alt="" />
+          </button>
+        </div>
       </ul>
     </div>
   )

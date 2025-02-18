@@ -700,6 +700,16 @@ body {
     transform: scaleY(0);
     transform-origin: top;
     transition: opacity 0.3s ease, transform 0.3s ease;
+
+    .light-dark-mode {
+      display: flex;
+      align-items: center;
+
+      button {
+        border: none;
+        background-color: inherit;
+      }
+    }
   }
 
   .dropdownMenu.show {
@@ -745,17 +755,18 @@ body {
 }
 
 .edit-delete-board {
-  font-weight:bold ;
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  padding:10px 30px;
+  padding: 10px 30px;
   background-color: white;
-  position:  absolute;
+  position: absolute;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   right: 0;
+
   .editBoard,
   .deleteBoard {
     border: none;
@@ -771,6 +782,8 @@ body {
   .deleteBoard {
     color: red;
   }
+
+
 
 }
 
