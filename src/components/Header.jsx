@@ -8,7 +8,7 @@ import React, {
 import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
-import { KanbanLogoSvg } from "../Svg";
+import { AddIcon, KanbanLogoSvg } from "../Svg";
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 768);
@@ -85,11 +85,11 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
 
       <div className="header-down">
         <button
-          className="modal-btn"
+          className="addBtn"
           onClick={openTaskModal}
           disabled={!currentBoard}
         >
-          <img src="img/add-icon.svg" alt="" />
+          <AddIcon />
         </button>
         <img onClick={openIsEditDeleteBoard} src="img/detail-icon.svg" alt="" />
       </div>
