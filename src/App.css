@@ -107,17 +107,7 @@ ul {
 .modal-btn:first-child {
   color: #635fc7;
 }
-.modal-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 18.9px;
-  letter-spacing: 0px;
-}
+
 .sideNav-boardBtn {
   background: none;
   background-color: none;
@@ -125,6 +115,9 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: start;
+}
+.sideNav-boardBtn button:last-child {
+  display: none;
 }
 .modal-content {
   background: white;
@@ -136,22 +129,25 @@ ul {
 .sideNav-board {
   display: none;
 }
-.board button {
-  display: flex;
-  gap: 12px;
-  width: 17.25rem;
-  left: 0;
+
+.allBoards button {
+  padding-left: 32px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18.9px;
+  letter-spacing: 0px;
 }
-.board button:active {
-  display: flex;
+.sideNav-board button:active {
   background-color: #635fc7;
   border-radius: 0 25px 25px 0;
-  color: #FFFFFF;
+  color: #ffffff;
 }
-.board button:hover {
-  color: #635FC7;
+.sideNav-board button:hover {
+  color: #635fc7;
   background-color: #635fc7;
   opacity: 0.1;
+  border-radius: 0 25px 25px 0;
+  color: #635fc7;
 }
 /* MUCAHIT MOBILE BITIS */
 

@@ -21,18 +21,18 @@ function App() {
   const page = getPage(url);
 
   return (
-    <TodoProvider>
-      <MyComponent/> 
-      <div className="app-container">
-        <nav className="nav-links">
-         
-        </nav>
+    <div className="board-container">
+      <TodoProvider>
+        <MyComponent />
+        <div className="app-container">
+          <nav className="nav-links"></nav>
 
-        <div className="page-content">
-          {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
+          <div className="page-content">
+            {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
+          </div>
         </div>
-      </div>
-    </TodoProvider>
+      </TodoProvider>
+    </div>
   );
 }
 
