@@ -717,6 +717,16 @@ ul {
     transform: scaleY(0);
     transform-origin: top;
     transition: opacity 0.3s ease, transform 0.3s ease;
+
+    .light-dark-mode {
+      display: flex;
+      align-items: center;
+
+      button {
+        border: none;
+        background-color: inherit;
+      }
+    }
   }
 
   .dropdownMenu.show {
@@ -770,6 +780,7 @@ ul {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   right: 0;
+
   .editBoard,
   .deleteBoard {
     border: none;

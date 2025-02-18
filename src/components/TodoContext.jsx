@@ -9,6 +9,7 @@ export function TodoProvider({ children }) {
   const dialogRef = useRef(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isEditDeleteBoard, setIsEditDeleteBoard] = useState(false);
+  
 useEffect(() => {
   console.log("Dialog Ref:", dialogRef.current);
 }, []);
