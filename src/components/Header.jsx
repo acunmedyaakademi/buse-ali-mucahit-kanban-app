@@ -4,7 +4,7 @@ import NewEditTask from './NewEditTask';
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 600);
-  
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,7 +30,14 @@ export default function MyComponent() {
 
 
 function MobileComponent() {
-  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard } = useContext(TodoContext);
+  const { isTaskModalOpen, closeTaskModal, openTaskModal, currentBoard, isEditDeleteBoard, setIsEditDeleteBoard } = useContext(TodoContext);
+
+  function openIsEditDeleteBoard() {
+    setIsEditDeleteBoard(!isEditDeleteBoard);
+  }
+
+  
+ 
   return (
     <>
       <div className="header">
@@ -47,9 +54,18 @@ function MobileComponent() {
           <button className="modal-btn" onClick={openTaskModal} disabled={!currentBoard}>
             <img src="img/add-icon.svg" alt="" />
           </button>
-          <img src="img/detail-icon.svg" alt="" />
+          <img onClick={openIsEditDeleteBoard} src="img/detail-icon.svg" alt="" />
         </div>
+
       </div>
+      {
+        isEditDeleteBoard && (
+          <div className='edit-delete-board'>
+            <button onClick={location.hash ="/new-edit-board"} className='editBoard'>Edit Board</button>
+            <button className='deleteBoard'>Delete Board</button>
+          </div>
+        )
+      }
 
       {isTaskModalOpen && (
         <div className="modal-overlay">
@@ -79,9 +95,9 @@ function DesktopComponent() {
         </div>
 
         <div className="header-down">
-            <button className="headerAddTaskBtn" onClick={openTaskModal} disabled={!currentBoard}>
+          <button className="headerAddTaskBtn" onClick={openTaskModal} disabled={!currentBoard}>
             + Add New Task
-            </button>
+          </button>
           <img src="img/detail-icon.svg" alt="" />
         </div>
       </div>
@@ -128,25 +144,18 @@ function Dropdown() {
   return (
     <div className="dropdown" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
-      ALL BOARDS (3)
+        ALL BOARDS ({todos.length})
       </button>
       <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
         {todos?.map((x) => (
           <li key={x.id}>
-            <button className='dropdownBtn' onClick={() => handleSelectBoard(x)}><img src="img/dropdown-white-menu-icon.svg" alt="" />{x.name}</button>
+            <button className='dropdownBtn' onClick={() => handleSelectBoard(x)}><img src="img/dropdown-grey-menu-icon.svg" alt="" />{x.name}</button>
           </li>
         ))}
       </ul>
-      {/* <div className={`dropdownMenu ${isOpen ? "show" : ""}`}>
-        <a href="#">
-          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Platform Launch</a>
-        <a href="#">
-          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Marketing Plan</a>
-        <a href="#">
-          <img src="img/dropdown-white-menu-icon.svg" alt="" /> Roadmap</a>
-        <a href="#">
-          <img src="img/dropdown-white-menu-icon.svg" alt="" /> + Create New Board</a>
-      </div> */}
     </div>
   )
 }
+
+
+
