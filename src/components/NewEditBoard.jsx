@@ -68,9 +68,10 @@ export default function NewEditBoard() {
 
   return (
     <div className="newEditBoardPage">
+      <h2>Edit Board</h2>
       <form autoComplete="off" onSubmit={isEdit ? editBoard : handleSubmit}>
         <div className="newBoardName">
-          <label>Name</label>
+          <label>Board Name</label>
           <input
             type="text"
             name="name"
@@ -79,7 +80,7 @@ export default function NewEditBoard() {
           />
         </div>
         <div className="newBoardColumns">
-          <label>Columns</label>
+          <label>Board Columns</label>
           {columns.map((column, index) => (
             <div key={column.id} className="column-input">
               <input
@@ -95,12 +96,12 @@ export default function NewEditBoard() {
               )}
             </div>
           ))}
-          <button type="button" onClick={addColumn}>
+          <button className="addNewBtn" type="button" onClick={addColumn}>
             + Add New Column
           </button>
         </div>
         <div className="addNewBoardBtn">
-          {isEdit ? <button>Save Changes</button> : <button>Create New Board</button>}
+          {isEdit ? <button className="createNewBtn">Save Changes</button> : <button>Create New Board</button>}
         </div>
       </form>
     </div>
