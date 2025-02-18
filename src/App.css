@@ -72,12 +72,16 @@ ul {
 .sideNav-board {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   min-width: 260px;
   z-index: 2;
   left: 0;
   background-color: white;
   padding: 0 20px 0 0;
-  border-right: 1px solid #E4EBFA;
+  border-right: 1px solid #e4ebfa;
+  transition: width 0.3s ease;
+  position: relative;
+
   h2 {
     font-weight: 700;
     font-size: 12px;
@@ -99,7 +103,45 @@ ul {
   letter-spacing: 0px;
 }
 
+.sideNav-board.closed {
+  display: none;
+}
 
+.hideIcon {
+  cursor: pointer;
+  padding: 32px 24px 48px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  p {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18.9px;
+    letter-spacing: 0px;
+    color: #828fa3;
+  }
+}
+
+.showSidebar-btn {
+  position: fixed;
+  bottom: 20px;
+  background-color: #635fc7; /* Mor renk */
+  width: 56px;
+  height: 48px;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.showSidebar-btn svg {
+  fill: white;
+  width: 16px;
+}
 
 .allBoards button {
   display: flex;
@@ -112,12 +154,11 @@ ul {
   padding: 14px 68px 15px 24px;
   border-top-right-radius: 100px;
   border-bottom-right-radius: 100px;
-
 }
 
 .board button:hover {
-background-color: #554dcf;
-color: #FFFFFF;
+  background-color: #554dcf;
+  color: #ffffff;
 }
 
 .board button:hover svg path {
@@ -168,8 +209,6 @@ color: #FFFFFF;
   left: 0;
 }
 
-
-
 /* MUCAHIT MOBILE BITIS */
 
 /* buse-start */
@@ -181,7 +220,7 @@ color: #FFFFFF;
   padding: 16px;
   white-space: nowrap;
   scrollbar-width: none;
-  border-top: 1px solid #E4EBFA;
+  border-top: 1px solid #e4ebfa;
 }
 
 .boardColumns::-webkit-scrollbar {
@@ -677,9 +716,10 @@ color: #FFFFFF;
     display: flex;
     align-items: center;
     gap: 16px;
+    padding: 20px 16px;
   }
 
-  .modal-btn {
+  .addBtn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -694,17 +734,17 @@ color: #FFFFFF;
     display: flex;
     min-width: 260px;
     gap: 15.76px;
-    border-right: 1px solid #E4EBFA;
+    border-right: 1px solid #e4ebfa;
     padding-left: 26px;
     padding-block: 32.78px;
   }
 
   .header-top-bottom {
     display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
   }
 
   .headerDropdown {
@@ -831,7 +871,6 @@ color: #FFFFFF;
   .deleteBoard {
     color: red;
   }
-
 }
 
 /* ALİ CSS  BİTİŞ */
@@ -845,7 +884,7 @@ color: #FFFFFF;
 
   /* mucahit tablet baslangic */
   .sideNav-board {
-    display: block;
+    display: flex;
   }
   /* mucahit tablet bitis */
 }

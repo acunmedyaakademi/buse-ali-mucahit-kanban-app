@@ -3,13 +3,18 @@ import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
 import AddColumnModal from "./AddColumnModal";
 import ViewTask from "./ViewTask";
-import { BoardIconSvg } from "../Svg";
+import { BoardIconSvg, HideIconSvg, ShowIconSvg } from "../Svg";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  function toggleSidebar() {
+    setIsSidebarOpen((prev) => !prev);
+  }
 
   useEffect(() => {
     if (todos.length > 0 && !selectedBoard) {
@@ -64,13 +69,13 @@ export default function Board() {
 
   return (
     <div className="boardPage">
-      <div className="sideNav-board">
-        <h2>ALL BOARDS ({todos.length})</h2>
+      <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
+        
         <ul className="allBoards">
+        <h2>ALL BOARDS ({todos.length})</h2>
           {todos?.map((x) => (
             <li className="board" key={x.id}>
               <button onClick={() => handleSelectBoard(x)}>
-                {" "}
                 <BoardIconSvg />
                 {x.name}
               </button>
@@ -78,33 +83,26 @@ export default function Board() {
           ))}
           <div className="sideNav-boardBtn">
             <button className="modal-btn" onClick={() => openModal(false)}>
-              <BoardIconSvg />+ Create New
-              Board
+              <BoardIconSvg />+ Create New Board
             </button>
           </div>
         </ul>
-
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <button className="close-btn" onClick={closeModal}>
-                ✖
-              </button>
-              <NewEditBoard closeModal={closeModal} />
-            </div>
+        {isSidebarOpen && (
+          <div className="hideIcon" onClick={toggleSidebar}>
+            <HideIconSvg />
+            <p>Hide Sidebar</p>
           </div>
         )}
-
-        {isColumnModalOpen && (
-          <AddColumnModal
-            closeModal={closeColumnModal}
-            selectedBoard={selectedBoard}
-            updateBoardColumns={updateBoardColumns}
-          />
-        )}
       </div>
+
       {selectedBoard && (
         <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
+      )}
+
+      {!isSidebarOpen && (
+        <div className="showSidebar-btn" onClick={toggleSidebar}>
+          <ShowIconSvg />
+        </div>
       )}
     </div>
   );
