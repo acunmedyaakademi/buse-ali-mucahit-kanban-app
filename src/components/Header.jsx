@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef, Fragment } from "react"
 import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
-
+import DeleteModal from "./DeleteModal";
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 600);
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
@@ -13,6 +13,7 @@ export default function MyComponent() {
     setIsModalOpen(true);
     console.log("çalıştı");
   }
+
 
   function closeModal() {
     setIsModalOpen(false);
@@ -41,10 +42,10 @@ export default function MyComponent() {
           openModal={openModal}
         />
       ) : (
-        <DesktopComponent 
-        closeModal={closeModal}
-        isModalOpen={isModalOpen}
-        openModal={openModal}
+        <DesktopComponent
+          closeModal={closeModal}
+          isModalOpen={isModalOpen}
+          openModal={openModal}
         />
       )}
     </Fragment>
@@ -65,38 +66,45 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
 
+  // function deleteModal(isDelete) {
+
+
+  // }
+
   return (
-      <div className="header">
-        <div className="header-top">
-          <img src="img/kanban-site-logo.svg" alt="img logo" />
+    <div className="header">
+      <div className="header-top">
+        <img src="img/kanban-site-logo.svg" alt="img logo" />
 
-          <div className="header-top-bottom">
-            <Dropdown />
-            <img src="img/down-icon.svg" alt="" />
-          </div>
+        <div className="header-top-bottom">
+          <Dropdown />
+          <img src="img/down-icon.svg" alt="" />
         </div>
+      </div>
 
-        <div className="header-down">
-          <button
-            className="modal-btn"
-            onClick={openTaskModal}
-            disabled={!currentBoard}
-          >
-            <img src="img/add-icon.svg" alt="" />
-          </button>
-          <img
-            onClick={openIsEditDeleteBoard}
-            src="img/detail-icon.svg"
-            alt=""
-          />
-        </div>
-      
+      <div className="header-down">
+        <button
+          className="modal-btn"
+          onClick={openTaskModal}
+          disabled={!currentBoard}
+        >
+          <img src="img/add-icon.svg" alt="" />
+        </button>
+        <img
+          onClick={openIsEditDeleteBoard}
+          src="img/detail-icon.svg"
+          alt=""
+        />
+      </div>
+
       {isEditDeleteBoard && (
         <div className="edit-delete-board">
           <button onClick={() => openModal(true)} className="editBoard">
             Edit Board
           </button>
-          <button className="deleteBoard">Delete Board</button>
+          <button onClick={() => deleteModal(true)} className="deleteBoard">
+            Delete Board
+          </button>
         </div>
       )}
 
@@ -139,32 +147,32 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
   return (
-      <div className="header">
-        <div className="header-top">
-          <img src="img/kanban-site-logo-white.svg" alt="img logo" />
-          <img src="img/kanban-site-logo.svg" alt="img logo" />
+    <div className="header">
+      <div className="header-top">
+        <img src="img/kanban-site-logo-white.svg" alt="img logo" />
+        <img src="img/kanban-site-logo.svg" alt="img logo" />
 
-          <div className="header-top-bottom">
-            <Dropdown />
-            <img src="img/down-icon.svg" alt="" />
-          </div>
+        <div className="header-top-bottom">
+          <Dropdown />
+          <img src="img/down-icon.svg" alt="" />
         </div>
+      </div>
 
-        <div className="header-down">
-          <button
-            className="headerAddTaskBtn"
-            onClick={openTaskModal}
-            disabled={!currentBoard}
-          >
-            + Add New Task
-          </button>
-          <img
-            src="img/detail-icon.svg"
-            alt=""
-            onClick={openIsEditDeleteBoard}
-          />
-        </div>
-      
+      <div className="header-down">
+        <button
+          className="headerAddTaskBtn"
+          onClick={openTaskModal}
+          disabled={!currentBoard}
+        >
+          + Add New Task
+        </button>
+        <img
+          src="img/detail-icon.svg"
+          alt=""
+          onClick={openIsEditDeleteBoard}
+        />
+      </div>
+
 
 
       {isEditDeleteBoard && (
@@ -199,7 +207,8 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
   );
 }
 
-function Dropdown() {
+function Dropdown(e) {
+  // console.log("e"{e})
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { todos, setTodos, setEdit, setCurrentBoard, setSelectedBoard } =
@@ -225,10 +234,13 @@ function Dropdown() {
     console.log(board);
   }
 
+  const currentpart = todos.find 
+
   return (
     <div className="dropdown" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
-        ALL BOARDS ({todos.length})
+         {/* {currentpart} */}
+         ({ (todos.length)})
       </button>
       <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
         {todos?.map((x) => (
