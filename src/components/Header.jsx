@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef, Fragment } from "react";
 import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
@@ -33,7 +33,7 @@ export default function MyComponent() {
   }, []);
 
   return (
-    <div>
+    <Fragment>
       {ismobil ? (
         <MobileComponent
           closeModal={closeModal}
@@ -47,7 +47,7 @@ export default function MyComponent() {
         openModal={openModal}
         />
       )}
-    </div>
+    </Fragment>
   );
 }
 
@@ -66,7 +66,6 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
   }
 
   return (
-    <>
       <div className="header">
         <div className="header-top">
           <img src="img/kanban-site-logo.svg" alt="img logo" />
@@ -91,7 +90,7 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
             alt=""
           />
         </div>
-      </div>
+      
       {isEditDeleteBoard && (
         <div className="edit-delete-board">
           <button onClick={() => openModal(true)} className="editBoard">
@@ -122,7 +121,7 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -140,7 +139,6 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
   return (
-    <>
       <div className="header">
         <div className="header-top">
           <img src="img/kanban-site-logo-white.svg" alt="img logo" />
@@ -166,7 +164,7 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
             onClick={openIsEditDeleteBoard}
           />
         </div>
-      </div>
+      
 
 
       {isEditDeleteBoard && (
@@ -197,7 +195,7 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

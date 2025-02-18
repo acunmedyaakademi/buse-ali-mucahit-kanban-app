@@ -22,12 +22,8 @@ function App() {
 
   return (
     <TodoProvider>
-      <MyComponent/> 
       <div className="app-container">
-        <nav className="nav-links">
-         
-        </nav>
-
+        <MyComponent/> 
         <div className="page-content">
           {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
         </div>
