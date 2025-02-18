@@ -39,8 +39,6 @@ export default function Board() {
   function closeColumnModal() {
     setIsColumnModalOpen(false);
   }
-
- 
   function updateBoardColumns(newColumns) {
     if (!selectedBoard) return;
 
@@ -55,42 +53,50 @@ export default function Board() {
 
   return (
     <div className="boardPage">
-      <ul className="allBoards">
-        {todos?.map((x) => (
-          <li className="board" key={x.id}>
-            <button onClick={() => handleSelectBoard(x)}>{x.name}</button>
-          </li>
-        ))}
-      </ul>
-      <button className="modal-btn" onClick={() => openModal(false)}>
-        + Create New Board
-      </button>
+      <div className="sideNav-board">
+        <h2>ALL BOARDS ({todos.length})</h2>
+        <ul className="allBoards">
+          {todos?.map((x) => (
+            <li className="board" key={x.id}>
+              <button onClick={() => handleSelectBoard(x)}>{x.name}</button>
+            </li>
+          ))}
+        </ul>
+        <div className="sideNav-boardBtn">
+          <button className="modal-btn" onClick={() => openModal(false)}>
+            + Create New Board
+          </button>
 
-      <button
-        className="modal-btn"
-        onClick={() => openModal(true)}
-        disabled={!selectedBoard}
-      >
-        Edit Board
-      </button>
-
-      {selectedBoard && <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />}
-
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-btn" onClick={closeModal}>✖</button>
-            <NewEditBoard closeModal={closeModal} />
-          </div>
+          <button
+            className="modal-btn"
+            onClick={() => openModal(true)}
+            disabled={!selectedBoard}
+          >
+            Edit Board
+          </button>
         </div>
-      )}
 
-      {isColumnModalOpen && (
-        <AddColumnModal 
-          closeModal={closeColumnModal} 
-          selectedBoard={selectedBoard} 
-          updateBoardColumns={updateBoardColumns} 
-        />
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-btn" onClick={closeModal}>
+                ✖
+              </button>
+              <NewEditBoard closeModal={closeModal} />
+            </div>
+          </div>
+        )}
+
+        {isColumnModalOpen && (
+          <AddColumnModal
+            closeModal={closeColumnModal}
+            selectedBoard={selectedBoard}
+            updateBoardColumns={updateBoardColumns}
+          />
+        )}
+      </div>
+      {selectedBoard && (
+        <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
       )}
     </div>
   );

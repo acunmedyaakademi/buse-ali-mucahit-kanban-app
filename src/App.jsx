@@ -25,9 +25,7 @@ function App() {
       <MyComponent/> 
       <div className="app-container">
         <nav className="nav-links">
-          <a href="#/" className={`link ${url === "/" ? "active" : ""}`}>
-            Home
-          </a>
+         
         </nav>
 
         <div className="page-content">
