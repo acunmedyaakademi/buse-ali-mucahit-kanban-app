@@ -117,7 +117,7 @@ function DesktopComponent() {
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
+  const { todos, setTodos, setEdit, setCurrentBoard, setSelectedBoard } = useContext(TodoContext);
 
   // menü dısına tıklanınca
   useEffect(() => {
@@ -135,9 +135,10 @@ function Dropdown() {
 
 
   function handleSelectBoard(board) {
-    setSelectedBoard({ ...board, columns: board.columns || [] });
+    // setSelectedBoard({ ...board, columns: board.columns || [] });
     setEdit(false);
     setCurrentBoard(board);
+    console.log(board)
   }
 
 
