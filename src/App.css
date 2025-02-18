@@ -72,12 +72,12 @@ ul {
 .sideNav-board {
   display: flex;
   flex-direction: column;
-  min-width: 18.75rem;
+  min-width: 260px;
   z-index: 2;
   left: 0;
   background-color: white;
   padding: 0 20px 0 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #E4EBFA;
   h2 {
     font-weight: 700;
     font-size: 12px;
@@ -98,14 +98,36 @@ ul {
   line-height: 18.9px;
   letter-spacing: 0px;
 }
+
+
+
 .allBoards button {
   display: flex;
   gap: 9px;
-  padding: 14px 68px 15px 0;
-  list-style: none;
+
+  width: 100%;
 }
+
+.board button {
+  padding: 14px 68px 15px 24px;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+
+}
+
+.board button:hover {
+background-color: #554dcf;
+color: #FFFFFF;
+}
+
+.board button:hover svg path {
+  fill: white; /* Hover durumunda SVG rengini kırmızı yap */
+}
+
 .modal-btn:first-child {
   color: #635fc7;
+  padding: 14px 41px 15px 24px;
+  align-items: center;
 }
 .modal-btn {
   background: none;
@@ -118,6 +140,7 @@ ul {
   line-height: 18.9px;
   letter-spacing: 0px;
 }
+
 .sideNav-boardBtn {
   background: none;
   background-color: none;
@@ -136,23 +159,17 @@ ul {
 .sideNav-board {
   display: none;
 }
+
 .board button {
   display: flex;
+  align-items: center;
   gap: 12px;
-  width: 17.25rem;
+  width: 240px;
   left: 0;
 }
-.board button:active {
-  display: flex;
-  background-color: #635fc7;
-  border-radius: 0 25px 25px 0;
-  color: #FFFFFF;
-}
-.board button:hover {
-  color: #635FC7;
-  background-color: #635fc7;
-  opacity: 0.1;
-}
+
+
+
 /* MUCAHIT MOBILE BITIS */
 
 /* buse-start */
@@ -164,6 +181,7 @@ ul {
   padding: 16px;
   white-space: nowrap;
   scrollbar-width: none;
+  border-top: 1px solid #E4EBFA;
 }
 
 .boardColumns::-webkit-scrollbar {
@@ -652,7 +670,6 @@ ul {
   color: white;
   background-color: white;
   align-items: center;
-  padding: 24px;
   justify-content: space-between;
 
   .header-top,
@@ -673,10 +690,25 @@ ul {
     border-radius: 24px;
   }
 
+  .kanbanLogo {
+    display: flex;
+    min-width: 260px;
+    gap: 15.76px;
+    border-right: 1px solid #E4EBFA;
+    padding-left: 26px;
+    padding-block: 32.78px;
+  }
+
   .header-top-bottom {
     display: flex;
-    align-items: center;
-    gap: 8px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+  }
+
+  .headerDropdown {
+    display: flex;
   }
 
   .headerAddTaskBtn {

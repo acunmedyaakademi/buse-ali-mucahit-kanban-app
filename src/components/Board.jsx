@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
 import AddColumnModal from "./AddColumnModal";
 import ViewTask from "./ViewTask";
+import { BoardIconSvg } from "../Svg";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
@@ -70,23 +71,15 @@ export default function Board() {
             <li className="board" key={x.id}>
               <button onClick={() => handleSelectBoard(x)}>
                 {" "}
-                <img src="img/dropdown-grey-menu-icon.svg" alt="" />
+                <BoardIconSvg />
                 {x.name}
               </button>
             </li>
           ))}
           <div className="sideNav-boardBtn">
             <button className="modal-btn" onClick={() => openModal(false)}>
-              <img src="img/dropdown-grey-menu-icon.svg" alt="" />+ Create New
+              <BoardIconSvg />+ Create New
               Board
-            </button>
-
-            <button
-              className="modal-btn"
-              onClick={() => openModal(true)}
-              disabled={!selectedBoard}
-            >
-              Edit Board
             </button>
           </div>
         </ul>
