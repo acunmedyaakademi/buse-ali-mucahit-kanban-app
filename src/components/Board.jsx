@@ -1,14 +1,14 @@
 import { TodoContext } from "./TodoContext";
 import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
-import AddColumnModal from "./AddColumnModal"; 
+import AddColumnModal from "./AddColumnModal";
 import ViewTask from "./ViewTask";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isColumnModalOpen, setIsColumnModalOpen] = useState(false); 
+  const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
 
   useEffect(() => {
     if (todos.length > 0 && !selectedBoard) {
@@ -60,7 +60,6 @@ export default function Board() {
       }
     }
   }, [todos]);
-  
 
   return (
     <div className="boardPage">
@@ -69,23 +68,28 @@ export default function Board() {
         <ul className="allBoards">
           {todos?.map((x) => (
             <li className="board" key={x.id}>
-              <button onClick={() => handleSelectBoard(x)}>{x.name}</button>
+              <button onClick={() => handleSelectBoard(x)}>
+                {" "}
+                <img src="img/dropdown-grey-menu-icon.svg" alt="" />
+                {x.name}
+              </button>
             </li>
           ))}
-        </ul>
-        <div className="sideNav-boardBtn">
-          <button className="modal-btn" onClick={() => openModal(false)}>
-            + Create New Board
-          </button>
+          <div className="sideNav-boardBtn">
+            <button className="modal-btn" onClick={() => openModal(false)}>
+              <img src="img/dropdown-grey-menu-icon.svg" alt="" />+ Create New
+              Board
+            </button>
 
-          <button
-            className="modal-btn"
-            onClick={() => openModal(true)}
-            disabled={!selectedBoard}
-          >
-            Edit Board
-          </button>
-        </div>
+            <button
+              className="modal-btn"
+              onClick={() => openModal(true)}
+              disabled={!selectedBoard}
+            >
+              Edit Board
+            </button>
+          </div>
+        </ul>
 
         {isModalOpen && (
           <div className="modal-overlay">
@@ -130,7 +134,7 @@ function BoardColumns({ board, openColumnModal }) {
   }
 
   function openTaskModal(task) {
-    console.log("Tıklanan Task:", task); 
+    console.log("Tıklanan Task:", task);
     setSelectedTask(task);
   }
 
@@ -156,11 +160,16 @@ function BoardColumns({ board, openColumnModal }) {
           </div>
           {(Array.isArray(column.tasks) ? column.tasks : []).length > 0 ? (
             column.tasks.map((task, taskIndex) => (
-              <div className="columnTodo" key={taskIndex} onClick={() => openTaskModal(task)}>
+              <div
+                className="columnTodo"
+                key={taskIndex}
+                onClick={() => openTaskModal(task)}
+              >
                 <p>{task.title}</p>
                 {task.subtasks && task.subtasks.length > 0 && (
                   <span className="board-subtasks-info">
-                    {task.subtasks.filter(st => st.isCompleted).length} of {task.subtasks.length} subtasks
+                    {task.subtasks.filter((st) => st.isCompleted).length} of{" "}
+                    {task.subtasks.length} subtasks
                   </span>
                 )}
               </div>
@@ -170,7 +179,7 @@ function BoardColumns({ board, openColumnModal }) {
           )}
         </div>
       ))}
-      
+
       <div className="boardColumn new-column" onClick={openColumnModal}>
         <p>+ New Column</p>
       </div>
@@ -178,7 +187,9 @@ function BoardColumns({ board, openColumnModal }) {
       {selectedTask && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-btn" onClick={closeTaskModal}>✖</button>
+            <button className="close-btn" onClick={closeTaskModal}>
+              ✖
+            </button>
             <ViewTask task={selectedTask} closeModal={closeTaskModal} />
           </div>
         </div>
