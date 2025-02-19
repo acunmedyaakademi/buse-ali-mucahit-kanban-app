@@ -13,7 +13,16 @@ import DeleteModal from "./DeleteModal";
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 768);
-  const { todos, setTodos, setEdit, setCurrentBoard, isEditDeleteBoard, setIsEditDeleteBoard, deleteModal, isDeleteModal } = useContext(TodoContext);
+  const {
+    todos,
+    setTodos,
+    setEdit,
+    setCurrentBoard,
+    isEditDeleteBoard,
+    setIsEditDeleteBoard,
+    deleteModal,
+    isDeleteModal,
+  } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function openModal(isEditMode) {
@@ -63,7 +72,13 @@ export default function MyComponent() {
   );
 }
 
-function MobileComponent({ openModal, isModalOpen, closeModal, deleteModal, isDeleteModal }) {
+function MobileComponent({
+  openModal,
+  isModalOpen,
+  closeModal,
+  deleteModal,
+  isDeleteModal,
+}) {
   const {
     isTaskModalOpen,
     closeTaskModal,
@@ -72,74 +87,90 @@ function MobileComponent({ openModal, isModalOpen, closeModal, deleteModal, isDe
     isEditDeleteBoard,
     setIsEditDeleteBoard,
   } = useContext(TodoContext);
-
+  const [isOpen, setIsOpen] = useState(false);
   function openIsEditDeleteBoard() {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
 
   return (
-    <div className="header">
-      <div className="header-top">
-        <img src="img/kanban-site-logo.svg" alt="img logo" />
+    <Fragment>
+      {isOpen && (
+        <div
+          className="dropdown-overlay"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+      <div className="header">
+        <div className="header-top">
+          <img src="img/kanban-site-logo.svg" alt="img logo" />
 
-        <div className="header-top-bottom">
-          <Dropdown />
-          <img src="img/down-icon.svg" alt="" />
+          <div className="header-top-bottom">
+            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} /> 
+            <img src="img/down-icon.svg" alt="" />
+          </div>
         </div>
-      </div>
 
-      <div className="header-down">
-        <button
-          className="addBtn"
-          onClick={openTaskModal}
-          disabled={!currentBoard}
-        >
-          <AddIcon />
-        </button>
-        <img onClick={openIsEditDeleteBoard} src="img/detail-icon.svg" alt="" />
-      </div>
-
-      {isEditDeleteBoard && (
-        <div className="edit-delete-board">
-          <button onClick={() => openModal(true)} className="editBoard">
-            Edit Board
+        <div className="header-down">
+          <button
+            className="addBtn"
+            onClick={openTaskModal}
+            disabled={!currentBoard}
+          >
+            <AddIcon />
           </button>
-          <button onClick={deleteModal} className="deleteBoard">Delete Board</button>
+          <img
+            onClick={openIsEditDeleteBoard}
+            src="img/detail-icon.svg"
+            alt=""
+          />
         </div>
-      )}
 
-      {isDeleteModal &&
-          (
-            <DeleteModal />
-          )
-       }
-
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-btn" onClick={closeModal}>
-              ✖
+        {isEditDeleteBoard && (
+          <div className="edit-delete-board">
+            <button onClick={() => openModal(true)} className="editBoard">
+              Edit Board
             </button>
-            <NewEditBoard closeModal={closeModal} />
-          </div>
-        </div>
-      )}
-
-      {isTaskModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-btn" onClick={closeTaskModal}>
-              ✖
+            <button onClick={deleteModal} className="deleteBoard">
+              Delete Board
             </button>
-            <NewEditTask closeModal={closeTaskModal} />
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {isDeleteModal && <DeleteModal />}
+
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-btn" onClick={closeModal}>
+                ✖
+              </button>
+              <NewEditBoard closeModal={closeModal} />
+            </div>
+          </div>
+        )}
+
+        {isTaskModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-btn" onClick={closeTaskModal}>
+                ✖
+              </button>
+              <NewEditTask closeModal={closeTaskModal} />
+            </div>
+          </div>
+        )}
+      </div>
+    </Fragment>
   );
 }
 
-function DesktopComponent({ openModal, isModalOpen, closeModal, deleteModal,isDeleteModal }) {
+function DesktopComponent({
+  openModal,
+  isModalOpen,
+  closeModal,
+  deleteModal,
+  isDeleteModal,
+}) {
   const {
     isTaskModalOpen,
     closeTaskModal,
@@ -185,7 +216,9 @@ function DesktopComponent({ openModal, isModalOpen, closeModal, deleteModal,isDe
           <button onClick={() => openModal(true)} className="editBoard">
             Edit Board
           </button>
-          <button onClick={deleteModal} className="deleteBoard">Delete Board</button>
+          <button onClick={deleteModal} className="deleteBoard">
+            Delete Board
+          </button>
         </div>
       )}
 
@@ -214,8 +247,7 @@ function DesktopComponent({ openModal, isModalOpen, closeModal, deleteModal,isDe
   );
 }
 
-function Dropdown() {
-  const [isOpen, setIsOpen] = useState(false);
+function Dropdown({ isOpen, setIsOpen }) {
   const dropdownRef = useRef(null);
   const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } =
     useContext(TodoContext);
@@ -234,9 +266,9 @@ function Dropdown() {
   }, []);
 
   function handleSelectBoard(board) {
-    setEdit(false);          // Düzenleme modunu kapat
-    setCurrentBoard(board);  // Context'teki currentBoard'u güncelle
-    setIsOpen(false);        // Dropdown'u kapat
+    setEdit(false); // Düzenleme modunu kapat
+    setCurrentBoard(board); // Context'teki currentBoard'u güncelle
+    setIsOpen(false); // Dropdown'u kapat
   }
 
   useEffect(() => {
@@ -244,37 +276,33 @@ function Dropdown() {
       setCurrentBoard(todos[0]);
     }
   }, [todos, currentBoard, setCurrentBoard]);
-  
+
   return (
     <Fragment>
-      {isOpen && <div className="dropdown-overlay" onClick={() => setIsOpen(false)}></div>}
-    <div className="dropdown" ref={dropdownRef}>
-      <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
-        {currentBoard?.name} ({todos.length})
-      </button>
-      <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
-        <li><p>ALL BOARDS ({todos.length})</p></li>
-        {todos?.map((x) => (
-          <li key={x.id} className={currentBoard?.id === x.id ? "active" : ""}>
-            <button
-              className="dropdownBtn"
-              onClick={() => handleSelectBoard(x)}
-            >
-              <img src="img/dropdown-grey-menu-icon.svg" alt="" />
-              {x.name}
-            </button>
+      <div className="dropdown" ref={dropdownRef}>
+        <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
+          {currentBoard?.name} ({todos.length})
+        </button>
+        <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
+          <li>
+            <p>ALL BOARDS ({todos.length})</p>
           </li>
-        ))}
-        <div className="light-dark-mode">
-          <button>
-            <img src="img/white-mode-theme-icon.svg" alt="" />
-          </button>
-          <button>
-            <img src="img/dark-mode-theme-icon.svg" alt="" />
-          </button>
-        </div>
-      </ul>
-    </div>
+          {todos?.map((x) => (
+            <li
+              key={x.id}
+              className={currentBoard?.id === x.id ? "active" : ""}
+            >
+              <button
+                className="dropdownBtn"
+                onClick={() => handleSelectBoard(x)}
+              >
+                <img src="img/dropdown-grey-menu-icon.svg" alt="" />
+                {x.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Fragment>
   );
 }

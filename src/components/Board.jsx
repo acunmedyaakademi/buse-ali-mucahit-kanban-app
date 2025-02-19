@@ -215,6 +215,11 @@ function BoardColumns({ board, openColumnModal }) {
                     onClick={() => openTaskModal(task)}
                   >
                     <p>{task.title}</p>
+                    {task.subtasks && task.subtasks.length > 0 && (
+                  <span className="board-subtasks-info">
+                    {task.subtasks.filter(st => st.isCompleted).length} of {task.subtasks.length} subtasks
+                  </span>
+                )}
                   </div>
                 ))
               ) : (
@@ -230,6 +235,15 @@ function BoardColumns({ board, openColumnModal }) {
         <div className="emptyBoard">
           <h5>This board is empty. Create a new column to get started.</h5>
           <button onClick={openColumnModal}>+ Add New Column</button>
+        </div>
+      )}
+
+{selectedTask && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeTaskModal}>✖</button>
+            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+          </div>
         </div>
       )}
     </div>
