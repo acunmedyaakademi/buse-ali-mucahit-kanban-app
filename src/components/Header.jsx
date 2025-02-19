@@ -21,6 +21,7 @@ export default function MyComponent() {
     setCurrentBoard,
     isEditDeleteBoard,
     setIsEditDeleteBoard,
+    setIsDeleteModal,
     deleteModal,
     isDeleteModal,
   } = useContext(TodoContext);
@@ -59,6 +60,7 @@ export default function MyComponent() {
           openModal={openModal}
           deleteModal={deleteModal}
           isDeleteModal={isDeleteModal}
+          setIsDeleteModal={setIsDeleteModal}
         />
       ) : (
         <DesktopComponent
@@ -67,6 +69,7 @@ export default function MyComponent() {
           openModal={openModal}
           deleteModal={deleteModal}
           isDeleteModal={isDeleteModal}
+          setIsDeleteModal={setIsDeleteModal}
         />
       )}
     </Fragment>
@@ -79,6 +82,7 @@ function MobileComponent({
   closeModal,
   deleteModal,
   isDeleteModal,
+  setIsDeleteModal,
 }) {
   const {
     isTaskModalOpen,
@@ -106,7 +110,7 @@ function MobileComponent({
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} /> 
+            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
 
@@ -136,7 +140,14 @@ function MobileComponent({
           </div>
         )}
 
-        {isDeleteModal && <DeleteModal />}
+        {isDeleteModal && (
+          <DeleteModal
+            type="board"
+            item={currentBoard}
+            closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
+            closeParentModal={() => setIsEditDeleteBoard(false)} // ✅ Header menüsü kapanır
+          />
+        )}
 
         {isModalOpen && (
           <div className="modal-overlay">
@@ -164,6 +175,7 @@ function DesktopComponent({
   closeModal,
   deleteModal,
   isDeleteModal,
+  setIsDeleteModal,
 }) {
   const {
     isTaskModalOpen,
@@ -172,63 +184,84 @@ function DesktopComponent({
     currentBoard,
     isEditDeleteBoard,
     setIsEditDeleteBoard,
-    todos
+    todos,
   } = useContext(TodoContext);
-
+  const [isOpen, setIsOpen] = useState(false);
   function openIsEditDeleteBoard() {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
   return (
-    <div className="header">
-      <div className="kanbanLogo">
-        <img src="img/kanban-site-logo.svg" alt="img logo" />
-        <KanbanLogoSvg fill="#000112" />
-      </div>
-      <div className="header-top-bottom">
-        <p className="desktopHeaderName">{currentBoard?.name}</p>
-        <div className="header-down">
-          <button
-            className="headerAddTaskBtn"
-            onClick={openTaskModal}
-            disabled={!currentBoard}
-          >
-            + Add New Task
-          </button>
-          <img
-            src="img/detail-icon.svg"
-            alt=""
-            onClick={openIsEditDeleteBoard}
+    <Fragment>
+      {isOpen && (
+        <div
+          className="dropdown-overlay"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+      <div className="header">
+        <div className="kanbanLogo">
+          <img src="img/kanban-site-logo.svg" alt="img logo" />
+          <KanbanLogoSvg fill="#000112" />
+        </div>
+        <div className="header-top-bottom">
+          <p className="desktopHeaderName">{currentBoard?.name}</p>
+          <div className="header-down">
+            <button
+              className="headerAddTaskBtn"
+              onClick={() => openTaskModal(false)}
+              disabled={!currentBoard}
+            >
+              + Add New Task
+            </button>
+            <img
+              src="img/detail-icon.svg"
+              alt=""
+              onClick={openIsEditDeleteBoard}
+            />
+          </div>
+        </div>
+
+        {isEditDeleteBoard && (
+          <div className="edit-delete-board">
+            <button onClick={() => openModal(true)} className="editBoard">
+              Edit Board
+            </button>
+            <button onClick={deleteModal} className="deleteBoard">
+              Delete Board
+            </button>
+          </div>
+        )}
+
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <NewEditBoard closeModal={closeModal} />
+            </div>
+          </div>
+        )}
+
+        {isDeleteModal && (
+          <DeleteModal
+            type="board"
+            item={currentBoard}
+            closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
+            closeParentModal={() => setIsEditDeleteBoard(false)} // ✅ Header menüsü kapanır
           />
-        </div>
+        )}
+
+        {isTaskModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <NewEditTask
+                closeModal={closeTaskModal}
+                task={selectedTask}
+                isEdit={isEdit}
+              />
+            </div>
+          </div>
+        )}
       </div>
-
-      {isEditDeleteBoard && (
-        <div className="edit-delete-board">
-          <button onClick={() => openModal(true)} className="editBoard">
-            Edit Board
-          </button>
-          <button onClick={deleteModal} className="deleteBoard">
-            Delete Board
-          </button>
-        </div>
-      )}
-
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <NewEditBoard closeModal={closeModal} />
-          </div>
-        </div>
-      )}
-
-      {isTaskModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <NewEditTask closeModal={closeTaskModal} />
-          </div>
-        </div>
-      )}
-    </div>
+    </Fragment>
   );
 }
 

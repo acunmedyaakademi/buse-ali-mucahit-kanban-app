@@ -78,7 +78,7 @@ export default function NewEditBoard({ closeModal }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content" ref={modalRef}>
-        <h2>{isEdit ? "Edit Board" : "Add New Board"}</h2>
+        <h3>{isEdit ? "Edit Board" : "Add New Board"}</h3>
         <form autoComplete="off" onSubmit={isEdit ? editBoard : handleSubmit}>
           <div className="newBoardName">
             <label>Board Name</label>
