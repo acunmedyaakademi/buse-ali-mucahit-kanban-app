@@ -1026,7 +1026,7 @@ ul {
   z-index: 1000; 
   display: inline-block;
   background-color: white;
-
+  
   .dropdown-btn {
     background-color: inherit;
     color: black;
@@ -1052,7 +1052,7 @@ ul {
   .dropdownMenu {
     min-width: 264px;
     position: absolute;
-    top: 100%;
+    top: 70px;
     background: white;
     border-radius: 8px;
     width: 150px;
