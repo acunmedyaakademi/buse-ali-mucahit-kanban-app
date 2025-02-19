@@ -100,9 +100,6 @@ export default function Board() {
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button className="close-btn" onClick={closeModal}>
-                ✖
-              </button>
               <NewEditBoard closeModal={closeModal} />
             </div>
           </div>
@@ -173,52 +170,77 @@ function BoardColumns({ board, openColumnModal }) {
 
   return (
     <div className="boardColumns">
-      {board.columns.map((column, columnIndex) => (
-        <div className="boardColumn" key={columnIndex}>
-          <div className="boardColumnTitle">
-            <span
-              style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: getRandomColor(),
-                display: "inline-block",
-              }}
-            ></span>
-            <h3>{column.name}</h3>
-          </div>
-          {(Array.isArray(column.tasks) ? column.tasks : []).length > 0 ? (
-            column.tasks.map((task, taskIndex) => (
-              <div
-                className="columnTodo"
-                key={taskIndex}
-                onClick={() => openTaskModal(task)}
-              >
-                <p>{task.title}</p>
-                {task.subtasks && task.subtasks.length > 0 && (
+      {board.columns?.filter((column) => column.name.trim() !== "").length >
+      0 ? (
+        <>
+        {board.columns
+          .filter((column) => column.name.trim() !== "")
+          .map((column, columnIndex) => (
+            <div className="boardColumn" key={columnIndex}>
+              <div className="boardColumnTitle">
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    backgroundColor: getRandomColor(),
+                    display: "inline-block",
+                  }}
+                ></span>
+                <h3>{column.name}</h3>
+              </div>
+              {column.tasks?.length > 0 ? (
+                column.tasks.map((task, taskIndex) => (
+                  <div
+                    className="columnTodo"
+                    key={taskIndex}
+                    onClick={() => openTaskModal(task)}
+                  >
+                    <p>{task.title}</p>
+                    {task.subtasks && task.subtasks.length > 0 && (
                   <span className="board-subtasks-info">
-                    {task.subtasks.filter((st) => st.isCompleted).length} of {" "}
-                    {task.subtasks.length} subtasks
+                    {task.subtasks.filter(st => st.isCompleted).length} of {task.subtasks.length} subtasks
                   </span>
                 )}
-              </div>
-            ))
-          ) : (
-            <p>Bu sütunda görev bulunmamaktadır.</p>
-          )}
-        </div>
-      ))}
-
-      <div className="boardColumn new-column" onClick={openColumnModal}>
+                  </div>
+                ))
+              ) : (
+                <div className="emptyColumnBorder"></div>
+              )}
+            </div>
+          ))}
+          <div className="boardColumn new-column" onClick={openColumnModal}>
         <p>+ New Column</p>
       </div>
-
+      </>
+      ) : (
+        <div className="emptyBoard">
+          <h5>This board is empty. Create a new column to get started.</h5>
+          <button onClick={openColumnModal}>+ Add New Column</button>
+        </div>
+      )}
       {selectedTask && (
         <div className="modal-overlay">
           <div className="modal-content">
             <button className="close-btn" onClick={closeTaskModal}>
               ✖
             </button>
+            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+          </div>
+        </div>
+      )}
+
+{selectedTask && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+          </div>
+        </div>
+      )}
+
+{selectedTask && (
+        <div className="modal-overlay">
+          <div className="modal-content">
             <ViewTask task={selectedTask} closeModal={closeTaskModal} />
           </div>
         </div>

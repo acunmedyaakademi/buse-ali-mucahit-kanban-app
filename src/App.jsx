@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { TodoProvider } from "./components/TodoContext";
 import { getPage } from "./helper";
 import "./App.css";
+import "./DarkMode.css";
 import MyComponent from "./components/Header";
 import { ThemeProvider, useTheme } from "./components/ThemeContext";
 

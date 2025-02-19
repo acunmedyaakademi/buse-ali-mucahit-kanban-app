@@ -1,0 +1,29 @@
+.dark {
+  .header {
+    background-color: #2B2C37;
+  }
+
+  .dropdown {
+    background-color: #2B2C37;
+
+    .dropdown-btn {
+      color: #FFFFFF;
+    }
+
+    .dropdownMenu {
+      background-color: #2B2C37;
+      box-shadow: 0px 10px 20px 0px #364E7E40;
+    }
+
+
+    .dropdownBtn,
+    p {
+      color: #828fa3;
+      background-color: #2B2C37;
+    }
+  }
+  
+  .navBar-themeBtn {
+    background-color: #20212C;
+  }
+}
