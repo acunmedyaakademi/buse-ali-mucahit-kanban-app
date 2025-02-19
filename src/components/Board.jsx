@@ -7,7 +7,7 @@ import { BoardIconSvg, HideIconSvg, ShowIconSvg } from "../Svg";
 import { useTheme } from "./ThemeContext";
 
 export default function Board() {
-  const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } = useContext(TodoContext);
+  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
@@ -24,14 +24,8 @@ export default function Board() {
     }
   }, [todos]);
 
-  useEffect(() => {
-    if (currentBoard) {
-      setSelectedBoard(currentBoard);
-    }
-  }, [currentBoard]);
-
   function handleSelectBoard(board) {
-    setSelectedBoard({ ...board, columns: board.columns ?? null });
+    setSelectedBoard({ ...board, columns: board.columns || [] });
     setEdit(false);
     setCurrentBoard(board);
   }
@@ -82,10 +76,7 @@ export default function Board() {
         <ul className="allBoards">
           <h2>ALL BOARDS ({todos.length})</h2>
           {todos?.map((x) => (
-            <li
-              className={`board ${selectedBoard?.id === x.id ? "active" : ""}`}
-              key={x.id}
-            >
+            <li className={`board ${selectedBoard?.id === x.id ? "active" : ""}`} key={x.id}>
               <button onClick={() => handleSelectBoard(x)}>
                 <BoardIconSvg />
                 {x.name}
@@ -98,6 +89,13 @@ export default function Board() {
             </button>
           </div>
         </ul>
+
+        {isSidebarOpen && (
+          <div className="hideIcon" onClick={toggleSidebar}>
+            <HideIconSvg />
+            <p>Hide Sidebar</p>
+          </div>
+        )}
 
         {isModalOpen && (
           <div className="modal-overlay">
@@ -120,9 +118,7 @@ export default function Board() {
 
         <div className="navBar-bottom">
           <div className="navBar-themeBtn">
-            <span className="white-mode-background">
-              <img src="img/white-mode-theme-icon.svg" alt="" />
-            </span>
+            <span className="white-mode-background"><img src="img/white-mode-theme-icon.svg" alt="" /></span>
             <label className="bg-theme-checkbox">
               <input
                 type="checkbox"
@@ -131,32 +127,21 @@ export default function Board() {
               />
               <span className="slider"></span>
             </label>
-            <span className="icon">
-              <img src="img/dark-mode-theme-icon.svg" alt="" />
-            </span>
+            <span className="icon"><img src="" alt="" /></span>
           </div>
-          {isSidebarOpen && (
-            <div className="hideIcon" onClick={toggleSidebar}>
-              <HideIconSvg />
-              <p>Hide Sidebar</p>
-            </div>
-          )}
         </div>
       </div>
 
       <div className="main-content">
-        {selectedBoard && (
-          <BoardColumns
-            board={selectedBoard}
-            openColumnModal={openColumnModal}
-          />
-        )}
+      {selectedBoard && (
+        <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
+      )}
 
-        {!isSidebarOpen && (
-          <div className="showSidebar-btn" onClick={toggleSidebar}>
-            <ShowIconSvg />
-          </div>
-        )}
+      {!isSidebarOpen && (
+        <div className="showSidebar-btn" onClick={toggleSidebar}>
+          <ShowIconSvg />
+        </div>
+      )}
       </div>
     </div>
   );
@@ -188,48 +173,54 @@ function BoardColumns({ board, openColumnModal }) {
 
   return (
     <div className="boardColumns">
-      {board.columns?.filter((column) => column.name.trim() !== "").length >
-      0 ? (
-        <>
-        {board.columns
-          .filter((column) => column.name.trim() !== "")
-          .map((column, columnIndex) => (
-            <div className="boardColumn" key={columnIndex}>
-              <div className="boardColumnTitle">
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: getRandomColor(),
-                    display: "inline-block",
-                  }}
-                ></span>
-                <h3>{column.name}</h3>
+      {board.columns.map((column, columnIndex) => (
+        <div className="boardColumn" key={columnIndex}>
+          <div className="boardColumnTitle">
+            <span
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor: getRandomColor(),
+                display: "inline-block",
+              }}
+            ></span>
+            <h3>{column.name}</h3>
+          </div>
+          {(Array.isArray(column.tasks) ? column.tasks : []).length > 0 ? (
+            column.tasks.map((task, taskIndex) => (
+              <div
+                className="columnTodo"
+                key={taskIndex}
+                onClick={() => openTaskModal(task)}
+              >
+                <p>{task.title}</p>
+                {task.subtasks && task.subtasks.length > 0 && (
+                  <span className="board-subtasks-info">
+                    {task.subtasks.filter((st) => st.isCompleted).length} of {" "}
+                    {task.subtasks.length} subtasks
+                  </span>
+                )}
               </div>
-              {column.tasks?.length > 0 ? (
-                column.tasks.map((task, taskIndex) => (
-                  <div
-                    className="columnTodo"
-                    key={taskIndex}
-                    onClick={() => openTaskModal(task)}
-                  >
-                    <p>{task.title}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="emptyColumnBorder"></div>
-              )}
-            </div>
-          ))}
-          <div className="boardColumn new-column" onClick={openColumnModal}>
+            ))
+          ) : (
+            <p>Bu sütunda görev bulunmamaktadır.</p>
+          )}
+        </div>
+      ))}
+
+      <div className="boardColumn new-column" onClick={openColumnModal}>
         <p>+ New Column</p>
       </div>
-        </>
-      ) : (
-        <div className="emptyBoard">
-          <h5>This board is empty. Create a new column to get started.</h5>
-          <button onClick={openColumnModal}>+ Add New Column</button>
+
+      {selectedTask && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-btn" onClick={closeTaskModal}>
+              ✖
+            </button>
+            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+          </div>
         </div>
       )}
     </div>
