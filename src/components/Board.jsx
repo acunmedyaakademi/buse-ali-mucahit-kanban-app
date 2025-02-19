@@ -4,12 +4,14 @@ import NewEditBoard from "./NewEditBoard";
 import AddColumnModal from "./AddColumnModal";
 import ViewTask from "./ViewTask";
 import { BoardIconSvg, HideIconSvg, ShowIconSvg } from "../Svg";
+import { useTheme } from "./ThemeContext";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   function toggleSidebar() {
@@ -69,32 +71,67 @@ export default function Board() {
 
   return (
     <div className="boardPage">
-      <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
-        
-        <ul className="allBoards">
-        <h2>ALL BOARDS ({todos.length})</h2>
-          {todos?.map((x) => (
-            <li className="board" key={x.id}>
-              <button onClick={() => handleSelectBoard(x)}>
-                <BoardIconSvg />
-                {x.name}
-              </button>
-            </li>
-          ))}
-          <div className="sideNav-boardBtn">
-            <button className="modal-btn" onClick={() => openModal(false)}>
-              <BoardIconSvg />+ Create New Board
-            </button>
-          </div>
-        </ul>
-        {isSidebarOpen && (
-          <div className="hideIcon" onClick={toggleSidebar}>
-            <HideIconSvg />
-            <p>Hide Sidebar</p>
-          </div>
-        )}
-      </div>
+      <div className="sideNav-board">
+        <div className="navBar-top">
+          <ul className="allBoards">
+            <h2>ALL BOARDS ({todos.length})</h2>
 
+            {todos?.map((x) => (
+              <li className="board" key={x.id}>
+                <button onClick={() => handleSelectBoard(x)}>
+                  {" "}
+                  <BoardIconSvg />
+                  {x.name}
+                </button>
+              </li>
+            ))}
+            <div className="sideNav-boardBtn">
+              <button className="modal-btn" onClick={() => openModal(false)}>
+                <BoardIconSvg />+ Create New Board
+              </button>
+            </div>
+          </ul>
+
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <button className="close-btn" onClick={closeModal}>
+                  ✖
+                </button>
+                <NewEditBoard closeModal={closeModal} />
+              </div>
+            </div>
+          )}
+
+          {isColumnModalOpen && (
+            <AddColumnModal
+              closeModal={closeColumnModal}
+              selectedBoard={selectedBoard}
+              updateBoardColumns={updateBoardColumns}
+            />
+          )}
+        </div>
+        <div className="navBar-bottom">
+          <div className="navBar-themeBtn">
+            <span className="white-mode-background">☀️</span>
+            <label className="bg-theme-checkbox">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={toggleTheme}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="icon">🌙</span>
+          </div>
+          <div className="navBar-sideBar">
+            <span>
+              <img src="img/eye-slash.1.svg" alt="" />
+              <a>Hide SideBar</a>
+            </span>
+          </div>
+        </div>
+      </div>
       {selectedBoard && (
         <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
       )}

@@ -3,6 +3,23 @@
 body {
   list-style-type: none;
 }
+
+.bg-theme-checkbox input {
+  cursor: pointer;
+}
+
+.slider {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 50px;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
 ul {
   padding: 0;
   margin: 0;
@@ -28,16 +45,6 @@ ul {
   max-width: 500px;
   margin-inline: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-
-  h2 {
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 22.68px;
-    letter-spacing: 0px;
-    color: #000112;
-    margin-bottom: 24px;
-  }
-
   form {
     display: flex;
     flex-direction: column;
@@ -68,20 +75,16 @@ ul {
   display: flex;
   height: 100vh;
   background-color: #f4f7fd;
-}
-.sideNav-board {
+ }
+/* .sideNav-board {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-width: 260px;
   z-index: 2;
   left: 0;
   background-color: white;
   padding: 0 20px 0 0;
-  border-right: 1px solid #e4ebfa;
-  transition: width 0.3s ease;
-  position: relative;
-
+  border-right: 1px solid #E4EBFA;
   h2 {
     font-weight: 700;
     font-size: 12px;
@@ -92,7 +95,12 @@ ul {
     padding-left: 24px;
     padding-top: 30px;
   }
-}
+} 
+
+.sideNav-board {
+  display: none} */
+
+
 .sideNav-board button {
   background: none;
   border: none;
@@ -102,6 +110,7 @@ ul {
   line-height: 18.9px;
   letter-spacing: 0px;
 }
+
 
 .sideNav-board.closed {
   display: none;
@@ -143,6 +152,7 @@ ul {
   width: 16px;
 }
 
+
 .allBoards button {
   display: flex;
   gap: 9px;
@@ -171,6 +181,18 @@ ul {
   align-items: center;
 }
 
+.modal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18.9px;
+  letter-spacing: 0px;
+}
+
 .sideNav-boardBtn {
   background: none;
   background-color: none;
@@ -178,9 +200,6 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: start;
-}
-.sideNav-boardBtn button:last-child {
-  display: none;
 }
 .modal-content {
   background: white;
@@ -193,6 +212,41 @@ ul {
   display: none;
 }
 
+.allBoards button {
+  padding-left: 32px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18.9px;
+  letter-spacing: 0px;
+  color: #828fa3;
+  margin-left: 10px;
+}
+.sideNav-board button:active {
+  background-color: #635fc7;
+  border-radius: 0 25px 25px 0;
+  color: #ffffff;
+}
+/* .sideNav-board button:hover {
+  color: #635fc7;
+  background-color: #635fc7;
+  opacity: 0.1;
+  border-radius: 0 25px 25px 0;
+  color: #635fc7;
+}
+
+.board button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 240px;
+  left: 0;
+} */
+
+
+
+.board {
+  color: inherit;
+}
 .board button {
   display: flex;
   align-items: center;
@@ -200,32 +254,91 @@ ul {
   width: 240px;
   left: 0;
 }
-/* .sideNav-board button:active {
-
-
-.allBoards button {
-  padding-left: 32px;
+.board button:hover {
+  background-color: #635fc7;
+  opacity: 50%;
+}
+.board button:focus {
+  background-color: #635fc7;
+  color: #fff;
+}
+.board button::after {
+  background-color: #635fc7;
+}
+.background-theme {
+  appearance: none;
+  width: 71px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #a8a4ff;
+  padding: 5px;
+}
+.background-theme::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+}
+.navBar-themeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  gap: 23px;
+  background-color: #f4f7fd;
+  width: 251px;
+  height: 48px;
+  margin-bottom: 30px;
+}
+.navBar-sideBar span {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-left: 30px;
+}
+.navBar-sideBar span a {
   font-weight: 700;
   font-size: 15px;
   line-height: 18.9px;
   letter-spacing: 0px;
+  color: #828fa3;
+  margin-left: 10px;
 }
-.sideNav-board button:active {
->>>>>>> origin/mucahit
-  background-color: #635fc7;
-  border-radius: 0 25px 25px 0;
-  color: #ffffff;
+.white-mode-background {
+  font-size: 20px;
+  color: #7d879c;
 }
-.sideNav-board button:hover {
-  color: #635fc7;
-  background-color: #635fc7;
-  opacity: 0.1;
-  border-radius: 0 25px 25px 0;
-  color: #635fc7;
-<<<<<<< HEAD
-} */
 
+.bg-theme-checkbox {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  background: #6c63ff;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+}
 
+.bg-theme-checkbox input {
+  display: none;
+}
+
+.bg-theme-checkbox .slider {
+  width: 19px;
+  height: 19px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 5px;
+  transition: 0.3s;
+}
+
+.bg-theme-checkbox input:checked + .slider {
+  left: 26px;
+}
 /* MUCAHIT MOBILE BITIS */
 
 /* buse-start */
@@ -900,8 +1013,77 @@ ul {
   }
 
   /* mucahit tablet baslangic */
+
+  body.light {
+    background-color: #635fc7;
+  }
+  body.dark {
+    background-color: #1a1a2e;
+    color: white;
+  }
+  .modal-content {
+    padding: 32px;
+    width: 480px;
+  }
   .sideNav-board {
     display: flex;
+  }
+  .sideNav-board {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 18.75rem;
+    height: calc(100% - 6rem);
+    z-index: 2;
+    background-color: white;
+    left: 0;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    border-right: 1px solid #e4ebfa;
+    cursor: default;
+    overflow-x: hidden;
+  }
+  .newEditBoardPage h2 {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22.68px;
+    letter-spacing: 0px;
+    color: #000112;
+    margin-bottom: 24px;
+  }
+  .newBoardColumns {
+    display: flex;
+    flex-direction: column;
+  }
+  .newBoardName {
+    display: flex;
+    flex-direction: column;
+  }
+  .newBoardName input {
+    height: 40px;
+    border: 1px solid #828fa340;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .newBoardName input::placeholder {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 23px;
+    letter-spacing: 0px;
+    opacity: 25%;
+  }
+  .column-input input {
+    margin-bottom: 12px;
+    width: 385px;
+  }
+  .sideNav-board .addNewBtn {
+    padding: 8px 50px;
+    background-color: #635fc71a;
+    border-radius: 20px;
+  }
+  .navBar-bottom {
+    margin-left: 15px;
   }
   /* mucahit tablet bitis */
 }
