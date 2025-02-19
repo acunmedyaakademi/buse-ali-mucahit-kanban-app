@@ -23,13 +23,13 @@ function App() {
   return (
     <div className="board-container">
       <TodoProvider>
-      <div className="app-container">
-        <MyComponent/> 
-        <div className="page-content">
-          {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
+        <div className="app-container">
+          <MyComponent />
+          <div className="page-content">
+            {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
+          </div>
         </div>
-      </div>
-    </TodoProvider>
+      </TodoProvider>
     </div>
   );
 }

@@ -181,7 +181,6 @@ ul {
   line-height: 18.9px;
   letter-spacing: 0px;
 }
-
 .sideNav-boardBtn {
   background: none;
   background-color: none;
@@ -189,6 +188,9 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: start;
+}
+.sideNav-boardBtn button:last-child {
+  display: none;
 }
 .modal-content {
   background: white;
@@ -200,7 +202,6 @@ ul {
 .sideNav-board {
   display: none;
 }
-
 .board button {
   display: flex;
   align-items: center;
@@ -208,7 +209,18 @@ ul {
   width: 240px;
   left: 0;
 }
-
+/* .sideNav-board button:active {
+  background-color: #635fc7;
+  border-radius: 0 25px 25px 0;
+  color: #ffffff;
+}
+.sideNav-board button:hover {
+  color: #635fc7;
+  background-color: #635fc7;
+  opacity: 0.1;
+  border-radius: 0 25px 25px 0;
+  color: #635fc7;
+} */
 /* MUCAHIT MOBILE BITIS */
 
 /* buse-start */
