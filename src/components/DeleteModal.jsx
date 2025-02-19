@@ -8,18 +8,18 @@ export default function DeleteModal({ type, item, closeModal, closeParentModal }
     let updatedTodos = [...todos];
 
     if (type === "board") {
-      // Board silme işlemi
+      // board silme işlemi
       updatedTodos = todos.filter((todo) => todo.id !== currentBoard.id);
       setTodos(updatedTodos);
 
-      // 🆕 Silindikten sonra currentBoard kalan ilk board olur (yoksa null)
+      // silindikten sonra currentBoard kalan ilk board olur (yoksa null)
       setCurrentBoard(updatedTodos.length > 0 ? updatedTodos[0] : null);
 
-      setIsDeleteModal(false); // Context modal kapanır
+      setIsDeleteModal(false); // context modal kapanır
     }
 
     if (type === "task") {
-      // Task silme işlemi
+      // task silme işlemi
       updatedTodos = todos.map((board) =>
         board.id === currentBoard.id
           ? {
@@ -33,11 +33,11 @@ export default function DeleteModal({ type, item, closeModal, closeParentModal }
       );
 
       setTodos(updatedTodos);
-      setCurrentBoard(updatedTodos.find((b) => b.id === currentBoard.id)); // Güncel board'u bul
+      setCurrentBoard(updatedTodos.find((b) => b.id === currentBoard.id)); // güncel board'u bul
     }
 
     closeModal(); // DeleteModal kapanır
-    if (closeParentModal) closeParentModal(); // Bağlı modal (örneğin ViewTask) kapanır
+    if (closeParentModal) closeParentModal(); // Bağlı modal kapanır
   }
 
   return (

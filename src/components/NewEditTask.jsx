@@ -12,7 +12,7 @@ export default function NewEditTask({ closeModal, task }) {
   const [status, setStatus] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // 📝 Düzenleme modunda mevcut task bilgilerini yükle
+  // düzenleme modunda mevcut task bilgilerini yükle
   useEffect(() => {
     if (isEdit && task) {
       setTitle(task.title || "");
@@ -34,7 +34,7 @@ export default function NewEditTask({ closeModal, task }) {
   }, [isEdit, task, currentBoard]);
   
 
-  // ➕ Yeni subtask ekleme
+  // yeni subtask ekleme
   const addSubtask = () => {
     setSubtasks([
       ...subtasks,
@@ -42,7 +42,7 @@ export default function NewEditTask({ closeModal, task }) {
     ]);
   };
 
-  // 🔄 Subtask düzenleme
+  // subtask düzenleme
   const handleSubtaskChange = (index, value) => {
     const updatedSubtasks = subtasks.map((st, i) =>
       i === index ? { ...st, name: value } : st
@@ -50,12 +50,12 @@ export default function NewEditTask({ closeModal, task }) {
     setSubtasks(updatedSubtasks);
   };
 
-  // 🗑️ Subtask silme
+  // sbtask silme
   const deleteSubtask = (id) => {
     setSubtasks(subtasks.filter((st) => st.id !== id));
   };
 
-  // ✅ Form gönderme
+  // form gönderme
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -72,17 +72,17 @@ export default function NewEditTask({ closeModal, task }) {
   
       const updatedColumns = board.columns.map((col) => {
         if (isEdit) {
-          // 🎯 1️⃣ Eski sütundaki task'ı sil
+          // eski sütundaki task'ı sil
           const filteredTasks = col.tasks.filter((t) => t.id !== task?.id);
   
-          // 🆕 2️⃣ Seçili sütuna güncellenmiş task'ı ekle
+          // seçili sütuna güncellenmiş task'ı ekle
           if (col.name === updatedTask.status) {
             return { ...col, tasks: [...filteredTasks, updatedTask] };
           }
   
-          return { ...col, tasks: filteredTasks }; // Diğer sütunlar için sadece sil
+          return { ...col, tasks: filteredTasks }; // diğer sütunlar için sadece sil
         } else {
-          // 📝 Yeni task eklerken sadece ilgili sütuna ekle
+          // yeni task eklerken sadece ilgili sütuna ekle
           return col.name === updatedTask.status
             ? { ...col, tasks: [...col.tasks, updatedTask] }
             : col;
@@ -134,7 +134,7 @@ export default function NewEditTask({ closeModal, task }) {
               <div key={subtask.id} className="subtaskInput">
                 <input
                   type="text"
-                  value={subtask.name} // ✅ Mevcut subtask adı inputta görünür
+                  value={subtask.name} // mevcut subtask adı inputta görünür
                   onChange={(e) => handleSubtaskChange(index, e.target.value)}
                   required
                 />

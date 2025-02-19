@@ -20,7 +20,7 @@ export default function ViewTask({ task, closeModal }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const modalRef = useRef(null);
 
-  // 🎯 Task değiştiğinde alt görevleri ve durumu güncelle
+  // task değiştiğinde alt görevleri ve durumu güncelle
   useEffect(() => {
     setStatus(task.status);
     setSubtasks(
@@ -31,7 +31,7 @@ export default function ViewTask({ task, closeModal }) {
     );
   }, [task]);
 
-  // ✅ Modal dışına tıklayınca kapatma
+  // modal dışına tıklayınca kapatma
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -45,7 +45,7 @@ export default function ViewTask({ task, closeModal }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeModal]);
 
-  // 📝 Alt görev tamamlama durumu değiştir
+  // alt görev tamamlama durumu değiştir
   const toggleSubtask = (id) => {
     const updatedSubtasks = subtasks.map((subtask) =>
       subtask.id === id ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
@@ -73,7 +73,7 @@ export default function ViewTask({ task, closeModal }) {
     setTodos(updatedTodos);
   };
 
-  // 🔄 Durum (status) güncelleme
+  // durum (status) güncelleme
   const updateStatus = (newStatus) => {
     if (newStatus === status) return;
 
@@ -103,7 +103,7 @@ export default function ViewTask({ task, closeModal }) {
     setIsDropdownOpen(false);
   };
 
-  // 📝 Modal açma
+  // mdal açma
   const openModal = (isEditMode) => {
     setEdit(isEditMode);
     setIsModalOpen(true);
