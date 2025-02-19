@@ -9,10 +9,11 @@ import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
 import { AddIcon, KanbanLogoSvg } from "../Svg";
+import DeleteModal from "./DeleteModal";
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 768);
-  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
+  const { todos, setTodos, setEdit, setCurrentBoard, isEditDeleteBoard, setIsEditDeleteBoard, deleteModal, isDeleteModal } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function openModal(isEditMode) {
@@ -46,19 +47,23 @@ export default function MyComponent() {
           closeModal={closeModal}
           isModalOpen={isModalOpen}
           openModal={openModal}
+          deleteModal={deleteModal}
+          isDeleteModal={isDeleteModal}
         />
       ) : (
         <DesktopComponent
           closeModal={closeModal}
           isModalOpen={isModalOpen}
           openModal={openModal}
+          deleteModal={deleteModal}
+          isDeleteModal={isDeleteModal}
         />
       )}
     </Fragment>
   );
 }
 
-function MobileComponent({ openModal, isModalOpen, closeModal }) {
+function MobileComponent({ openModal, isModalOpen, closeModal, deleteModal, isDeleteModal }) {
   const {
     isTaskModalOpen,
     closeTaskModal,
@@ -99,9 +104,15 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
           <button onClick={() => openModal(true)} className="editBoard">
             Edit Board
           </button>
-          <button className="deleteBoard">Delete Board</button>
+          <button onClick={deleteModal} className="deleteBoard">Delete Board</button>
         </div>
       )}
+
+      {isDeleteModal &&
+          (
+            <DeleteModal />
+          )
+       }
 
       {isModalOpen && (
         <div className="modal-overlay">
@@ -128,7 +139,7 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
   );
 }
 
-function DesktopComponent({ openModal, isModalOpen, closeModal }) {
+function DesktopComponent({ openModal, isModalOpen, closeModal, deleteModal,isDeleteModal }) {
   const {
     isTaskModalOpen,
     closeTaskModal,
@@ -174,7 +185,7 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
           <button onClick={() => openModal(true)} className="editBoard">
             Edit Board
           </button>
-          <button className="deleteBoard">Delete Board</button>
+          <button onClick={deleteModal} className="deleteBoard">Delete Board</button>
         </div>
       )}
 
@@ -206,7 +217,7 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { todos, setTodos, setEdit, setCurrentBoard, setSelectedBoard } =
+  const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } =
     useContext(TodoContext);
 
   // menü dısına tıklanınca
@@ -223,20 +234,28 @@ function Dropdown() {
   }, []);
 
   function handleSelectBoard(board) {
-    // setSelectedBoard({ ...board, columns: board.columns || [] });
-    setEdit(false);
-    setCurrentBoard(board);
-    console.log(board);
+    setEdit(false);          // Düzenleme modunu kapat
+    setCurrentBoard(board);  // Context'teki currentBoard'u güncelle
+    setIsOpen(false);        // Dropdown'u kapat
   }
 
+  useEffect(() => {
+    if (!currentBoard && todos.length > 0) {
+      setCurrentBoard(todos[0]);
+    }
+  }, [todos, currentBoard, setCurrentBoard]);
+  
   return (
+    <Fragment>
+      {isOpen && <div className="dropdown-overlay" onClick={() => setIsOpen(false)}></div>}
     <div className="dropdown" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
-        ALL BOARDS ({todos.length})
+        {currentBoard?.name} ({todos.length})
       </button>
       <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
+        <li><p>ALL BOARDS ({todos.length})</p></li>
         {todos?.map((x) => (
-          <li key={x.id}>
+          <li key={x.id} className={currentBoard?.id === x.id ? "active" : ""}>
             <button
               className="dropdownBtn"
               onClick={() => handleSelectBoard(x)}
@@ -256,5 +275,6 @@ function Dropdown() {
         </div>
       </ul>
     </div>
+    </Fragment>
   );
 }
