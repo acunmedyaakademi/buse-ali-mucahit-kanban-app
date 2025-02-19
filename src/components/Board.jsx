@@ -48,6 +48,7 @@ export default function Board() {
   function closeColumnModal() {
     setIsColumnModalOpen(false);
   }
+
   function updateBoardColumns(newColumns) {
     if (!selectedBoard) return;
 
@@ -72,42 +73,49 @@ export default function Board() {
   return (
     <div className="boardPage">
       <div className="sideNav-board">
-      <ul className="allBoards">
-            <h2>ALL BOARDS ({todos.length})</h2>
-
-            {todos?.map((x) => (
-              <li className="board" key={x.id}>
-                <button onClick={() => handleSelectBoard(x)}>
-                  {" "}
-                  <BoardIconSvg />
-                  {x.name}
-                </button>
-              </li>
-            ))}
-            <div className="sideNav-boardBtn">
-              <button className="modal-btn" onClick={() => openModal(false)}>
-                <BoardIconSvg />+ Create New Board
+        <ul className="allBoards">
+          <h2>ALL BOARDS ({todos.length})</h2>
+          {todos?.map((x) => (
+            <li className="board" key={x.id}>
+              <button onClick={() => handleSelectBoard(x)}>
+                <BoardIconSvg />
+                {x.name}
               </button>
-            </div>
-          </ul>
-          {isModalOpen && (
-            <div className="modal-overlay">
-              <div className="modal-content">
-                <button className="close-btn" onClick={closeModal}>
-                  ✖
-                </button>
-                <NewEditBoard closeModal={closeModal} />
-              </div>
-            </div>
-          )}
+            </li>
+          ))}
+          <div className="sideNav-boardBtn">
+            <button className="modal-btn" onClick={() => openModal(false)}>
+              <BoardIconSvg />+ Create New Board
+            </button>
+          </div>
+        </ul>
 
-          {isColumnModalOpen && (
-            <AddColumnModal
-              closeModal={closeColumnModal}
-              selectedBoard={selectedBoard}
-              updateBoardColumns={updateBoardColumns}
-            />
-          )}
+        {isSidebarOpen && (
+          <div className="hideIcon" onClick={toggleSidebar}>
+            <HideIconSvg />
+            <p>Hide Sidebar</p>
+          </div>
+        )}
+
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button className="close-btn" onClick={closeModal}>
+                ✖
+              </button>
+              <NewEditBoard closeModal={closeModal} />
+            </div>
+          </div>
+        )}
+
+        {isColumnModalOpen && (
+          <AddColumnModal
+            closeModal={closeColumnModal}
+            selectedBoard={selectedBoard}
+            updateBoardColumns={updateBoardColumns}
+          />
+        )}
+
         <div className="navBar-bottom">
           <div className="navBar-themeBtn">
             <span className="white-mode-background">☀️</span>
@@ -121,14 +129,9 @@ export default function Board() {
             </label>
             <span className="icon">🌙</span>
           </div>
-          <div className="navBar-sideBar">
-            <span>
-              <img src="img/eye-slash.1.svg" alt="" />
-              <a>Hide SideBar</a>
-            </span>
-          </div>
         </div>
       </div>
+
       {selectedBoard && (
         <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
       )}
