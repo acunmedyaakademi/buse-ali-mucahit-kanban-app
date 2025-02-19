@@ -72,8 +72,7 @@ export default function Board() {
   return (
     <div className="boardPage">
       <div className="sideNav-board">
-        <div className="navBar-top">
-          <ul className="allBoards">
+      <ul className="allBoards">
             <h2>ALL BOARDS ({todos.length})</h2>
 
             {todos?.map((x) => (
@@ -91,7 +90,6 @@ export default function Board() {
               </button>
             </div>
           </ul>
-
           {isModalOpen && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -110,7 +108,6 @@ export default function Board() {
               updateBoardColumns={updateBoardColumns}
             />
           )}
-        </div>
         <div className="navBar-bottom">
           <div className="navBar-themeBtn">
             <span className="white-mode-background">☀️</span>

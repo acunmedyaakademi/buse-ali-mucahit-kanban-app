@@ -76,7 +76,7 @@ ul {
   height: 100vh;
   background-color: #f4f7fd;
  }
-/* .sideNav-board {
+ .sideNav-board {
   display: flex;
   flex-direction: column;
   min-width: 260px;
@@ -96,10 +96,6 @@ ul {
     padding-top: 30px;
   }
 } 
-
-.sideNav-board {
-  display: none} */
-
 
 .sideNav-board button {
   background: none;
@@ -212,7 +208,7 @@ ul {
   display: none;
 }
 
-.allBoards button {
+/* .allBoards button {
   padding-left: 32px;
   font-weight: 700;
   font-size: 15px;
@@ -220,7 +216,7 @@ ul {
   letter-spacing: 0px;
   color: #828fa3;
   margin-left: 10px;
-}
+} */
 .sideNav-board button:active {
   background-color: #635fc7;
   border-radius: 0 25px 25px 0;
@@ -247,17 +243,7 @@ ul {
 .board {
   color: inherit;
 }
-.board button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 240px;
-  left: 0;
-}
-.board button:hover {
-  background-color: #635fc7;
-  opacity: 50%;
-}
+
 .board button:focus {
   background-color: #635fc7;
   color: #fff;
@@ -1025,9 +1011,12 @@ ul {
     padding: 32px;
     width: 480px;
   }
+
   .sideNav-board {
     display: flex;
   }
+
+  /* 
   .sideNav-board {
     display: flex;
     flex-direction: column;
@@ -1042,7 +1031,7 @@ ul {
     border-right: 1px solid #e4ebfa;
     cursor: default;
     overflow-x: hidden;
-  }
+  } */
   .newEditBoardPage h2 {
     font-weight: 700;
     font-size: 18px;
