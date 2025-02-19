@@ -10,6 +10,7 @@ import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
 import { AddIcon, KanbanLogoSvg } from "../Svg";
 import DeleteModal from "./DeleteModal";
+import { useTheme } from "./ThemeContext";
 
 export default function MyComponent() {
   const [ismobil, setIsmobil] = useState(window.innerWidth < 768);
@@ -171,6 +172,7 @@ function DesktopComponent({
     currentBoard,
     isEditDeleteBoard,
     setIsEditDeleteBoard,
+    todos
   } = useContext(TodoContext);
 
   function openIsEditDeleteBoard() {
@@ -183,11 +185,7 @@ function DesktopComponent({
         <KanbanLogoSvg fill="#000112" />
       </div>
       <div className="header-top-bottom">
-        <div className="headerDropdown">
-          <Dropdown />
-          <img src="img/down-icon.svg" alt="" />
-        </div>
-
+        <p className="desktopHeaderName">{currentBoard?.name}</p>
         <div className="header-down">
           <button
             className="headerAddTaskBtn"
@@ -236,6 +234,7 @@ function DesktopComponent({
 
 function Dropdown({ isOpen, setIsOpen }) {
   const dropdownRef = useRef(null);
+  const { darkMode, toggleTheme } = useTheme();
   const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } =
     useContext(TodoContext);
 
@@ -289,6 +288,22 @@ function Dropdown({ isOpen, setIsOpen }) {
               </button>
             </li>
           ))}
+          <div className="navBar-themeBtn">
+            <span className="white-mode-background">
+              <img src="img/white-mode-theme-icon.svg" alt="" />
+            </span>
+            <label className="bg-theme-checkbox">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={toggleTheme}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="icon">
+              <img src="img/dark-mode-theme-icon.svg" alt="" />
+            </span>
+          </div>
         </ul>
       </div>
     </Fragment>
