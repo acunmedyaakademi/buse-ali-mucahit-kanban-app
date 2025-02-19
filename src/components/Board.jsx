@@ -93,13 +93,6 @@ export default function Board() {
           </div>
         </ul>
 
-        {isSidebarOpen && (
-          <div className="hideIcon" onClick={toggleSidebar}>
-            <HideIconSvg />
-            <p>Hide Sidebar</p>
-          </div>
-        )}
-
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -121,7 +114,9 @@ export default function Board() {
 
         <div className="navBar-bottom">
           <div className="navBar-themeBtn">
-            <span className="white-mode-background">☀️</span>
+            <span className="white-mode-background">
+              <img src="img/white-mode-theme-icon.svg" alt="" />
+            </span>
             <label className="bg-theme-checkbox">
               <input
                 type="checkbox"
@@ -130,8 +125,16 @@ export default function Board() {
               />
               <span className="slider"></span>
             </label>
-            <span className="icon">🌙</span>
+            <span className="icon">
+              <img src="img/dark-mode-theme-icon.svg" alt="" />
+            </span>
           </div>
+          {isSidebarOpen && (
+            <div className="hideIcon" onClick={toggleSidebar}>
+              <HideIconSvg />
+              <p>Hide Sidebar</p>
+            </div>
+          )}
         </div>
       </div>
 
