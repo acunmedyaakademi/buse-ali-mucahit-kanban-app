@@ -11,7 +11,7 @@ export default function NewEditBoard() {
     setCurrentBoard
   } = useContext(TodoContext);
 
-  const [columns, setColumns] = useState([{ id: 0, name: "" }]);
+  const [columns, setColumns] = useState([]); 
 
   useEffect(() => {
     if (isEdit && currentBoard) {
@@ -88,7 +88,6 @@ export default function NewEditBoard() {
                 type="text"
                 value={column.name}
                 onChange={(e) => handleColumnChange(index, e.target.value)}
-                required
               />
               {columns.length > 1 && (
                 <button type="button" onClick={() => deleteColumn(column.id)}>
@@ -102,7 +101,7 @@ export default function NewEditBoard() {
           </button>
         </div>
         <div className="addNewBoardBtn">
-          {isEdit ? <button className="createNewBtn">Save Changes</button> : <button>Create New Board</button>}
+          {isEdit ? <button className="saveBtn">Save Changes</button> : <button className="createNewBoardBtn">Create New Board</button>}
         </div>
       </form>
     </div>
