@@ -9,6 +9,7 @@ export function TodoProvider({ children }) {
   const dialogRef = useRef(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isEditDeleteBoard, setIsEditDeleteBoard] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
   
 useEffect(() => {
   console.log("Dialog Ref:", dialogRef.current);
@@ -38,6 +39,12 @@ useEffect(() => {
   function closeTaskModal() {
     setIsTaskModalOpen(false);
   }
+
+
+  function deleteModal() {
+    setIsDeleteModal((prev) => !prev);
+  }
+
   
 
   // useEffect(() => {
@@ -49,7 +56,7 @@ useEffect(() => {
   // };
 
   return (
-    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard, dialogRef, isTaskModalOpen, closeTaskModal, openTaskModal, isEditDeleteBoard, setIsEditDeleteBoard}}>
+    <TodoContext.Provider value={{ todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard, dialogRef, isTaskModalOpen, closeTaskModal, openTaskModal, isEditDeleteBoard, setIsEditDeleteBoard, deleteModal, isDeleteModal}}>
       {children}
     </TodoContext.Provider>
   );

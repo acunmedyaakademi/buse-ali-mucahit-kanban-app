@@ -7,7 +7,7 @@ import { BoardIconSvg, HideIconSvg, ShowIconSvg } from "../Svg";
 import { useTheme } from "./ThemeContext";
 
 export default function Board() {
-  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
+  const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
@@ -23,6 +23,12 @@ export default function Board() {
       handleSelectBoard(todos[0]);
     }
   }, [todos]);
+
+  useEffect(() => {
+    if (currentBoard) {
+      setSelectedBoard(currentBoard);
+    }
+  }, [currentBoard]);
 
   function handleSelectBoard(board) {
     setSelectedBoard({ ...board, columns: board.columns ?? null });
@@ -212,7 +218,7 @@ function BoardColumns({ board, openColumnModal }) {
                   </div>
                 ))
               ) : (
-                <p>Bu sütunda görev bulunmamaktadır.</p>
+                <div className="emptyColumnBorder"></div>
               )}
             </div>
           ))}

@@ -873,6 +873,85 @@ ul {
   }
 }
 
+.deleteModal {
+  background-color: white;
+  padding: 24px 28px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+}
+
+.deleteModal h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ea5555; 
+  margin-bottom: 16px;
+}
+
+.deleteModal p {
+  font-size: 14px;
+  color: #828fa3;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.deleteModal button {
+  width: 100%;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.deleteModal button:first-of-type {
+  background-color: #ea5555;
+  color: white;
+}
+
+.deleteModal button:first-of-type:hover {
+  background-color: #d43c3c;
+}
+
+.deleteModal button:last-of-type {
+  background-color: #f0f0f0;
+  color: #635fc7;
+}
+
+.deleteModal button:last-of-type:hover {
+  background-color: #e0e0e0;
+}
+
+
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.emptyColumnBorder {
+  width: 100%;
+  height: 100%;
+  border: 3px dashed #c7cdd9;
+  border-radius: 5px;
+}
+
+
 /* buse-end */
 /* ALİ CSS  BASLANGIC */
 .header {
@@ -881,6 +960,8 @@ ul {
   background-color: white;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1100 !important;
 
   .header-top,
   .header-down {
@@ -942,6 +1023,7 @@ ul {
   line-height: 18.9px;
   letter-spacing: 0px;
   position: relative;
+  z-index: 1000; 
   display: inline-block;
   background-color: white;
 
@@ -952,9 +1034,23 @@ ul {
     cursor: pointer;
   }
 
+  li.active button {
+    background-color: #635fc7 !important;
+    color: white !important;
+  }
+  
+  li.active button svg path {
+    fill: white !important;
+  }
+  
+  li.active button:focus,
+  li.active button:hover {
+    background-color: #635fc7 !important;
+    color: white !important;
+  }
+
   .dropdownMenu {
     min-width: 264px;
-    padding: 24px;
     position: absolute;
     top: 100%;
     background: white;
@@ -964,6 +1060,7 @@ ul {
     transform: scaleY(0);
     transform-origin: top;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1200;
 
     .light-dark-mode {
       display: flex;
@@ -980,28 +1077,27 @@ ul {
     opacity: 1;
     transform: scaleY(1);
     z-index: 100;
+    padding: 16px 24px 16px 0px;
   }
 
   li {
     width: 100%;
-
     display: flex;
     flex-direction: row;
     text-decoration: none;
-    color: white;
     background-color: inherit;
 
-    .dropdownBtn {
+    .dropdownBtn, p {
       display: flex;
       border: none;
       list-style: none;
       padding: 14px 24px;
+      width: 240px;
       gap: 12px;
       color: #828fa3;
       background-color: white;
       border-top-right-radius: 100px;
       border-bottom-right-radius: 100px;
-      margin-left: -24px;
     }
   }
 
@@ -1013,6 +1109,18 @@ ul {
   .dropdownBtn:focus img {
     content: url("img/dropdown-white-menu-icon.svg");
   }
+
+
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 900;
 }
 
 .edit-delete-board {
@@ -1027,6 +1135,7 @@ ul {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   right: 0;
+  top: 80px;
 
   .editBoard,
   .deleteBoard {
