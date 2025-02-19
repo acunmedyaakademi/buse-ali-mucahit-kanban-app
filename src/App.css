@@ -4,6 +4,10 @@ body {
   list-style-type: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 .bg-theme-checkbox input {
   cursor: pointer;
 }
@@ -34,7 +38,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 4000;
 }
 
 .modal-content {
@@ -864,7 +868,7 @@ ul {
     letter-spacing: 0px;
     color: #ffffff;
     padding: 15px 18px;
-    background-color: #635FC7;
+    background-color: #635fc7;
     border: none;
     border-radius: 24px;
     justify-content: center;
@@ -889,7 +893,7 @@ ul {
 .deleteModal h2 {
   font-size: 20px;
   font-weight: 700;
-  color: #ea5555; 
+  color: #ea5555;
   margin-bottom: 16px;
 }
 
@@ -930,7 +934,6 @@ ul {
   background-color: #e0e0e0;
 }
 
-
 .delete-modal-overlay {
   position: fixed;
   top: 0;
@@ -941,7 +944,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 4000;
 }
 
 .emptyColumnBorder {
@@ -950,7 +953,6 @@ ul {
   border: 3px dashed #c7cdd9;
   border-radius: 5px;
 }
-
 
 /* buse-end */
 /* ALİ CSS  BASLANGIC */
@@ -1026,23 +1028,26 @@ ul {
   z-index: 4000;
   display: inline-block;
   background-color: white;
-  
+
   .dropdown-btn {
+    display: flex;
+    align-items: center;
     background-color: inherit;
     color: black;
     border: none;
     cursor: pointer;
+    gap: 8px;
   }
 
   li.active button {
     background-color: #635fc7 !important;
     color: white !important;
   }
-  
+
   li.active button svg path {
     fill: white !important;
   }
-  
+
   li.active button:focus,
   li.active button:hover {
     background-color: #635fc7 !important;
@@ -1080,6 +1085,10 @@ ul {
     padding: 16px 24px 16px 0px;
   }
 
+  .dropdown-btn:focus img {
+    transform: rotate(180deg);
+  }
+
   li {
     width: 100%;
     display: flex;
@@ -1087,7 +1096,8 @@ ul {
     text-decoration: none;
     background-color: inherit;
 
-    .dropdownBtn, p {
+    .dropdownBtn,
+    p {
       display: flex;
       border: none;
       list-style: none;
@@ -1110,8 +1120,6 @@ ul {
   .dropdownBtn:focus img {
     content: url("img/dropdown-white-menu-icon.svg");
   }
-
-
 }
 
 .dropdown-overlay {

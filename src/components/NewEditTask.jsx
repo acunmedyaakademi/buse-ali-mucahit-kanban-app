@@ -10,14 +10,8 @@ export default function NewEditTask({ closeModal, task }) {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    console.log("Güncellenen currentBoard:", currentBoard);
-    console.log("Güncellenen Todos:", todos);
-  }, [currentBoard, todos]);
-  
-  useEffect(() => {
     const updatedBoard = todos.find((b) => b.id === currentBoard?.id);
     if (updatedBoard && updatedBoard.columns.length !== currentBoard?.columns.length) {
-      console.log("✅ `setCurrentBoard` güncellendi:", updatedBoard);
       setCurrentBoard(updatedBoard);
     }
   }, [todos]); 
@@ -37,7 +31,7 @@ export default function NewEditTask({ closeModal, task }) {
     } else {
       setStatus(currentBoard?.columns[0]?.name || "");
     }
-  }, [isEdit, task, currentBoard ]); 
+  }, [isEdit, task, currentBoard]); 
 
   function addSubtask() {
     setSubtasks([...subtasks, { id: subtasks.length, name: "" }]);
@@ -56,26 +50,24 @@ export default function NewEditTask({ closeModal, task }) {
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const formObj = Object.fromEntries(formData);
     const newTaskObj = {
       id: crypto.randomUUID(),
-      title: formObj.title,
-      description: formObj.description,
-      subtasks: subtasks.length > 0 ? subtasks.map(st => ({
+      title: formData.get("title"),
+      description: formData.get("description"),
+      subtasks: subtasks.map(st => ({
         id: crypto.randomUUID(),
         name: st.name,
         isCompleted: false
-      })) : [],
-      status: formObj.status,
+      })),
+      status: formData.get("status"),
     };
-    
 
     const updatedTodos = todos.map((board) =>
       board.id === currentBoard.id
         ? {
             ...board,
             columns: board.columns.map((col) =>
-              col.name === formObj.status
+              col.name === newTaskObj.status
                 ? { ...col, tasks: [...(col.tasks || []), newTaskObj] }
                 : col
             ),
@@ -84,21 +76,13 @@ export default function NewEditTask({ closeModal, task }) {
     );
 
     setTodos(updatedTodos);
-
-    const updatedBoard = updatedTodos.find((b) => b.id === currentBoard.id);
-    setCurrentBoard(updatedBoard);
-
-    if (typeof closeModal === "function") {
-      closeModal();
-    } else {
-      console.error("closeModal fonksiyonu undefined!");
-    }
+    setCurrentBoard(updatedTodos.find((b) => b.id === currentBoard.id));
+    closeModal?.();
   }
 
   return (
-    <div className="taskModalOverlay">
-      <div className="taskModalContent">
-        <button className="taskModalCloseBtn" onClick={closeModal}>✖</button>
+    <div className="taskModalOverlay" onClick={closeModal}>
+      <div className="taskModalContent" onClick={(e) => e.stopPropagation()}>
         <h2>{isEdit ? "Edit Task" : "Add New Task"}</h2>
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="addTaskInputGroup">
@@ -127,7 +111,7 @@ export default function NewEditTask({ closeModal, task }) {
               <div key={subtask.id} className="subtaskInput">
                 <input
                   type="text"
-                  value={subtask.title}
+                  value={subtask.name}
                   onChange={(e) => handleSubtaskChange(index, e.target.value)}
                   required
                 />
@@ -151,7 +135,9 @@ export default function NewEditTask({ closeModal, task }) {
             </select>
           </div>
           <div className="submit-btn-group">
-            <button className="create-task-btn" disabled={subtasks.length === 0}>{isEdit ? "Save Changes" : "Create Task"}</button>
+            <button className="create-task-btn" disabled={subtasks.length === 0}>
+              {isEdit ? "Save Changes" : "Create Task"}
+            </button>
           </div>
         </form>
       </div>

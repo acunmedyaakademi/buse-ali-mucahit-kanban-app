@@ -106,7 +106,6 @@ function MobileComponent({
 
           <div className="header-top-bottom">
             <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} /> 
-            <img src="img/down-icon.svg" alt="" />
           </div>
         </div>
 
@@ -141,9 +140,6 @@ function MobileComponent({
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button className="close-btn" onClick={closeModal}>
-                ✖
-              </button>
               <NewEditBoard closeModal={closeModal} />
             </div>
           </div>
@@ -152,9 +148,6 @@ function MobileComponent({
         {isTaskModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button className="close-btn" onClick={closeTaskModal}>
-                ✖
-              </button>
               <NewEditTask closeModal={closeTaskModal} />
             </div>
           </div>
@@ -225,9 +218,6 @@ function DesktopComponent({
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-btn" onClick={closeModal}>
-              ✖
-            </button>
             <NewEditBoard closeModal={closeModal} />
           </div>
         </div>
@@ -236,9 +226,6 @@ function DesktopComponent({
       {isTaskModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-btn" onClick={closeTaskModal}>
-              ✖
-            </button>
             <NewEditTask closeModal={closeTaskModal} />
           </div>
         </div>
@@ -282,6 +269,7 @@ function Dropdown({ isOpen, setIsOpen }) {
       <div className="dropdown" ref={dropdownRef}>
         <button onClick={() => setIsOpen(!isOpen)} className="dropdown-btn">
           {currentBoard?.name} ({todos.length})
+          <img src="img/down-icon.svg" alt="" />
         </button>
         <ul className={`dropdownMenu ${isOpen ? "show" : ""}`}>
           <li>

@@ -102,9 +102,6 @@ export default function Board() {
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button className="close-btn" onClick={closeModal}>
-                ✖
-              </button>
               <NewEditBoard closeModal={closeModal} />
             </div>
           </div>
@@ -241,7 +238,6 @@ function BoardColumns({ board, openColumnModal }) {
 {selectedTask && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-btn" onClick={closeTaskModal}>✖</button>
             <ViewTask task={selectedTask} closeModal={closeTaskModal} />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { TodoContext } from "./TodoContext";
 
 export default function ViewTask({ task, closeModal }) {
@@ -6,37 +6,29 @@ export default function ViewTask({ task, closeModal }) {
   const [status, setStatus] = useState(task.status);
   const [subtasks, setSubtasks] = useState(task.subtasks || []);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (task?.subtasks && Array.isArray(task.subtasks)) {
-      console.log("Subtasks Güncellendi:", task.subtasks);
       setSubtasks(task.subtasks.map(st => ({ ...st }))); 
     }
   }, [task]);
 
   useEffect(() => {
-    if (task?.subtasks) {
-      console.log("Subtasks Dizisi:", task.subtasks);
-    }
-  }, [task]);
-  
-  
-  useEffect(() => {
-    if (task?.subtasks) {
-      console.log("Subtasks Güncellendi:", task.subtasks);
-      setSubtasks([...task.subtasks]); 
-    }
-  }, [task]);
-  
-
-  useEffect(() => {
-    console.log("Gelen task verisi:", task);
-    console.log("Subtasks verisi:", task.subtasks);
     setStatus(task.status);
     setSubtasks(task.subtasks || []);
   }, [task]);
-  
-  
+
+  // ➡️ Modal dışına tıklayınca kapanma
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        closeModal();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [closeModal]);
 
   function toggleSubtask(index) {
     const updatedSubtasks = [...subtasks];
@@ -78,18 +70,12 @@ export default function ViewTask({ task, closeModal }) {
       return {
         ...board,
         columns: board.columns.map((col) => {
-          if (col.name === status) { 
-            return {
-              ...col,
-              tasks: col.tasks.filter((t) => t.id !== task.id),
-            };
+          if (col.name === status) {
+            return { ...col, tasks: col.tasks.filter((t) => t.id !== task.id) };
           }
   
           if (col.name === newStatus) {
-            return {
-              ...col,
-              tasks: [...col.tasks, { ...task, status: newStatus }],
-            };
+            return { ...col, tasks: [...col.tasks, { ...task, status: newStatus }] };
           }
   
           return col;
@@ -98,23 +84,13 @@ export default function ViewTask({ task, closeModal }) {
     });
   
     setTodos(updatedTodos);
-  
     const updatedBoard = updatedTodos.find((b) => b.id === currentBoard.id);
-    if (updatedBoard) {
-      setCurrentBoard(updatedBoard);
-    }
+    if (updatedBoard) setCurrentBoard(updatedBoard);
   }
-  
-  
-  
 
   return (
     <div className="taskModalOverlay">
-      <div className="taskModalContent">
-        <button className="taskModalCloseBtn" onClick={closeModal}>
-          ✖
-        </button>
-
+      <div className="taskModalContent" ref={modalRef}>
         <h2 className="taskTitle">{task.title}</h2>
         <p className="taskDescription">{task.description}</p>
 
@@ -130,7 +106,7 @@ export default function ViewTask({ task, closeModal }) {
                 onChange={() => toggleSubtask(index)}
               />
               <span className={subtask.isCompleted ? "completed" : "notCompleted"}>
-              <span>{subtask.title || subtask.name}</span> 
+                {subtask.title || subtask.name}
               </span>
             </label>
           ))}
@@ -147,8 +123,8 @@ export default function ViewTask({ task, closeModal }) {
             <div className="statusDropdown">
               {currentBoard.columns.map((col) => (
                 <div
-                  className={`statusOption ${col.name === status ? "selected" : ""}`}
                   key={col.name}
+                  className={`statusOption ${col.name === status ? "selected" : ""}`}
                   onClick={() => updateStatus(col.name)}
                 >
                   {col.name}
