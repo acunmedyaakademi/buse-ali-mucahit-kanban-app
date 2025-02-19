@@ -71,12 +71,12 @@ export default function Board() {
   }, [todos]);
 
   return (
-    <div className="boardPage">
-      <div className="sideNav-board">
+    <div className={`boardPage ${darkMode ? "dark-mode" : "light-mode"}`}>
+      <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
         <ul className="allBoards">
           <h2>ALL BOARDS ({todos.length})</h2>
           {todos?.map((x) => (
-            <li className="board" key={x.id}>
+            <li className={`board ${selectedBoard?.id === x.id ? "active" : ""}`} key={x.id}>
               <button onClick={() => handleSelectBoard(x)}>
                 <BoardIconSvg />
                 {x.name}
@@ -132,6 +132,7 @@ export default function Board() {
         </div>
       </div>
 
+      <div className="main-content">
       {selectedBoard && (
         <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />
       )}
@@ -141,6 +142,7 @@ export default function Board() {
           <ShowIconSvg />
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -162,7 +164,6 @@ function BoardColumns({ board, openColumnModal }) {
   }
 
   function openTaskModal(task) {
-    console.log("Tıklanan Task:", task);
     setSelectedTask(task);
   }
 
@@ -196,7 +197,7 @@ function BoardColumns({ board, openColumnModal }) {
                 <p>{task.title}</p>
                 {task.subtasks && task.subtasks.length > 0 && (
                   <span className="board-subtasks-info">
-                    {task.subtasks.filter((st) => st.isCompleted).length} of{" "}
+                    {task.subtasks.filter((st) => st.isCompleted).length} of {" "}
                     {task.subtasks.length} subtasks
                   </span>
                 )}

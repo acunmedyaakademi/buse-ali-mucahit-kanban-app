@@ -75,16 +75,22 @@ ul {
   display: flex;
   height: 100vh;
   background-color: #f4f7fd;
+  transition: all 0.3s ease;
+  width: 100%;
  }
  .sideNav-board {
   display: flex;
   flex-direction: column;
   min-width: 260px;
+  width: 260px;
   z-index: 2;
   left: 0;
   background-color: white;
   padding: 0 20px 0 0;
   border-right: 1px solid #E4EBFA;
+  transition: width 0.4s ease, transform 0.4s ease;
+  overflow: hidden;
+
   h2 {
     font-weight: 700;
     font-size: 12px;
@@ -109,7 +115,19 @@ ul {
 
 
 .sideNav-board.closed {
-  display: none;
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  transform: translateX(-100%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* Ana İçerik */
+.main-content {
+  flex: 1;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hideIcon {
