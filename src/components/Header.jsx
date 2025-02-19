@@ -1,10 +1,17 @@
-import React, { useState, useEffect, useContext, useRef, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  Fragment,
+} from "react";
 import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
+import { KanbanLogoSvg } from "../Svg";
 
 export default function MyComponent() {
-  const [ismobil, setIsmobil] = useState(window.innerWidth < 600);
+  const [ismobil, setIsmobil] = useState(window.innerWidth < 768);
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,7 +28,7 @@ export default function MyComponent() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsmobil(window.innerWidth < 600);
+      setIsmobil(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
@@ -41,10 +48,10 @@ export default function MyComponent() {
           openModal={openModal}
         />
       ) : (
-        <DesktopComponent 
-        closeModal={closeModal}
-        isModalOpen={isModalOpen}
-        openModal={openModal}
+        <DesktopComponent
+          closeModal={closeModal}
+          isModalOpen={isModalOpen}
+          openModal={openModal}
         />
       )}
     </Fragment>
@@ -66,31 +73,27 @@ function MobileComponent({ openModal, isModalOpen, closeModal }) {
   }
 
   return (
-      <div className="header">
-        <div className="header-top">
-          <img src="img/kanban-site-logo.svg" alt="img logo" />
+    <div className="header">
+      <div className="header-top">
+        <img src="img/kanban-site-logo.svg" alt="img logo" />
 
-          <div className="header-top-bottom">
-            <Dropdown />
-            <img src="img/down-icon.svg" alt="" />
-          </div>
+        <div className="header-top-bottom">
+          <Dropdown />
+          <img src="img/down-icon.svg" alt="" />
         </div>
+      </div>
 
-        <div className="header-down">
-          <button
-            className="modal-btn"
-            onClick={openTaskModal}
-            disabled={!currentBoard}
-          >
-            <img src="img/add-icon.svg" alt="" />
-          </button>
-          <img
-            onClick={openIsEditDeleteBoard}
-            src="img/detail-icon.svg"
-            alt=""
-          />
-        </div>
-      
+      <div className="header-down">
+        <button
+          className="modal-btn"
+          onClick={openTaskModal}
+          disabled={!currentBoard}
+        >
+          <img src="img/add-icon.svg" alt="" />
+        </button>
+        <img onClick={openIsEditDeleteBoard} src="img/detail-icon.svg" alt="" />
+      </div>
+
       {isEditDeleteBoard && (
         <div className="edit-delete-board">
           <button onClick={() => openModal(true)} className="editBoard">
@@ -139,15 +142,15 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
     setIsEditDeleteBoard(!isEditDeleteBoard);
   }
   return (
-      <div className="header">
-        <div className="header-top">
-          <img src="img/kanban-site-logo-white.svg" alt="img logo" />
-          <img src="img/kanban-site-logo.svg" alt="img logo" />
-
-          <div className="header-top-bottom">
-            <Dropdown />
-            <img src="img/down-icon.svg" alt="" />
-          </div>
+    <div className="header">
+      <div className="kanbanLogo">
+        <img src="img/kanban-site-logo.svg" alt="img logo" />
+        <KanbanLogoSvg fill="#000112" />
+      </div>
+      <div className="header-top-bottom">
+        <div className="headerDropdown">
+          <Dropdown />
+          <img src="img/down-icon.svg" alt="" />
         </div>
 
         <div className="header-down">
@@ -164,12 +167,13 @@ function DesktopComponent({ openModal, isModalOpen, closeModal }) {
             onClick={openIsEditDeleteBoard}
           />
         </div>
-      
-
+      </div>
 
       {isEditDeleteBoard && (
         <div className="edit-delete-board">
-          <button onClick={() => openModal(true)} className="editBoard">Edit Board</button>
+          <button onClick={() => openModal(true)} className="editBoard">
+            Edit Board
+          </button>
           <button className="deleteBoard">Delete Board</button>
         </div>
       )}

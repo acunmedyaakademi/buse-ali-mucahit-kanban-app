@@ -3,17 +3,17 @@ import { TodoProvider } from "./components/TodoContext";
 import { getPage } from "./helper";
 import "./App.css";
 import MyComponent from "./components/Header";
+import { ThemeProvider, useTheme } from "./components/ThemeContext";
 
-function App() {
+function AppContent() {
   const [url, setUrl] = useState(window.location.hash.substring(1) || "/");
-  const PageContext = createContext(null);
+  const { darkMode } = useTheme();
 
   useEffect(() => {
     const updateUrl = () => {
       const newUrl = window.location.hash.substring(1) || "/";
       setUrl(newUrl);
     };
-
     window.addEventListener("hashchange", updateUrl);
     return () => window.removeEventListener("hashchange", updateUrl);
   }, []);
@@ -21,12 +21,10 @@ function App() {
   const page = getPage(url);
 
   return (
-    <div className="board-container">
+    <div className={`board-container ${darkMode ? "dark" : "light"}`}>
       <TodoProvider>
-        <MyComponent />
         <div className="app-container">
-     
-
+          <MyComponent />
           <div className="page-content">
             {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
           </div>
@@ -36,4 +34,10 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}

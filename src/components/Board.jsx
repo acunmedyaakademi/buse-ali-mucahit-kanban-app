@@ -3,12 +3,15 @@ import { useContext, useState, useEffect } from "react";
 import NewEditBoard from "./NewEditBoard";
 import AddColumnModal from "./AddColumnModal";
 import ViewTask from "./ViewTask";
+import { BoardIconSvg } from "../Svg";
+import { useTheme } from "./ThemeContext";
 
 export default function Board() {
   const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (todos.length > 0 && !selectedBoard) {
@@ -64,51 +67,64 @@ export default function Board() {
   return (
     <div className="boardPage">
       <div className="sideNav-board">
-        <h2>ALL BOARDS ({todos.length})</h2>
-        <ul className="allBoards">
-          {todos?.map((x) => (
-            <li className="board" key={x.id}>
-              <button onClick={() => handleSelectBoard(x)}>
-                {" "}
-                <img src="img/dropdown-grey-menu-icon.svg" alt="" />
-                {x.name}
+        <div className="navBar-top">
+          <h2>ALL BOARDS ({todos.length})</h2>
+          <ul className="allBoards">
+            {todos?.map((x) => (
+              <li className="board" key={x.id}>
+                <button onClick={() => handleSelectBoard(x)}>
+                  {" "}
+                  <BoardIconSvg />
+                  {x.name}
+                </button>
+              </li>
+            ))}
+            <div className="sideNav-boardBtn">
+              <button className="modal-btn" onClick={() => openModal(false)}>
+                <BoardIconSvg />+ Create New Board
               </button>
-            </li>
-          ))}
-          <div className="sideNav-boardBtn">
-            <button className="modal-btn" onClick={() => openModal(false)}>
-              <img src="img/dropdown-grey-menu-icon.svg" alt="" />+ Create New
-              Board
-            </button>
-
-            <button
-              className="modal-btn"
-              onClick={() => openModal(true)}
-              disabled={!selectedBoard}
-            >
-              Edit Board
-            </button>
-          </div>
-        </ul>
-
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <button className="close-btn" onClick={closeModal}>
-                ✖
-              </button>
-              <NewEditBoard closeModal={closeModal} />
             </div>
-          </div>
-        )}
+          </ul>
 
-        {isColumnModalOpen && (
-          <AddColumnModal
-            closeModal={closeColumnModal}
-            selectedBoard={selectedBoard}
-            updateBoardColumns={updateBoardColumns}
-          />
-        )}
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <button className="close-btn" onClick={closeModal}>
+                  ✖
+                </button>
+                <NewEditBoard closeModal={closeModal} />
+              </div>
+            </div>
+          )}
+
+          {isColumnModalOpen && (
+            <AddColumnModal
+              closeModal={closeColumnModal}
+              selectedBoard={selectedBoard}
+              updateBoardColumns={updateBoardColumns}
+            />
+          )}
+        </div>
+        <div className="navBar-bottom">
+          <div className="navBar-themeBtn">
+            <span className="white-mode-background">☀️</span>
+            <label className="bg-theme-checkbox">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={toggleTheme}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="icon">🌙</span>
+          </div>
+          <div className="navBar-sideBar">
+            <span>
+              <img src="img/eye-slash.1.svg" alt="" />
+              <a>Hide SideBar</a>
+            </span>
+          </div>
+        </div>
       </div>
       {selectedBoard && (
         <BoardColumns board={selectedBoard} openColumnModal={openColumnModal} />

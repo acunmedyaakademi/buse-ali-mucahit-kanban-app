@@ -68,13 +68,14 @@ export default function NewEditBoard() {
 
   return (
     <div className="newEditBoardPage">
-      <h2>Edit Board</h2>
+      <h2>Add New Board</h2>
       <form autoComplete="off" onSubmit={isEdit ? editBoard : handleSubmit}>
         <div className="newBoardName">
           <label>Board Name</label>
           <input
             type="text"
             name="name"
+            placeholder="e.g. Web Designh"
             required
             defaultValue={isEdit ? currentBoard?.name : ""}
           />
