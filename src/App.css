@@ -45,7 +45,7 @@ ul {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  width: 100%;
+  width: 90%;
   max-width: 500px;
   margin-inline: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -235,10 +235,10 @@ ul {
   align-items: start;
 }
 .modal-content {
+  margin: 20px;
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .sideNav-board {
@@ -254,7 +254,66 @@ ul {
 .board {
   color: inherit;
 }
+.newBoardName input {
+  height: 40px;
+  border: 1px solid #828fa340;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+.newBoardName input::placeholder {
+  padding: 10px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+  letter-spacing: 0px;
+  opacity: 25%;
+}
+.column-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.column-input input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 385px;
+  border-radius: 4px;
+  border: 1px solid #828fa340;
+}
 
+.column-input button {
+  border: none;
+  background-color: white;
+}
+.addNewBtn {
+  width: 100%;
+  border: none;
+  padding: 8px 50px;
+  background-color: #635fc71a;
+  border-radius: 20px;
+  color: #635fc7;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  letter-spacing: 0px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.saveBtn {
+  border: none;
+  padding: 8px 50px;
+  width: 100%;
+  background-color: #635fc7;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  letter-spacing: 0px;
+  text-align: center;
+  margin-bottom: 24px;
+}
 .board button:focus {
   background-color: #635fc7;
   color: #fff;
@@ -1314,7 +1373,7 @@ form input {
     border-radius: 4px;
     border: 1px solid #828fa340;
   }
-  
+
   .column-input button {
     border: none;
     background-color: white;
