@@ -16,7 +16,7 @@ export default function Board() {
 
   useEffect(() => {
     if (todos.length > 0 && !currentBoard) {
-      setCurrentBoard(todos[0]); // İlk board varsayılan olarak seçilsin
+      setCurrentBoard(todos[0]);
     }
   }, [todos, currentBoard, setCurrentBoard]);
 
@@ -37,16 +37,18 @@ export default function Board() {
 
   const updateBoardColumns = (newColumns) => {
     if (!currentBoard) return;
-
     const updatedBoard = { ...currentBoard, columns: newColumns };
 
     setTodos((prevTodos) =>
-      prevTodos.map((board) =>
-        board.id === currentBoard.id ? updatedBoard : board
-      )
+      prevTodos.map((board) => (board.id === currentBoard.id ? updatedBoard : board))
     );
+    setCurrentBoard(updatedBoard);
+  };
 
-    setCurrentBoard(updatedBoard); // Context üzerinden güncelle
+  const handleBoardCreation = (newBoard) => {
+    setTodos((prevTodos) => [...prevTodos, newBoard]);
+    setCurrentBoard(newBoard);  // ✅ Yeni board otomatik seçilsin
+    setIsModalOpen(false);
   };
 
   return (
@@ -63,11 +65,7 @@ export default function Board() {
 
       <div className="main-content">
         {currentBoard ? (
-          <BoardColumns
-            board={currentBoard}
-            openColumnModal={openColumnModal}
-            openTaskModal={openTaskModal}
-          />
+          <BoardColumns board={currentBoard} openColumnModal={openColumnModal} openTaskModal={openTaskModal} />
         ) : (
           <p>No board selected.</p>
         )}
@@ -75,17 +73,13 @@ export default function Board() {
 
       {isModalOpen && (
         <Modal closeModal={closeModal}>
-          <NewEditBoard closeModal={closeModal} />
+          <NewEditBoard closeModal={closeModal} onBoardCreated={handleBoardCreation} />
         </Modal>
       )}
 
       {isColumnModalOpen && (
         <Modal closeModal={closeColumnModal}>
-          <AddColumnModal
-            closeModal={closeColumnModal}
-            selectedBoard={currentBoard}
-            updateBoardColumns={updateBoardColumns}
-          />
+          <AddColumnModal closeModal={closeColumnModal} selectedBoard={currentBoard} updateBoardColumns={updateBoardColumns} />
         </Modal>
       )}
 
@@ -98,19 +92,11 @@ export default function Board() {
   );
 }
 
-function Sidebar({
-  todos,
-  currentBoard,
-  openModal,
-  isSidebarOpen,
-  toggleSidebar,
-  darkMode,
-  toggleTheme,
-}) {
+function Sidebar({ todos, currentBoard, openModal, isSidebarOpen, toggleSidebar, darkMode, toggleTheme }) {
   const { setCurrentBoard, setEdit } = useContext(TodoContext);
 
   const handleSelectBoard = (board) => {
-    setCurrentBoard(board); // Context üzerinden board güncellenir
+    setCurrentBoard(board);
     setEdit(false);
   };
 
@@ -119,36 +105,54 @@ function Sidebar({
       <ul className="allBoards">
         <h2>ALL BOARDS ({todos.length})</h2>
         {todos.map((board) => (
-          <li
-            key={board.id}
-            className={`board ${currentBoard?.id === board.id ? "active" : ""}`}
-          >
+          <li key={board.id} className={`board ${currentBoard?.id === board.id ? "active" : ""}`}>
             <button onClick={() => handleSelectBoard(board)}>
               <BoardIconSvg />
               {board.name}
             </button>
           </li>
         ))}
-        <button className="modal-btn" onClick={() => openModal(false)}>
-          <BoardIconSvg /> + Create New Board
-        </button>
+        <li>
+          <button className="modal-btn" onClick={() => openModal(false)}>
+            <BoardIconSvg /> + Create New Board
+          </button>
+        </li>
       </ul>
+
       <div className="navBar-bottom">
-        <label className="bg-theme-checkbox">
-          <input type="checkbox" checked={darkMode} onChange={toggleTheme} />
-          <span className="slider"></span>
-        </label>
-        <button onClick={toggleSidebar}>
-          {isSidebarOpen ? <HideIconSvg /> : <ShowIconSvg />}
+      <div className="navBar-themeBtn">
+            <span className="white-mode-background">
+              <img src="img/white-mode-theme-icon.svg" alt="" />
+            </span>
+            <label className="bg-theme-checkbox">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={toggleTheme}
+              />
+              <span className="slider"></span>
+            </label>
+            <span className="icon">
+              <img src="img/dark-mode-theme-icon.svg" alt="" />
+            </span>
+          </div>
+        <button className="hideIcon" onClick={toggleSidebar}>
+          {isSidebarOpen && <HideIconSvg />}
+          <p>Hide Sidebar</p>
         </button>
       </div>
+
+      {!isSidebarOpen && (
+        <div className="showSidebar-btn" onClick={toggleSidebar}>
+          <ShowIconSvg />
+        </div>
+      )}
     </div>
   );
 }
 
 function getRandomColor() {
-  const letters = "0123456789ABCDEF";
-  return "#" + Array.from({ length: 6 }, () => letters[Math.floor(Math.random() * 16)]).join("");
+  return "#" + Array.from({ length: 6 }, () => "0123456789ABCDEF"[Math.floor(Math.random() * 16)]).join("");
 }
 
 function BoardColumns({ board, openColumnModal, openTaskModal }) {
@@ -158,26 +162,14 @@ function BoardColumns({ board, openColumnModal, openTaskModal }) {
         board.columns.map((column, i) => (
           <div className="boardColumn" key={i}>
             <div className="boardColumnTitle">
-              <span
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: getRandomColor(),
-                  display: "inline-block",
-                }}
-              ></span>
+              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: getRandomColor() }}></span>
               <h3>{column.name}</h3>
             </div>
             {column.tasks?.length > 0 ? (
               column.tasks.map((task, taskIndex) => (
-                <div
-                  className="columnTodo"
-                  key={taskIndex}
-                  onClick={() => openTaskModal(task)}
-                >
+                <div key={taskIndex} className="columnTodo" onClick={() => openTaskModal(task)}>
                   <p>{task.title}</p>
-                  {task.subtasks && task.subtasks.length > 0 && (
+                  {task.subtasks?.length > 0 && (
                     <span className="board-subtasks-info">
                       Subtasks ({task.subtasks.filter((st) => st.isCompleted).length} of {task.subtasks.length})
                     </span>

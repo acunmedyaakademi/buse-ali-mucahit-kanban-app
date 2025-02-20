@@ -132,7 +132,6 @@ ul {
   min-width: 0;
   padding: 0;
   border: none;
-  transform: translateX(-100%);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -206,24 +205,6 @@ ul {
 
 .board button:hover svg path {
   fill: white;
-}
-
-.modal-btn:first-child {
-  color: #635fc7;
-  padding: 14px 41px 15px 24px;
-  align-items: center;
-}
-
-.modal-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 18.9px;
-  letter-spacing: 0px;
 }
 
 .sideNav-boardBtn {
@@ -1254,6 +1235,8 @@ color: white;
       align-items: center;
       gap: 12px;
       padding: 4px 24px;
+      background-color: transparent;
+      border: none;
     }
   }
 
@@ -1481,6 +1464,18 @@ color: white;
     margin-left: 15px;
   }
   /* mucahit tablet bitis */
+
+  .modal-btn:first-child {
+    color: #635fc7;
+    align-items: center;
+  }
+  
+  .modal-btn {
+    padding: 14px 38px 15px 24px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    
+  }
 }
 
 /* ALİ TABLET CSS  BASLANGIC */
