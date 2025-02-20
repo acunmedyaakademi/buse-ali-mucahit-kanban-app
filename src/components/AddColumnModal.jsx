@@ -24,12 +24,14 @@ export default function AddColumnModal({ closeModal, selectedBoard, updateBoardC
   };
 
   const addColumn = () => {
-    setColumns((prev) => [...prev, { id: Date.now(), name: "" }]);
+    const newColumn = { id: crypto.randomUUID(), name: "", tasks: [] }; 
+    setColumns((prev) => [...prev, newColumn]);
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateBoardColumns([...columns]);  // ✅ Sadece mevcut kolonları gönderiyoruz
+    updateBoardColumns([...columns]);  // sadece mevcut kolonları gönder
     closeModal();
   };
 

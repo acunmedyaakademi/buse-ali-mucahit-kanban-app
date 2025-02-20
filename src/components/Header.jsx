@@ -30,7 +30,6 @@ export default function MyComponent() {
   function openModal(isEditMode) {
     setEdit(isEditMode);
     setIsModalOpen(true);
-    console.log("çalıştı");
   }
 
   function closeModal() {
@@ -110,7 +109,11 @@ function MobileComponent({
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} openModal={openModal}/>
+            <Dropdown
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              openModal={openModal}
+            />
           </div>
         </div>
 
@@ -122,11 +125,8 @@ function MobileComponent({
           >
             <AddIcon />
           </button>
-          <button className="detailBtn" clas onClick={openIsEditDeleteBoard}>
-          <img
-            src="img/detail-icon.svg"
-            alt=""
-          />
+          <button className="detailBtn" onClick={openIsEditDeleteBoard}>
+            <img src="img/detail-icon.svg" alt="" />
           </button>
         </div>
 
@@ -145,8 +145,8 @@ function MobileComponent({
           <DeleteModal
             type="board"
             item={currentBoard}
-            closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
-            closeParentModal={closeModal} // ✅ Header menüsü kapanır
+            closeModal={() => setIsDeleteModal(false)} // deleteModal kapanır
+            closeParentModal={closeModal} // hader menüsü kapanır
           />
         )}
 
@@ -214,11 +214,9 @@ function DesktopComponent({
             >
               + Add New Task
             </button>
-            <img
-              src="img/detail-icon.svg"
-              alt=""
-              onClick={openIsEditDeleteBoard}
-            />
+            <button className="detailBtn" onClick={openIsEditDeleteBoard}>
+              <img src="img/detail-icon.svg" alt="" />
+            </button>
           </div>
         </div>
 
@@ -245,17 +243,15 @@ function DesktopComponent({
           <DeleteModal
             type="board"
             item={currentBoard}
-            closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
-            closeParentModal={closeModal}// header menüsü kapanır
+            closeModal={() => setIsDeleteModal(false)} // deleteModal kapanır
+            closeParentModal={closeModal} // header menüsü kapanır
           />
         )}
 
         {isTaskModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <NewEditTask
-                closeModal={closeTaskModal}
-              />
+              <NewEditTask closeModal={closeTaskModal} />
             </div>
           </div>
         )}
@@ -286,7 +282,7 @@ function Dropdown({ isOpen, setIsOpen, openModal }) {
   function handleSelectBoard(board) {
     setCurrentBoard({
       ...board,
-      columns: board.columns ?? [], 
+      columns: board.columns ?? [],
     });
     setEdit(false);
     setIsOpen(false);
@@ -296,11 +292,11 @@ function Dropdown({ isOpen, setIsOpen, openModal }) {
     if (!currentBoard && todos.length > 0) {
       setCurrentBoard(todos[0]);
     }
-  }, [todos, currentBoard, setCurrentBoard]);  
+  }, [todos, currentBoard, setCurrentBoard]);
 
   const handleCreateNewBoard = () => {
-    setIsOpen(false);        // ✅ Dropdown kapat
-    openModal(false);        // ✅ NewEditBoard modal aç
+    setIsOpen(false); // dropdown kapat
+    openModal(false); // newEditBoard modal aç
   };
 
   return (
@@ -317,7 +313,7 @@ function Dropdown({ isOpen, setIsOpen, openModal }) {
           {todos?.map((x) => (
             <li
               key={x.id}
-              className={currentBoard?.id === x.id ? "active" : ""}
+              className={currentBoard?.id === x.id ? "active" : "passive"}
             >
               <button
                 className="dropdownBtn"

@@ -11,6 +11,18 @@ export default function NewEditTask({ closeModal, task }) {
   const [subtasks, setSubtasks] = useState([]);
   const [status, setStatus] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true); // Kapanış animasyonu başlat
+    setTimeout(() => {
+      closeModal(); // Animasyon bittikten sonra modalı kapat
+    }, 400); 
+  };
+
+  useEffect(() => {
+    setIsClosing(false); // Modal açılırken resetle
+  }, []);
 
   // düzenleme modunda mevcut task bilgilerini yükle
   useEffect(() => {
@@ -71,23 +83,19 @@ export default function NewEditTask({ closeModal, task }) {
       if (board.id !== currentBoard.id) return board;
   
       const updatedColumns = board.columns.map((col) => {
+        const filteredTasks = (col.tasks ?? []).filter((t) => t.id !== task?.id);
+      
         if (isEdit) {
-          // eski sütundaki task'ı sil
-          const filteredTasks = col.tasks.filter((t) => t.id !== task?.id);
-  
-          // seçili sütuna güncellenmiş task'ı ekle
-          if (col.name === updatedTask.status) {
-            return { ...col, tasks: [...filteredTasks, updatedTask] };
-          }
-  
-          return { ...col, tasks: filteredTasks }; // diğer sütunlar için sadece sil
-        } else {
-          // yeni task eklerken sadece ilgili sütuna ekle
           return col.name === updatedTask.status
-            ? { ...col, tasks: [...col.tasks, updatedTask] }
-            : col;
+            ? { ...col, tasks: [...filteredTasks, updatedTask] }
+            : { ...col, tasks: filteredTasks };
         }
+      
+        return col.name === updatedTask.status
+          ? { ...col, tasks: [...(col.tasks ?? []), updatedTask] }
+          : col;
       });
+      
   
       return { ...board, columns: updatedColumns };
     });
@@ -100,11 +108,10 @@ export default function NewEditTask({ closeModal, task }) {
   
 
   return (
-    <div className="taskModalOverlay" onClick={closeModal}>
+    <div className={`taskModalOverlay ${isClosing ? "closing" : "open"}`} onClick={handleClose}>
       <div className="taskModalContent" onClick={(e) => e.stopPropagation()}>
         <div className="modalHeader">
         <h2>{isEdit ? "Edit Task" : "Add New Task"}</h2>
-        <button onClick={closeModal}><DeleteSvg /></button>
         </div>
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="addTaskInputGroup">

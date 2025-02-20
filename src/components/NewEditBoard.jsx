@@ -15,7 +15,7 @@ export default function NewEditBoard({ closeModal }) {
     }
   }, [isEdit, currentBoard]);
 
-  // ➡️ Modal dışına tıklayınca kapanma işlevi
+  // modal dışına tıklayınca kapanma işlevi
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -27,9 +27,13 @@ export default function NewEditBoard({ closeModal }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeModal]);
 
-  const addColumn = () =>
-    setColumns([...columns, { id: columns.length, name: "" }]);
-
+  const addColumn = () => {
+    // Son eklenen columnun adı boşsa yeni column ekleme
+    if (columns.length > 0 && columns[columns.length - 1].name.trim() === "") return;
+  
+    setColumns([...columns, { id: crypto.randomUUID(), name: "", tasks: [] }]);
+  };
+  
   const handleColumnChange = (index, value) => {
     const updatedColumns = [...columns];
     updatedColumns[index].name = value;
@@ -47,11 +51,13 @@ export default function NewEditBoard({ closeModal }) {
     const newBoard = {
       id: crypto.randomUUID(),
       name: formObj.name,
-      columns: columns.length > 0 ? columns : [],
-    };
+      columns: columns
+        .filter((col) => col.name.trim() !== "") // boş isimli sütunları çıkar
+        .map((col) => ({ ...col, tasks: col.tasks ?? [] })), // tasks varsa bırak, yoksa boş array
+    };    
 
     setTodos((prevTodos) => [...prevTodos, newBoard]);
-    setCurrentBoard(newBoard);   
+    setCurrentBoard(newBoard);
     closeModal();
   };
 
