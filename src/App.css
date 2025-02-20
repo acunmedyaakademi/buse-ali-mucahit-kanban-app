@@ -314,9 +314,23 @@ ul {
   text-align: center;
   margin-bottom: 24px;
 }
+.dark .newBoardName {
+  display: flex;
+  flex-direction: column;
+}
+.dark .column-input button {
+  border: none;
+  background-color: inherit;
+}
+.dark .addNewBtn {
+  background-color: #fff;
+}
 .board button:focus {
   background-color: #635fc7;
   color: #fff;
+}
+.dark .saveBtn {
+  background-color: #635fc7;
 }
 .board button::after {
   background-color: #635fc7;
@@ -1336,6 +1350,7 @@ form input {
     color: #000112;
     margin-bottom: 24px;
   }
+
   .newBoardColumns {
     display: flex;
     flex-direction: column;
