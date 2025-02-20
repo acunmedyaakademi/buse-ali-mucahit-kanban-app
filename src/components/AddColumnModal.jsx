@@ -1,45 +1,52 @@
 import { useState, useEffect } from "react";
-import { DeleteSvg } from "../Svg"
+import { DeleteSvg } from "../Svg";
 
 export default function AddColumnModal({ closeModal, selectedBoard, updateBoardColumns }) {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    if (selectedBoard) {
-      setColumns(selectedBoard.columns || []);
+    if (selectedBoard?.columns) {
+      setColumns([...selectedBoard.columns]);
     }
   }, [selectedBoard]);
 
-  function handleColumnChange(index, value) {
-    const newColumns = [...columns];
-    newColumns[index].name = value;
-    setColumns(newColumns);
-  }
+  const handleColumnChange = (index, value) => {
+    setColumns((prev) => {
+      const updated = [...prev];
+      updated[index].name = value;
+      return updated;
+    });
+  };
 
-  function addColumn() {
-    setColumns([...columns, { id: Date.now(), name: "" }]);
-  }
-
-  function deleteColumn(index) {
-    const newColumns = columns.filter((_, i) => i !== index);
-    setColumns(newColumns);
-  }
-
-  function handleSubmit(e) {
+  const deleteColumn = (e, index) => {
     e.preventDefault();
-    updateBoardColumns(columns);
+    setColumns((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const addColumn = () => {
+    setColumns((prev) => [...prev, { id: Date.now(), name: "" }]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateBoardColumns([...columns]);  // ✅ Sadece mevcut kolonları gönderiyoruz
     closeModal();
-  }
+  };
 
   return (
-    <div className="addColumnModalOverlay">
-      <div className="addColumnModalContent">
+    <div className="addColumnModalOverlay" onClick={closeModal}>
+      <div className="addColumnModalContent" onClick={(e) => e.stopPropagation()}>
         <button className="addColumncloseBtn" onClick={closeModal}>✖</button>
         <h2>Add New Column</h2>
-        
+
         <form onSubmit={handleSubmit}>
           <label>Name</label>
-          <input className="addColumnModalNameInput" type="text" value={selectedBoard?.name} disabled />
+          <input
+            className="addColumnModalNameInput"
+            type="text"
+            value={selectedBoard?.name || ""}
+            disabled
+          />
 
           <label>Columns</label>
           {columns.map((column, index) => (
@@ -48,16 +55,25 @@ export default function AddColumnModal({ closeModal, selectedBoard, updateBoardC
                 type="text"
                 value={column.name}
                 onChange={(e) => handleColumnChange(index, e.target.value)}
+                placeholder="Column Name"
                 required
               />
-              <button type="button" className="addColumnModalDelete" onClick={() => deleteColumn(index)}>
+              <button
+                type="button"
+                className="addColumnModalDelete"
+                onClick={(e) => deleteColumn(e, index)}
+              >
                 <DeleteSvg width={20} height={20} />
               </button>
             </div>
           ))}
 
-          <button type="button" className="addColumnModalAddBtn" onClick={addColumn}>+ Add New Column</button>
-          <button type="submit" className="addColumnModalSaveBtn">Save Changes</button>
+          <button type="button" className="addColumnModalAddBtn" onClick={addColumn}>
+            + Add New Column
+          </button>
+          <button type="submit" className="addColumnModalSaveBtn">
+            Save Changes
+          </button>
         </form>
       </div>
     </div>

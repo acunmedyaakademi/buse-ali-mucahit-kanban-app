@@ -11,142 +11,139 @@ export default function Board() {
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
   const { darkMode, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  function toggleSidebar() {
-    setIsSidebarOpen((prev) => !prev);
-  }
-
   useEffect(() => {
-    if (todos.length > 0 && !selectedBoard) {
-      handleSelectBoard(todos[0]);
-    }
+    if (todos.length > 0 && !selectedBoard) handleSelectBoard(todos[0]);
   }, [todos]);
 
-  function handleSelectBoard(board) {
-    setSelectedBoard({ ...board, columns: board.columns || [] });
+  const handleSelectBoard = (board) => {
+    setSelectedBoard(board); // ✅ Seçilen board'u direkt set et
     setEdit(false);
     setCurrentBoard(board);
-  }
+  };
 
-  function openModal(isEditMode) {
+  const openModal = (isEditMode) => {
     setEdit(isEditMode);
     setIsModalOpen(true);
-  }
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     setIsModalOpen(false);
     setEdit(false);
-    setCurrentBoard(null);
-  }
+  };
 
-  function openColumnModal() {
-    setIsColumnModalOpen(true);
-  }
+  const openColumnModal = () => setIsColumnModalOpen(true);
+  const closeColumnModal = () => setIsColumnModalOpen(false);
+  const openTaskModal = (task) => setSelectedTask(task);
+  const closeTaskModal = () => setSelectedTask(null);
 
-  function closeColumnModal() {
-    setIsColumnModalOpen(false);
-  }
-
-  function updateBoardColumns(newColumns) {
+  const updateBoardColumns = (newColumns) => {
     if (!selectedBoard) return;
 
-    const updatedBoard = {
-      ...selectedBoard,
-      columns: newColumns,
-    };
+    const updatedBoard = { ...selectedBoard, columns: newColumns };
 
-    setTodos(todos.map((b) => (b.id === selectedBoard.id ? updatedBoard : b)));
-    setSelectedBoard(updatedBoard);
-  }
+    setTodos((prevTodos) =>
+      prevTodos.map((board) =>
+        board.id === selectedBoard.id ? updatedBoard : board
+      )
+    );
 
-  useEffect(() => {
-    if (todos.length > 0 && selectedBoard) {
-      const updatedBoard = todos.find((b) => b.id === selectedBoard.id);
-      if (updatedBoard) {
-        setSelectedBoard(updatedBoard);
-      }
-    }
-  }, [todos]);
+    setSelectedBoard(updatedBoard); // ✅ Seçilen board'u güncelle
+    setCurrentBoard(updatedBoard); // ✅ Context güncelle
+  };
 
   return (
     <div className={`boardPage ${darkMode ? "dark-mode" : "light-mode"}`}>
-      <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
-        <ul className="allBoards">
-          <h2>ALL BOARDS ({todos.length})</h2>
-          {todos?.map((x) => (
-            <li
-              className={`board ${selectedBoard?.id === x.id ? "active" : ""}`}
-              key={x.id}
-            >
-              <button onClick={() => handleSelectBoard(x)}>
-                <BoardIconSvg />
-                {x.name}
-              </button>
-            </li>
-          ))}
-          <div className="sideNav-boardBtn">
-            <button className="modal-btn" onClick={() => openModal(false)}>
-              <BoardIconSvg />+ Create New Board
-            </button>
-          </div>
-        </ul>
+      <Sidebar
+        todos={todos}
+        selectedBoard={selectedBoard}
+        handleSelectBoard={handleSelectBoard}
+        openModal={openModal}
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        darkMode={darkMode}
+        toggleTheme={toggleTheme}
+      />
 
-        {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <NewEditBoard closeModal={closeModal} />
-            </div>
-          </div>
+      <div className="main-content">
+        {selectedBoard ? (
+          <BoardColumns
+            board={selectedBoard}
+            openColumnModal={openColumnModal}
+            openTaskModal={openTaskModal}
+          />
+        ) : (
+          <p>No board selected.</p>
         )}
+      </div>
 
-        {isColumnModalOpen && (
+      {isModalOpen && (
+        <Modal closeModal={closeModal}>
+          <NewEditBoard closeModal={closeModal} />
+        </Modal>
+      )}
+
+      {isColumnModalOpen && (
+        <Modal closeModal={closeColumnModal}>
           <AddColumnModal
             closeModal={closeColumnModal}
             selectedBoard={selectedBoard}
             updateBoardColumns={updateBoardColumns}
           />
-        )}
-        <div className="navBar-bottom">
-          <div className="navBar-themeBtn">
-            <span className="white-mode-background">
-              <img src="img/white-mode-theme-icon.svg" alt="" />
-            </span>
-            <label className="bg-theme-checkbox">
-              <input
-                type="checkbox"
-                checked={darkMode}
-                onChange={toggleTheme}
-              />
-              <span className="slider"></span>
-            </label>
-            <span className="icon">
-              <img src="img/dark-mode-theme-icon.svg" alt="" />
-            </span>
-          </div>
-          {isSidebarOpen && (
-            <div className="hideIcon" onClick={toggleSidebar}>
-              <HideIconSvg />
-              <p>Hide Sidebar</p>
-            </div>
-          )}
-        </div>
-      </div>
+        </Modal>
+      )}
 
-      <div className="main-content">
-        {selectedBoard && (
-          <BoardColumns
-            board={selectedBoard}
-            openColumnModal={openColumnModal}
-          />
-        )}
+      {selectedTask && (
+        <Modal closeModal={closeTaskModal}>
+          <ViewTask task={selectedTask} closeModal={closeTaskModal} />
+        </Modal>
+      )}
+    </div>
+  );
+}
 
-        {!isSidebarOpen && (
-          <div className="showSidebar-btn" onClick={toggleSidebar}>
-            <ShowIconSvg />
-          </div>
-        )}
+function Sidebar({
+  todos,
+  selectedBoard,
+  handleSelectBoard,
+  openModal,
+  isSidebarOpen,
+  toggleSidebar,
+  darkMode,
+  toggleTheme,
+}) {
+  return (
+    <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
+      <ul className="allBoards">
+        <h2>ALL BOARDS ({todos.length})</h2>
+        {todos.map((board) => (
+          <li
+            key={board.id}
+            className={`board ${
+              selectedBoard?.id === board.id ? "active" : ""
+            }`}
+          >
+            <button onClick={() => handleSelectBoard(board)}>
+              <BoardIconSvg />
+              {board.name}
+            </button>
+          </li>
+        ))}
+        <button className="modal-btn" onClick={() => openModal(false)}>
+          <BoardIconSvg /> + Create New Board
+        </button>
+      </ul>
+      <div className="navBar-bottom">
+        <label className="bg-theme-checkbox">
+          <input type="checkbox" checked={darkMode} onChange={toggleTheme} />
+          <span className="slider"></span>
+        </label>
+        <button onClick={toggleSidebar}>
+          {isSidebarOpen ? <HideIconSvg /> : <ShowIconSvg />}
+        </button>
       </div>
     </div>
   );
@@ -154,106 +151,77 @@ export default function Board() {
 
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+  return (
+    "#" +
+    Array.from(
+      { length: 6 },
+      () => letters[Math.floor(Math.random() * 16)]
+    ).join("")
+  );
 }
 
-function BoardColumns({ board, openColumnModal }) {
-  const [selectedTask, setSelectedTask] = useState(null);
-
-  if (!board || !Array.isArray(board.columns)) {
-    return <p>Bu board için kolon bulunmamaktadır.</p>;
-  }
-
-  function openTaskModal(task) {
-    setSelectedTask(task);
-  }
-
-  function closeTaskModal() {
-    setSelectedTask(null);
-  }
-
+function BoardColumns({ board, openColumnModal, openTaskModal }) {
   return (
     <div className="boardColumns">
-      {board.columns?.filter((column) => column.name.trim() !== "").length >
-      0 ? (
-        <>
-          {board.columns
-            .filter((column) => column.name.trim() !== "")
-            .map((column, columnIndex) => (
-              <div className="boardColumn" key={columnIndex}>
-                <div className="boardColumnTitle">
-                  <span
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      backgroundColor: getRandomColor(),
-                      display: "inline-block",
-                    }}
-                  ></span>
-                  <h3>{column.name}</h3>
+      {board.columns?.length ? (
+        board.columns.map((column, i) => (
+          <div className="boardColumn" key={i}>
+            <div className="boardColumnTitle">
+              <span
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  backgroundColor: getRandomColor(),
+                  display: "inline-block",
+                }}
+              ></span>
+              <h3>{column.name}</h3>
+            </div>
+            {column.tasks?.length > 0 ? (
+              column.tasks.map((task, taskIndex) => (
+                <div
+                  className="columnTodo"
+                  key={taskIndex}
+                  onClick={() => openTaskModal(task)}
+                >
+                  <p>{task.title}</p>
+                  {task.subtasks && task.subtasks.length > 0 && (
+                    <span className="board-subtasks-info">
+                      Subtasks (
+                      {task.subtasks.filter((st) => st.isCompleted).length} of{" "}
+                      {task.subtasks.length})
+                    </span>
+                  )}
                 </div>
-                {column.tasks?.length > 0 ? (
-                  column.tasks.map((task, taskIndex) => (
-                    <div
-                      className="columnTodo"
-                      key={taskIndex}
-                      onClick={() => openTaskModal(task)}
-                    >
-                      <p>{task.title}</p>
-                      {task.subtasks && task.subtasks.length > 0 && (
-                        <span className="board-subtasks-info">
-                          {task.subtasks.filter((st) => st.isCompleted).length}{" "}
-                          of {task.subtasks.length} subtasks
-                        </span>
-                      )}
-                    </div>
-                  ))
-                ) : (
-                  <div className="emptyColumnBorder"></div>
-                )}
-              </div>
-            ))}
-          <div className="boardColumn new-column" onClick={openColumnModal}>
-            <p>+ New Column</p>
+              ))
+            ) : (
+              <div className="emptyColumnBorder"></div>
+            )}
           </div>
-        </>
+        ))
       ) : (
         <div className="emptyBoard">
-          <h5>This board is empty. Create a new column to get started.</h5>
+          <h5>This board is empty.</h5>
           <button onClick={openColumnModal}>+ Add New Column</button>
         </div>
       )}
-      {selectedTask && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="close-btn" onClick={closeTaskModal}>
-              ✖
-            </button>
-            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
-          </div>
-        </div>
-      )}
+      <div className="boardColumn new-column" onClick={openColumnModal}>
+        <p>+ New Column</p>
+      </div>
+    </div>
+  );
+}
 
-      {selectedTask && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
-          </div>
-        </div>
-      )}
-
-      {selectedTask && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <ViewTask task={selectedTask} closeModal={closeTaskModal} />
-          </div>
-        </div>
-      )}
+function Modal({ children, closeModal }) {
+  return (
+    <div className="modal-overlay" onClick={closeModal}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={closeModal}>
+          ✖
+        </button>
+        {children}
+      </div>
     </div>
   );
 }

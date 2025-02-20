@@ -245,7 +245,7 @@ function DesktopComponent({
             type="board"
             item={currentBoard}
             closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
-            closeParentModal={closeModal}// ✅ Header menüsü kapanır
+            closeParentModal={closeModal}// header menüsü kapanır
           />
         )}
 
@@ -283,16 +283,19 @@ function Dropdown({ isOpen, setIsOpen }) {
   }, []);
 
   function handleSelectBoard(board) {
-    setEdit(false); // Düzenleme modunu kapat
-    setCurrentBoard(board); // Context'teki currentBoard'u güncelle
-    setIsOpen(false); // Dropdown'u kapat
+    setCurrentBoard({
+      ...board,
+      columns: board.columns ?? [], 
+    });
+    setEdit(false);
+    setIsOpen(false);
   }
 
   useEffect(() => {
     if (!currentBoard && todos.length > 0) {
       setCurrentBoard(todos[0]);
     }
-  }, [todos, currentBoard, setCurrentBoard]);
+  }, [todos, currentBoard, setCurrentBoard]);  
 
   return (
     <Fragment>
