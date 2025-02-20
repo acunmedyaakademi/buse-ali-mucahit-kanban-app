@@ -145,7 +145,7 @@ function MobileComponent({
             type="board"
             item={currentBoard}
             closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
-            closeParentModal={() => setIsEditDeleteBoard(false)} // ✅ Header menüsü kapanır
+            closeParentModal={closeModal} // ✅ Header menüsü kapanır
           />
         )}
 
@@ -245,7 +245,7 @@ function DesktopComponent({
             type="board"
             item={currentBoard}
             closeModal={() => setIsDeleteModal(false)} // DeleteModal kapanır
-            closeParentModal={() => setIsEditDeleteBoard(false)} // ✅ Header menüsü kapanır
+            closeParentModal={closeModal}// ✅ Header menüsü kapanır
           />
         )}
 
@@ -254,8 +254,6 @@ function DesktopComponent({
             <div className="modal-content">
               <NewEditTask
                 closeModal={closeTaskModal}
-                task={selectedTask}
-                isEdit={isEdit}
               />
             </div>
           </div>

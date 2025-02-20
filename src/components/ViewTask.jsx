@@ -4,13 +4,7 @@ import DeleteModal from "./DeleteModal";
 import NewEditTask from "./NewEditTask";
 
 export default function ViewTask({ task, closeModal }) {
-  const {
-    todos,
-    setTodos,
-    currentBoard,
-    setCurrentBoard,
-    setEdit,
-  } = useContext(TodoContext);
+  const { todos, setTodos, currentBoard, setCurrentBoard, setEdit } = useContext(TodoContext);
 
   const [status, setStatus] = useState(task.status);
   const [subtasks, setSubtasks] = useState([]);
@@ -18,34 +12,21 @@ export default function ViewTask({ task, closeModal }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTaskMenuOpen, setIsTaskMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const modalRef = useRef(null);
 
-  // task değiştiğinde alt görevleri ve durumu güncelle
+  // Alt görev ve durumları güncelle
   useEffect(() => {
     setStatus(task.status);
     setSubtasks(
       (task.subtasks || []).map((st) => ({
         ...st,
-        id: st.id || crypto.randomUUID(), // Her alt göreve benzersiz bir ID ver
+        id: st.id || crypto.randomUUID(),
       }))
     );
   }, [task]);
 
-  // modal dışına tıklayınca kapatma
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsModalOpen(false);
-        setIsTaskMenuOpen(false);
-        setIsDeleteModalOpen(false);
-        closeModal();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [closeModal]);
-
-  // alt görev tamamlama durumu değiştir
+  // Alt görev tamamlama
   const toggleSubtask = (id) => {
     const updatedSubtasks = subtasks.map((subtask) =>
       subtask.id === id ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
@@ -73,7 +54,7 @@ export default function ViewTask({ task, closeModal }) {
     setTodos(updatedTodos);
   };
 
-  // durum (status) güncelleme
+  // Durum güncelleme
   const updateStatus = (newStatus) => {
     if (newStatus === status) return;
 
@@ -103,15 +84,22 @@ export default function ViewTask({ task, closeModal }) {
     setIsDropdownOpen(false);
   };
 
-  // mdal açma
+  // Edit Task modal aç
   const openModal = (isEditMode) => {
     setEdit(isEditMode);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="taskModalOverlay">
-      <div className="taskModalContent" ref={modalRef} onClick={(e) => e.stopPropagation()}>
+    <div
+      className="taskModalOverlay"
+      onClick={closeModal} // Dış tıklamada modal kapanır
+    >
+      <div
+        className="taskModalContent"
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()} // İç tıklamalarda kapanma engellenir
+      >
         <div className="viewTaskTop">
           <h2 className="taskTitle">{task.title}</h2>
           <img
@@ -126,26 +114,26 @@ export default function ViewTask({ task, closeModal }) {
 
         {isTaskMenuOpen && (
           <div className="edit-delete-board">
-            <button onClick={() => openModal(true)} className="editBoard">
-              Edit Task
-            </button>
-            <button onClick={() => setIsDeleteModalOpen(true)} className="deleteBoard">
-              Delete Task
-            </button>
+            <button onClick={() => openModal(true)} className="editBoard">Edit Task</button>
+            <button onClick={() => setIsDeleteModalOpen(true)} className="deleteBoard">Delete Task</button>
           </div>
         )}
 
         {isDeleteModalOpen && (
-          <DeleteModal
-            type="task"
-            item={task}
-            closeModal={() => setIsDeleteModalOpen(false)}
-            closeParentModal={closeModal}
-          />
+          <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <DeleteModal
+                type="task"
+                item={task}
+                closeModal={() => setIsDeleteModalOpen(false)}
+                closeParentModal={closeModal}
+              />
+            </div>
+          </div>
         )}
 
         {isModalOpen && (
-          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <NewEditTask closeModal={() => setIsModalOpen(false)} task={task} />
             </div>
