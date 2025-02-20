@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TodoProvider } from "./components/TodoContext";
 import { getPage } from "./helper";
 import "./App.css";
@@ -23,14 +23,12 @@ function AppContent() {
 
   return (
     <div className={`board-container ${darkMode ? "dark" : "light"}`}>
-      <TodoProvider>
-        <div className="app-container">
-          <MyComponent />
-          <div className="page-content">
-            {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
-          </div>
+      <div className="app-container">
+        <MyComponent />
+        <div className="page-content">
+          {page ? page.component : <h1>Sayfa Bulunamadı</h1>}
         </div>
-      </TodoProvider>
+      </div>
     </div>
   );
 }
@@ -38,7 +36,9 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <TodoProvider>
+        <AppContent />
+      </TodoProvider>
     </ThemeProvider>
   );
 }
