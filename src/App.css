@@ -254,6 +254,12 @@ ul {
 .board {
   color: inherit;
 }
+
+.newBoardName {
+  display: flex;
+  flex-direction: column;
+}
+
 .newBoardName input {
   height: 40px;
   border: 1px solid #828fa340;
@@ -525,7 +531,6 @@ ul {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   z-index: 10000000 !important;
 
-
   h2 {
     font-weight: 700;
     font-size: 18px;
@@ -564,7 +569,7 @@ ul {
         padding: 8px 16px;
         border-radius: 4px;
         border: 1px solid rgba(130, 143, 163, 0.25);
-        color: #000112;;
+        color: #000112;
       }
 
       button {
@@ -628,7 +633,7 @@ ul {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  width: 100%;
+  width: 90%;
   max-width: 500px;
   position: relative;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -1028,7 +1033,9 @@ ul {
 .subtaskItem .checkmark {
   width: 16px;
   height: 16px;
-  background-color: #2d2f4d;
+  /* background-color: #2d2f4d; */
+  border: 1px solid #828FA33F;
+  background-color: #FFFFFF;
   border-radius: 2px;
   position: relative;
   display: flex;
@@ -1078,6 +1085,22 @@ form input {
     border: none;
     cursor: pointer;
   }
+}
+
+.createNewBoardBtn {
+  display: flex;
+  background-color: #635FC7;
+  border: none;
+  border-radius: 20px;
+  width: 100%;
+  padding: 8px;
+  justify-content: center;
+font-weight: 700;
+font-size: 13px;
+line-height: 23px;
+letter-spacing: 0px;
+text-align: center;
+color: white;
 }
 
 /* buse-end */
@@ -1186,6 +1209,9 @@ form input {
   }
 
   .dropdownMenu {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
     min-width: 264px;
     position: fixed;
     top: 80px;
@@ -1206,6 +1232,14 @@ form input {
         border: none;
         background-color: inherit;
       }
+    }
+
+    .modal-btn {
+      color: #635FC7;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 24px;
     }
   }
 
@@ -1230,6 +1264,7 @@ form input {
     .dropdownBtn,
     p {
       display: flex;
+      align-items: center;
       border: none;
       list-style: none;
       padding: 14px 24px;
@@ -1342,10 +1377,7 @@ form input {
     display: flex;
     flex-direction: column;
   }
-  .newBoardName {
-    display: flex;
-    flex-direction: column;
-  }
+  
   .newBoardName input {
     height: 40px;
     border: 1px solid #828fa340;
@@ -1390,6 +1422,7 @@ form input {
     letter-spacing: 0px;
     text-align: center;
     margin-bottom: 24px;
+    margin-top: 12px;
   }
   .saveBtn {
     border: none;

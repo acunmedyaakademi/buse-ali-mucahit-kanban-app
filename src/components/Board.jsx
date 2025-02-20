@@ -7,8 +7,7 @@ import { BoardIconSvg, HideIconSvg, ShowIconSvg } from "../Svg";
 import { useTheme } from "./ThemeContext";
 
 export default function Board() {
-  const { todos, setTodos, setEdit, setCurrentBoard } = useContext(TodoContext);
-  const [selectedBoard, setSelectedBoard] = useState(null);
+  const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } = useContext(TodoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColumnModalOpen, setIsColumnModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -16,14 +15,10 @@ export default function Board() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
-    if (todos.length > 0 && !selectedBoard) handleSelectBoard(todos[0]);
-  }, [todos]);
-
-  const handleSelectBoard = (board) => {
-    setSelectedBoard(board); // ✅ Seçilen board'u direkt set et
-    setEdit(false);
-    setCurrentBoard(board);
-  };
+    if (todos.length > 0 && !currentBoard) {
+      setCurrentBoard(todos[0]); // İlk board varsayılan olarak seçilsin
+    }
+  }, [todos, currentBoard, setCurrentBoard]);
 
   const openModal = (isEditMode) => {
     setEdit(isEditMode);
@@ -41,26 +36,24 @@ export default function Board() {
   const closeTaskModal = () => setSelectedTask(null);
 
   const updateBoardColumns = (newColumns) => {
-    if (!selectedBoard) return;
+    if (!currentBoard) return;
 
-    const updatedBoard = { ...selectedBoard, columns: newColumns };
+    const updatedBoard = { ...currentBoard, columns: newColumns };
 
     setTodos((prevTodos) =>
       prevTodos.map((board) =>
-        board.id === selectedBoard.id ? updatedBoard : board
+        board.id === currentBoard.id ? updatedBoard : board
       )
     );
 
-    setSelectedBoard(updatedBoard); // ✅ Seçilen board'u güncelle
-    setCurrentBoard(updatedBoard); // ✅ Context güncelle
+    setCurrentBoard(updatedBoard); // Context üzerinden güncelle
   };
 
   return (
     <div className={`boardPage ${darkMode ? "dark-mode" : "light-mode"}`}>
       <Sidebar
         todos={todos}
-        selectedBoard={selectedBoard}
-        handleSelectBoard={handleSelectBoard}
+        currentBoard={currentBoard}
         openModal={openModal}
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -69,9 +62,9 @@ export default function Board() {
       />
 
       <div className="main-content">
-        {selectedBoard ? (
+        {currentBoard ? (
           <BoardColumns
-            board={selectedBoard}
+            board={currentBoard}
             openColumnModal={openColumnModal}
             openTaskModal={openTaskModal}
           />
@@ -90,7 +83,7 @@ export default function Board() {
         <Modal closeModal={closeColumnModal}>
           <AddColumnModal
             closeModal={closeColumnModal}
-            selectedBoard={selectedBoard}
+            selectedBoard={currentBoard}
             updateBoardColumns={updateBoardColumns}
           />
         </Modal>
@@ -107,14 +100,20 @@ export default function Board() {
 
 function Sidebar({
   todos,
-  selectedBoard,
-  handleSelectBoard,
+  currentBoard,
   openModal,
   isSidebarOpen,
   toggleSidebar,
   darkMode,
   toggleTheme,
 }) {
+  const { setCurrentBoard, setEdit } = useContext(TodoContext);
+
+  const handleSelectBoard = (board) => {
+    setCurrentBoard(board); // Context üzerinden board güncellenir
+    setEdit(false);
+  };
+
   return (
     <div className={`sideNav-board ${isSidebarOpen ? "open" : "closed"}`}>
       <ul className="allBoards">
@@ -122,9 +121,7 @@ function Sidebar({
         {todos.map((board) => (
           <li
             key={board.id}
-            className={`board ${
-              selectedBoard?.id === board.id ? "active" : ""
-            }`}
+            className={`board ${currentBoard?.id === board.id ? "active" : ""}`}
           >
             <button onClick={() => handleSelectBoard(board)}>
               <BoardIconSvg />
@@ -151,13 +148,7 @@ function Sidebar({
 
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
-  return (
-    "#" +
-    Array.from(
-      { length: 6 },
-      () => letters[Math.floor(Math.random() * 16)]
-    ).join("")
-  );
+  return "#" + Array.from({ length: 6 }, () => letters[Math.floor(Math.random() * 16)]).join("");
 }
 
 function BoardColumns({ board, openColumnModal, openTaskModal }) {
@@ -188,9 +179,7 @@ function BoardColumns({ board, openColumnModal, openTaskModal }) {
                   <p>{task.title}</p>
                   {task.subtasks && task.subtasks.length > 0 && (
                     <span className="board-subtasks-info">
-                      Subtasks (
-                      {task.subtasks.filter((st) => st.isCompleted).length} of{" "}
-                      {task.subtasks.length})
+                      Subtasks ({task.subtasks.filter((st) => st.isCompleted).length} of {task.subtasks.length})
                     </span>
                   )}
                 </div>
@@ -217,9 +206,7 @@ function Modal({ children, closeModal }) {
   return (
     <div className="modal-overlay" onClick={closeModal}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={closeModal}>
-          ✖
-        </button>
+        <button className="close-btn" onClick={closeModal}>✖</button>
         {children}
       </div>
     </div>

@@ -8,7 +8,7 @@ import React, {
 import { TodoContext } from "./TodoContext";
 import NewEditTask from "./NewEditTask";
 import NewEditBoard from "./NewEditBoard";
-import { AddIcon, KanbanLogoSvg } from "../Svg";
+import { AddIcon, BoardIconSvg, KanbanLogoSvg } from "../Svg";
 import DeleteModal from "./DeleteModal";
 import { useTheme } from "./ThemeContext";
 
@@ -110,7 +110,7 @@ function MobileComponent({
           <img src="img/kanban-site-logo.svg" alt="img logo" />
 
           <div className="header-top-bottom">
-            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Dropdown isOpen={isOpen} setIsOpen={setIsOpen} openModal={openModal}/>
           </div>
         </div>
 
@@ -263,7 +263,7 @@ function DesktopComponent({
   );
 }
 
-function Dropdown({ isOpen, setIsOpen }) {
+function Dropdown({ isOpen, setIsOpen, openModal }) {
   const dropdownRef = useRef(null);
   const { darkMode, toggleTheme } = useTheme();
   const { todos, setTodos, setEdit, currentBoard, setCurrentBoard } =
@@ -297,6 +297,11 @@ function Dropdown({ isOpen, setIsOpen }) {
     }
   }, [todos, currentBoard, setCurrentBoard]);  
 
+  const handleCreateNewBoard = () => {
+    setIsOpen(false);        // ✅ Dropdown kapat
+    openModal(false);        // ✅ NewEditBoard modal aç
+  };
+
   return (
     <Fragment>
       <div className="dropdown" ref={dropdownRef}>
@@ -317,11 +322,14 @@ function Dropdown({ isOpen, setIsOpen }) {
                 className="dropdownBtn"
                 onClick={() => handleSelectBoard(x)}
               >
-                <img src="img/dropdown-grey-menu-icon.svg" alt="" />
+                <BoardIconSvg />
                 {x.name}
               </button>
             </li>
           ))}
+          <button className="modal-btn" onClick={handleCreateNewBoard}>
+            <BoardIconSvg /> + Create New Board
+          </button>
           <div className="navBar-themeBtn">
             <span className="white-mode-background">
               <img src="img/white-mode-theme-icon.svg" alt="" />

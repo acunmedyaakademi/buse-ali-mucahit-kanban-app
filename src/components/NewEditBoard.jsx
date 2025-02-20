@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { TodoContext } from "./TodoContext";
+import { DeleteSvg } from "../Svg";
 
 export default function NewEditBoard({ closeModal }) {
   const { todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard } =
@@ -50,6 +51,7 @@ export default function NewEditBoard({ closeModal }) {
     };
 
     setTodos((prevTodos) => [...prevTodos, newBoard]);
+    setCurrentBoard(newBoard);   
     closeModal();
   };
 
@@ -99,7 +101,7 @@ export default function NewEditBoard({ closeModal }) {
                 />
                 {columns.length > 1 && (
                   <button type="button" onClick={() => deleteColumn(column.id)}>
-                    ❌
+                    <DeleteSvg />
                   </button>
                 )}
               </div>
