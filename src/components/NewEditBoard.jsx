@@ -2,14 +2,8 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { TodoContext } from "./TodoContext";
 
 export default function NewEditBoard({ closeModal }) {
-  const {
-    todos,
-    setTodos,
-    isEdit,
-    setEdit,
-    currentBoard,
-    setCurrentBoard,
-  } = useContext(TodoContext);
+  const { todos, setTodos, isEdit, setEdit, currentBoard, setCurrentBoard } =
+    useContext(TodoContext);
 
   const [columns, setColumns] = useState([]);
   const modalRef = useRef(null);
@@ -32,7 +26,8 @@ export default function NewEditBoard({ closeModal }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeModal]);
 
-  const addColumn = () => setColumns([...columns, { id: columns.length, name: "" }]);
+  const addColumn = () =>
+    setColumns([...columns, { id: columns.length, name: "" }]);
 
   const handleColumnChange = (index, value) => {
     const updatedColumns = [...columns];
@@ -40,7 +35,8 @@ export default function NewEditBoard({ closeModal }) {
     setColumns(updatedColumns);
   };
 
-  const deleteColumn = (id) => setColumns(columns.filter((col) => col.id !== id));
+  const deleteColumn = (id) =>
+    setColumns(columns.filter((col) => col.id !== id));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,21 +98,22 @@ export default function NewEditBoard({ closeModal }) {
                   placeholder={`Column ${index + 1}`}
                 />
                 {columns.length > 1 && (
-                  <button type="button" onClick={() => deleteColumn(column.id)}>❌</button>
+                  <button type="button" onClick={() => deleteColumn(column.id)}>
+                    ❌
+                  </button>
                 )}
               </div>
             ))}
             <button type="button" className="addNewBtn" onClick={addColumn}>
               + Add New Column
             </button>
-          </div>
-
-          <div className="addNewBoardBtn">
-            {isEdit ? (
-              <button className="saveBtn">Save Changes</button>
-            ) : (
-              <button className="createNewBoardBtn">Create New Board</button>
-            )}
+            <div className="addNewBoardBtn">
+              {isEdit ? (
+                <button className="saveBtn">Save Changes</button>
+              ) : (
+                <button className="createNewBoardBtn">Create New Board</button>
+              )}
+            </div>
           </div>
         </form>
       </div>

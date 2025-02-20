@@ -64,12 +64,12 @@ ul {
   }
 
   h3 {
-font-weight: 700;
-font-size: 18px;
-line-height: 22.68px;
-letter-spacing: 0px;
-color: #000112;
-margin-bottom: 24px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22.68px;
+    letter-spacing: 0px;
+    color: #000112;
+    margin-bottom: 24px;
   }
 }
 
@@ -136,7 +136,7 @@ margin-bottom: 24px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sideNav-board.open body{
+.sideNav-board.open body {
   overflow-y: hidden;
 }
 
@@ -165,7 +165,7 @@ margin-bottom: 24px;
 .showSidebar-btn {
   position: fixed;
   bottom: 20px;
-  background-color: #635fc7; 
+  background-color: #635fc7;
   width: 56px;
   height: 48px;
   border-top-right-radius: 100px;
@@ -470,7 +470,6 @@ margin-bottom: 24px;
     line-height: 22.68px;
     letter-spacing: 0px;
     color: #000112;
-
   }
 
   form {
@@ -608,7 +607,7 @@ margin-bottom: 24px;
     resize: none;
     overflow-y: hidden;
     background-color: transparent;
-    border: 1px solid #828FA340;
+    border: 1px solid #828fa340;
     border-radius: 4px;
     padding: 8px 16px;
   }
@@ -903,7 +902,7 @@ margin-bottom: 24px;
 }
 
 .deleteModal button:first-of-type:hover {
-  background-color: #FF9898;
+  background-color: #ff9898;
 }
 
 .deleteModal button:last-of-type {
@@ -962,14 +961,14 @@ margin-bottom: 24px;
 }
 
 .subtaskItem input {
-  display: none; 
+  display: none;
 }
 
 .subtaskItem .checkmark {
   width: 16px;
   height: 16px;
-  background-color: #2d2f4d; 
-  border-radius: 2px; 
+  background-color: #2d2f4d;
+  border-radius: 2px;
   position: relative;
   display: flex;
   align-items: center;
@@ -984,16 +983,16 @@ margin-bottom: 24px;
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-  opacity: 0; 
+  opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .subtaskItem input:checked + .checkmark {
-  background-color: #635fc7; 
+  background-color: #635fc7;
 }
 
 .subtaskItem input:checked + .checkmark::after {
-  opacity: 1; 
+  opacity: 1;
 }
 
 .deleteModalBtns {
@@ -1002,7 +1001,7 @@ margin-bottom: 24px;
 }
 
 form input {
-  border: 1px solid #828FA340;
+  border: 1px solid #828fa340;
   padding: 8px 16px;
   background-color: transparent;
   border-radius: 4px;
@@ -1230,7 +1229,7 @@ form input {
   }
 
   .deleteBoard {
-    color: #EA5555;
+    color: #ea5555;
   }
 }
 
@@ -1312,6 +1311,38 @@ form input {
     width: 385px;
     border-radius: 4px;
     border: 1px solid #828fa340;
+  }
+  
+  .column-input button {
+    border: none;
+    background-color: white;
+  }
+  .addNewBtn {
+    border: none;
+    padding: 8px 50px;
+    background-color: #635fc71a;
+    border-radius: 20px;
+    color: #635fc7;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 23px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .saveBtn {
+    border: none;
+    padding: 8px 50px;
+    width: 100%;
+    background-color: #635fc7;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 23px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin-bottom: 24px;
   }
   .sideNav-board .addNewBtn {
     padding: 8px 50px;
