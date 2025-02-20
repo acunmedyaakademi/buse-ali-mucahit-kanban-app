@@ -198,7 +198,6 @@ function Modal({ children, closeModal }) {
   return (
     <div className="modal-overlay" onClick={closeModal}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={closeModal}>✖</button>
         {children}
       </div>
     </div>

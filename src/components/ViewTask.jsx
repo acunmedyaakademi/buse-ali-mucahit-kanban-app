@@ -4,7 +4,8 @@ import DeleteModal from "./DeleteModal";
 import NewEditTask from "./NewEditTask";
 
 export default function ViewTask({ task, closeModal }) {
-  const { todos, setTodos, currentBoard, setCurrentBoard, setEdit } = useContext(TodoContext);
+  const { todos, setTodos, currentBoard, setCurrentBoard, setEdit } =
+    useContext(TodoContext);
 
   const [status, setStatus] = useState(task.status);
   const [subtasks, setSubtasks] = useState([]);
@@ -29,7 +30,9 @@ export default function ViewTask({ task, closeModal }) {
   // Alt görev tamamlama
   const toggleSubtask = (id) => {
     const updatedSubtasks = subtasks.map((subtask) =>
-      subtask.id === id ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
+      subtask.id === id
+        ? { ...subtask, isCompleted: !subtask.isCompleted }
+        : subtask
     );
     setSubtasks(updatedSubtasks);
 
@@ -64,7 +67,10 @@ export default function ViewTask({ task, closeModal }) {
             ...board,
             columns: board.columns.map((col) => {
               if (col.name === status) {
-                return { ...col, tasks: col.tasks.filter((t) => t.id !== task.id) };
+                return {
+                  ...col,
+                  tasks: col.tasks.filter((t) => t.id !== task.id),
+                };
               }
               if (col.name === newStatus) {
                 return {
@@ -102,20 +108,29 @@ export default function ViewTask({ task, closeModal }) {
       >
         <div className="viewTaskTop">
           <h2 className="taskTitle">{task.title}</h2>
-          <img
-            src="img/detail-icon.svg"
-            alt="Options"
+
+          <button
+            className="detailBtn"
             onClick={(e) => {
               e.stopPropagation();
               setIsTaskMenuOpen((prev) => !prev);
             }}
-          />
+          >
+            <img src="img/detail-icon.svg" alt="Options" />
+          </button>
         </div>
 
         {isTaskMenuOpen && (
           <div className="edit-delete-board">
-            <button onClick={() => openModal(true)} className="editBoard">Edit Task</button>
-            <button onClick={() => setIsDeleteModalOpen(true)} className="deleteBoard">Delete Task</button>
+            <button onClick={() => openModal(true)} className="editBoard">
+              Edit Task
+            </button>
+            <button
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="deleteBoard"
+            >
+              Delete Task
+            </button>
           </div>
         )}
 
@@ -135,7 +150,10 @@ export default function ViewTask({ task, closeModal }) {
         {isModalOpen && (
           <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <NewEditTask closeModal={() => setIsModalOpen(false)} task={task} />
+              <NewEditTask
+                closeModal={() => setIsModalOpen(false)}
+                task={task}
+              />
             </div>
           </div>
         )}
@@ -143,7 +161,8 @@ export default function ViewTask({ task, closeModal }) {
         <p className="taskDescription">{task.description}</p>
 
         <label className="subtasksLabel">
-          Subtasks ({subtasks.filter((st) => st.isCompleted).length} of {subtasks.length})
+          Subtasks ({subtasks.filter((st) => st.isCompleted).length} of{" "}
+          {subtasks.length})
         </label>
         <div className="subtasksContainer">
           {subtasks.map((subtask) => (
@@ -154,7 +173,9 @@ export default function ViewTask({ task, closeModal }) {
                 onChange={() => toggleSubtask(subtask.id)}
               />
               <span className="checkmark"></span>
-              <span className={subtask.isCompleted ? "completed" : "notCompleted"}>
+              <span
+                className={subtask.isCompleted ? "completed" : "notCompleted"}
+              >
                 {subtask.title}
               </span>
             </label>
@@ -162,7 +183,10 @@ export default function ViewTask({ task, closeModal }) {
         </div>
 
         <label className="statusLabel">Current Status</label>
-        <div className="selectWrapper" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <div
+          className="selectWrapper"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
           <div className="statusSelect">
             {status}
             <img src="img/down-icon.svg" alt="Dropdown Arrow" />
@@ -173,7 +197,9 @@ export default function ViewTask({ task, closeModal }) {
               {currentBoard.columns.map((col) => (
                 <div
                   key={col.name}
-                  className={`statusOption ${col.name === status ? "selected" : ""}`}
+                  className={`statusOption ${
+                    col.name === status ? "selected" : ""
+                  }`}
                   onClick={() => updateStatus(col.name)}
                 >
                   {col.name}

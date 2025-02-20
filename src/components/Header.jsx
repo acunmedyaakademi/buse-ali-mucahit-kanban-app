@@ -122,11 +122,12 @@ function MobileComponent({
           >
             <AddIcon />
           </button>
+          <button className="detailBtn" clas onClick={openIsEditDeleteBoard}>
           <img
-            onClick={openIsEditDeleteBoard}
             src="img/detail-icon.svg"
             alt=""
           />
+          </button>
         </div>
 
         {isEditDeleteBoard && (
