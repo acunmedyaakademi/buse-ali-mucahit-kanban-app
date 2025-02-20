@@ -22,7 +22,7 @@ button {
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: white;
 }
 ul {
   padding: 0;
@@ -62,6 +62,15 @@ ul {
       margin-bottom: 8px;
     }
   }
+
+  h3 {
+font-weight: 700;
+font-size: 18px;
+line-height: 22.68px;
+letter-spacing: 0px;
+color: #000112;
+margin-bottom: 24px;
+  }
 }
 
 .close-btn {
@@ -74,18 +83,23 @@ ul {
   cursor: pointer;
 }
 
-/* MUCAHIT MOBILE BASLANGIC */
+.board-container {
+  width: 100%;
+  overflow: hidden;
+}
+
 .boardPage {
   display: flex;
   height: 100vh;
   background-color: #f4f7fd;
   transition: all 0.3s ease;
   width: 100%;
+  overflow: hidden;
 }
 .sideNav-board {
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: auto;
   left: 0;
   background-color: white;
   border-right: 1px solid #e4ebfa;
@@ -100,7 +114,6 @@ ul {
     color: #828fa3;
     margin-bottom: 19px;
     padding-left: 24px;
-    padding-top: 30px;
   }
 }
 
@@ -123,10 +136,15 @@ ul {
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ana İçerik */
+.sideNav-board.open body{
+  overflow-y: hidden;
+}
+
 .main-content {
   flex: 1;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  overflow: auto;
 }
 
 .hideIcon {
@@ -147,7 +165,7 @@ ul {
 .showSidebar-btn {
   position: fixed;
   bottom: 20px;
-  background-color: #635fc7; /* Mor renk */
+  background-color: #635fc7; 
   width: 56px;
   height: 48px;
   border-top-right-radius: 100px;
@@ -187,7 +205,7 @@ ul {
 }
 
 .board button:hover svg path {
-  fill: white; /* Hover durumunda SVG rengini kırmızı yap */
+  fill: white;
 }
 
 .modal-btn:first-child {
@@ -227,35 +245,11 @@ ul {
   display: none;
 }
 
-/* .allBoards button {
-  padding-left: 32px;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 18.9px;
-  letter-spacing: 0px;
-  color: #828fa3;
-  margin-left: 10px;
-} */
 .sideNav-board button:active {
   background-color: #635fc7;
   border-radius: 0 25px 25px 0;
   color: #ffffff;
 }
-/* .sideNav-board button:hover {
-  color: #635fc7;
-  background-color: #635fc7;
-  opacity: 0.1;
-  border-radius: 0 25px 25px 0;
-  color: #635fc7;
-}
-
-.board button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 240px;
-  left: 0;
-} */
 
 .board {
   color: inherit;
@@ -408,6 +402,7 @@ ul {
     box-shadow: 0px 4px 6px 0px #364e7e1a;
     background-color: white;
     border-radius: 8px;
+    cursor: pointer;
 
     p {
       font-weight: 700;
@@ -475,7 +470,7 @@ ul {
     line-height: 22.68px;
     letter-spacing: 0px;
     color: #000112;
-    margin-bottom: 24px;
+
   }
 
   form {
@@ -592,7 +587,6 @@ ul {
     font-weight: 700;
     font-size: 18px;
     color: #000112;
-    margin-bottom: 24px;
   }
 
   .addTaskInputGroup {
@@ -608,24 +602,21 @@ ul {
     margin-bottom: 8px;
   }
 
-  /* input,
-  textarea,
-  select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(130, 143, 163, 0.25);
-  } */
-
   textarea {
-    height: 80px;
+    min-height: 112px;
+    height: auto;
     resize: none;
+    overflow-y: hidden;
+    background-color: transparent;
+    border: 1px solid #828FA340;
+    border-radius: 4px;
+    padding: 8px 16px;
   }
 
   .subtask-section {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
 
   .subtaskInput {
@@ -653,9 +644,10 @@ ul {
     color: #635fc7;
     background-color: rgba(99, 95, 199, 0.1);
     border: none;
-    padding: 8px;
+    padding: 10px;
     border-radius: 20px;
     cursor: pointer;
+    margin-top: 12px;
   }
 
   .addTaskInputGroup select {
@@ -775,7 +767,6 @@ ul {
     cursor: pointer;
   }
 
-  /* Seçili Alan */
   .statusSelect {
     width: 100%;
     padding: 12px;
@@ -880,7 +871,7 @@ ul {
   left: 50%;
 }
 
-.deleteModal h2 {
+.deleteModal h4 {
   font-size: 20px;
   font-weight: 700;
   color: #ea5555;
@@ -912,7 +903,7 @@ ul {
 }
 
 .deleteModal button:first-of-type:hover {
-  background-color: #d43c3c;
+  background-color: #FF9898;
 }
 
 .deleteModal button:last-of-type {
@@ -951,6 +942,82 @@ ul {
   letter-spacing: 0px;
   color: #000112;
   padding-left: 24px;
+}
+
+.kanbanLogo svg path {
+  color: #000112;
+}
+
+.viewTaskTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subtaskItem {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.subtaskItem input {
+  display: none; 
+}
+
+.subtaskItem .checkmark {
+  width: 16px;
+  height: 16px;
+  background-color: #2d2f4d; 
+  border-radius: 2px; 
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.subtaskItem .checkmark::after {
+  content: "";
+  width: 5px;
+  height: 7.76px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0; 
+  transition: opacity 0.2s ease;
+}
+
+.subtaskItem input:checked + .checkmark {
+  background-color: #635fc7; 
+}
+
+.subtaskItem input:checked + .checkmark::after {
+  opacity: 1; 
+}
+
+.deleteModalBtns {
+  display: flex;
+  flex-direction: column;
+}
+
+form input {
+  border: 1px solid #828FA340;
+  padding: 8px 16px;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #000112;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
 }
 
 /* buse-end */
@@ -1133,7 +1200,7 @@ ul {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 0;
 }
 
 .edit-delete-board {
@@ -1146,15 +1213,16 @@ ul {
   background-color: white;
   position: absolute;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 4px 6px rgba(0, 0, 0, 0.1);
   right: 0;
   top: 80px;
+  z-index: 1;
 
   .editBoard,
   .deleteBoard {
     border: none;
     display: block;
-    background-color: white;
+    background-color: transparent;
   }
 
   .editBoard {
@@ -1162,7 +1230,7 @@ ul {
   }
 
   .deleteBoard {
-    color: red;
+    color: #EA5555;
   }
 }
 
@@ -1194,8 +1262,7 @@ ul {
     flex-direction: column;
     justify-content: space-between;
     min-width: 261px;
-    height: calc(100% - 6rem);
-    z-index: 2;
+    height: 100%;
     background-color: white;
     padding-top: 1rem;
     padding-bottom: 2rem;

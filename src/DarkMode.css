@@ -1,29 +1,145 @@
 .dark {
   .header {
-    background-color: #2B2C37;
+    background-color: #2b2c37;
+    z-index: 0;
   }
 
   .dropdown {
-    background-color: #2B2C37;
+    background-color: #2b2c37;
 
     .dropdown-btn {
-      color: #FFFFFF;
+      color: #ffffff;
     }
 
     .dropdownMenu {
-      background-color: #2B2C37;
-      box-shadow: 0px 10px 20px 0px #364E7E40;
+      background-color: #2b2c37;
+      box-shadow: 0px 10px 20px 0px #364e7e40;
     }
-
 
     .dropdownBtn,
     p {
       color: #828fa3;
-      background-color: #2B2C37;
+      background-color: #2b2c37;
     }
   }
-  
+
   .navBar-themeBtn {
+    background-color: #20212c;
+  }
+
+  .kanbanLogo svg path {
+    color: #ffffff;
+  }
+
+  .desktopHeaderName {
+    color: #ffffff;
+  }
+
+  .kanbanLogo {
+    border-right: 1px solid #3e3f4e;
+  }
+
+  .sideNav-board {
+    background-color: #2b2c37;
+    border-right: 1px solid #3e3f4e;
+  }
+
+  .boardColumns {
+    background-color: #20212b;
+    border-top: 1px solid #3e3f4e;
+
+    .boardColumn {
+      background-color: #20212b;
+
+      .columnTodo {
+        background-color: #2b2c37;
+        box-shadow: 0px 4px 6px 0px #364e7e1a;
+
+        p {
+          color: #ffffff;
+        }
+      }
+    }
+
+    .new-column {
+      background: linear-gradient(
+        180deg,
+        rgba(43, 44, 55, 0.25) 0%,
+        rgba(43, 44, 55, 0.125) 100%
+      );
+    }
+  }
+
+  .modal-content {
+    background-color: #2b2c37;
+
+    h3 {
+      color: #ffffff;
+    }
+  }
+
+  .newBoardName input {
+    background-color: #2b2c37;
+  }
+
+  .boardPage {
+    background-color: #20212b;
+  }
+
+  .taskModalContent {
+    background-color: #2b2c37;
+
+    h2 {
+      color: white;
+    }
+
+    .subtasksContainer label {
+      background-color: #20212c;
+
+      span {
+        color: #ffffff;
+      }
+
+      span.completed {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .statusSelect {
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background-color: transparent;
+      color: white;
+    }
+
+    .statusLabel, .subtasksLabel {
+      color: white;
+    }
+
+    .statusDropdown {
+      background-color: rgba(32, 33, 44, 1);
+      box-shadow: 0px 10px 20px 0px rgba(54, 78, 126, 0.25);
+    }
+
+    .statusOption.selected {
+      color: white;
+    }
+  }
+
+  .edit-delete-board {
+    box-shadow: 0px 10px 20px 0px rgba(54, 78, 126, 0.25);
     background-color: #20212C;
+  }
+
+  .deleteModal {
+    background-color: #2B2C37;
+  }
+
+  form input {
+    background-color: transparent;
+    color: white;
+  }
+
+  .addSubtaskBtn {
+    background-color: white;
   }
 }
